@@ -1,5 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import SiteHeader from "../components/SiteHeader.astro";
 
 const socials = [
   {
@@ -26,31 +28,7 @@ const contactHref = "mailto:contact@watervalleyvoice.com?subject=Water%20Valley%
   title="Water Valley Voice | Conversations from Windsor, Colorado"
   description="Water Valley Voice shares the people, places, and conversations shaping Water Valley, Windsor, and Northern Colorado."
 >
-  <header class="site-header">
-    <div class="nav-shell">
-      <a class="brand" href="#top" aria-label="Water Valley Voice home">
-        <img src="/media/images/wvv-mic-mark-web.jpg" alt="" width="48" height="48" />
-        <span class="brand-text">
-          <span>Water Valley</span>
-          <strong>Voice</strong>
-        </span>
-      </a>
-
-      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation">
-        <span class="sr-only">Open menu</span>
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-      </button>
-
-      <nav id="primary-navigation" class="primary-nav" aria-label="Primary navigation">
-        <a href="#listen">Listen</a>
-        <a href="#watch">Watch</a>
-        <a href="#studio">Our studio</a>
-        <a class="nav-cta" href="#contact">Contact</a>
-      </nav>
-    </div>
-  </header>
+  <SiteHeader />
 
   <main id="main-content">
     <section id="top" class="hero">
@@ -160,11 +138,12 @@ const contactHref = "mailto:contact@watervalleyvoice.com?subject=Water%20Valley%
         <span>Water Valley Voice Studio</span>
       </div>
       <div class="studio-copy">
-        <p class="eyebrow eyebrow-gold"><span></span> Where we record</p>
-        <h2>Built for great<br /><em>conversation.</em></h2>
+        <p class="eyebrow eyebrow-gold"><span></span> Record with us</p>
+        <h2>Built for your next<br /><em>production.</em></h2>
         <p>
-          Our Water Valley studio is where local experience, honest questions, and a little curiosity come together. Every episode begins right here in Windsor.
+          Bring your podcast, interview, or production to a fully equipped Windsor studio. Rent the space and gear for a DIY session, or let our team handle production and editing for you.
         </p>
+        <a class="button button-gold studio-book-button" href="/book-studio">View studio packages <span aria-hidden="true">→</span></a>
         <address>
           <span>1625 Pelican Lakes Point, Suite 201</span>
           <span>Windsor, CO 80550</span>
@@ -178,7 +157,7 @@ const contactHref = "mailto:contact@watervalleyvoice.com?subject=Water%20Valley%
         <p class="eyebrow eyebrow-centered"><span></span> Get in touch <span></span></p>
         <h2>Have a story to share?</h2>
         <p>
-          Know someone we should meet, a local place we should visit, or a conversation worth having? We’d love to hear from you.
+          Know someone we should meet, a local place we should highlight, or a conversation worth having? We’d love to hear from you.
         </p>
         <a class="contact-email" href={contactHref}>
           <span>Email Water Valley Voice</span>
@@ -207,58 +186,5 @@ const contactHref = "mailto:contact@watervalleyvoice.com?subject=Water%20Valley%
     </section>
   </main>
 
-  <footer>
-    <div class="footer-main section">
-      <a class="brand brand-footer" href="#top" aria-label="Water Valley Voice home">
-        <img src="/media/images/wvv-mic-mark-web.jpg" alt="" width="48" height="48" loading="lazy" />
-        <span class="brand-text"><span>Water Valley</span><strong>Voice</strong></span>
-      </a>
-
-      <div class="footer-contact">
-        <p>Contact</p>
-        <a href={contactHref}>contact@watervalleyvoice.com</a>
-      </div>
-
-      <address>
-        <span>1625 Pelican Lakes Point, Suite 201</span>
-        <span>Windsor, CO 80550</span>
-      </address>
-    </div>
-
-    <div class="footer-bottom section">
-      <p>© {new Date().getFullYear()} Water Valley Voice</p>
-      <div class="parent-brand">
-        <span>A podcast from</span>
-        <img
-          src="/media/images/201022_WV_logo_color-final_outlined_white_lettering.png"
-          alt="Water Valley"
-          width="220"
-          height="69"
-          loading="lazy"
-        />
-      </div>
-    </div>
-  </footer>
-
-  <script>
-    const menuButton = document.querySelector<HTMLButtonElement>(".menu-toggle");
-    const navigation = document.querySelector<HTMLElement>(".primary-nav");
-    const menuLabel = menuButton?.querySelector<HTMLElement>(".sr-only");
-
-    const setMenu = (isOpen: boolean) => {
-      menuButton?.setAttribute("aria-expanded", String(isOpen));
-      navigation?.classList.toggle("is-open", isOpen);
-      if (menuLabel) menuLabel.textContent = isOpen ? "Close menu" : "Open menu";
-    };
-
-    menuButton?.addEventListener("click", () => {
-      setMenu(menuButton.getAttribute("aria-expanded") !== "true");
-    });
-
-    navigation?.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => setMenu(false)));
-
-    window.addEventListener("resize", () => {
-      if (window.innerWidth > 760) setMenu(false);
-    });
-  </script>
+  <SiteFooter />
 </BaseLayout>

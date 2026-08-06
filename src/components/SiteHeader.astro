@@ -1,0 +1,56 @@
+---
+interface Props {
+  currentPage?: "home" | "booking";
+}
+
+const { currentPage = "home" } = Astro.props;
+---
+
+<header class="site-header">
+  <div class="nav-shell">
+    <a class="brand" href="/" aria-label="Water Valley Voice home">
+      <img src="/media/images/wvv-mic-mark-web.jpg" alt="" width="48" height="48" />
+      <span class="brand-text">
+        <span>Water Valley</span>
+        <strong>Voice</strong>
+      </span>
+    </a>
+
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation">
+      <span class="sr-only">Open menu</span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </button>
+
+    <nav id="primary-navigation" class="primary-nav" aria-label="Primary navigation">
+      <a href="/#listen">Listen</a>
+      <a href="/#watch">Watch</a>
+      <a href="/#studio">Our studio</a>
+      <a href="/book-studio" aria-current={currentPage === "booking" ? "page" : undefined}>Rent the studio</a>
+      <a class="nav-cta" href="/#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const menuButton = document.querySelector<HTMLButtonElement>(".menu-toggle");
+  const navigation = document.querySelector<HTMLElement>(".primary-nav");
+  const menuLabel = menuButton?.querySelector<HTMLElement>(".sr-only");
+
+  const setMenu = (isOpen: boolean) => {
+    menuButton?.setAttribute("aria-expanded", String(isOpen));
+    navigation?.classList.toggle("is-open", isOpen);
+    if (menuLabel) menuLabel.textContent = isOpen ? "Close menu" : "Open menu";
+  };
+
+  menuButton?.addEventListener("click", () => {
+    setMenu(menuButton.getAttribute("aria-expanded") !== "true");
+  });
+
+  navigation?.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => setMenu(false)));
+
+  window.addEventListener("resize", () => {
+    if (window.innerWidth > 760) setMenu(false);
+  });
+</script>

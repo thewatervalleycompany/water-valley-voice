@@ -1,0 +1,305 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+
+const serviceOptions = [
+  {
+    id: "diy-half",
+    eyebrow: "DIY",
+    title: "Half Production Day",
+    description: "Includes Space + Gear.",
+    duration: "4 hours",
+    price: "$250",
+    requestLabel: "DIY Half Production Day • Includes Space + Gear (4 hours) • $250",
+  },
+  {
+    id: "diy-full",
+    eyebrow: "DIY",
+    title: "Full Production Day",
+    description: "Includes Space + Gear.",
+    duration: "8 hours",
+    price: "$500",
+    requestLabel: "DIY Full Production Day • Includes Space + Gear (8 hours) • $500",
+  },
+  {
+    id: "dfy-half",
+    eyebrow: "Done-For-You",
+    title: "Half Production Day + Editing",
+    description: "A fully supported production day with editing for 2 episodes.",
+    duration: "4 hours / 2 episodes",
+    price: "$795",
+    requestLabel: "Done-For-You Half Production Day + Editing (4 hours / 2 episodes) • $795",
+  },
+  {
+    id: "dfy-full",
+    eyebrow: "Done-For-You",
+    title: "Full Production Day + Editing",
+    description: "A fully supported production day with editing for 4 episodes.",
+    duration: "8 hours / 4 episodes",
+    price: "$1,395",
+    requestLabel: "Done-For-You Full Production Day + Editing (8 hours / 4 episodes) • $1,395",
+  },
+  {
+    id: "conference-room",
+    eyebrow: "Meeting space",
+    title: "Conference Room",
+    description: "A private, professional room for your next meeting.",
+    duration: "2 hours",
+    price: "$50",
+    requestLabel: "Conference Room for 2 hours • $50",
+  },
+];
+---
+
+<BaseLayout
+  title="Rent the Studio | Water Valley Voice"
+  description="Book the Water Valley Voice podcast studio or conference room in Windsor, Colorado. Choose DIY space and gear or done-for-you production and editing."
+>
+  <SiteHeader currentPage="booking" />
+
+  <main id="main-content" class="booking-page">
+    <section class="booking-hero">
+      <div class="booking-hero-copy">
+        <p class="eyebrow eyebrow-gold"><span></span> Studio rentals in Windsor</p>
+        <h1>Your story.<br /><em>Your session.</em></h1>
+        <p>
+          A polished, purpose-built space for podcasts, interviews, content days, and meetings—with the gear and support to match your production.
+        </p>
+        <a class="button button-gold" href="#booking-form">Request a session <span aria-hidden="true">↓</span></a>
+      </div>
+      <div class="booking-hero-photo">
+        <img
+          src="/media/images/wvv-podcast-studio-web.jpg"
+          alt="Water Valley Voice podcast studio available to rent in Windsor"
+          width="1800"
+          height="1200"
+          fetchpriority="high"
+        />
+        <div>
+          <span>Water Valley Voice Studio</span>
+          <address>1625 Pelican Lakes Point, Suite 201 · Windsor, CO 80550</address>
+        </div>
+      </div>
+    </section>
+
+    <section class="rental-packages section" aria-labelledby="packages-title">
+      <div class="rental-heading">
+        <div>
+          <p class="eyebrow eyebrow-dark"><span></span> Choose your setup</p>
+          <h2 id="packages-title">Studio packages.</h2>
+        </div>
+        <p>
+          Come in and run your own production, or let our team take care of the recording and editing. All sessions are scheduled by request and confirmed by email.
+        </p>
+      </div>
+
+      <div class="package-grid">
+        {serviceOptions.map((service, index) => (
+          <article class:list={["package-card", index > 1 && index < 4 && "package-card-featured"]}>
+            <div class="package-topline">
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              <p>{service.eyebrow}</p>
+            </div>
+            <h3>{service.title}</h3>
+            <p>{service.description}</p>
+            <div class="package-meta">
+              <span>{service.duration}</span>
+              <strong>{service.price}</strong>
+            </div>
+            <a
+              href={`#service-${service.id}`}
+              data-select-service={service.id}
+              aria-label={`Select ${service.eyebrow} ${service.title}`}
+            >
+              Select this package <span aria-hidden="true">↓</span>
+            </a>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section id="booking-form" class="booking-form-section">
+      <div class="section booking-form-layout">
+        <div class="booking-form-intro">
+          <p class="eyebrow eyebrow-gold"><span></span> Request your session</p>
+          <h2>Tell us what<br /><em>you need.</em></h2>
+          <p>
+            Choose a package and preferred date and start time. We’ll review availability and reply by email to confirm the details.
+          </p>
+          <div class="booking-process" aria-label="Booking process">
+            <div><span>1</span><p><strong>Choose</strong>Your studio package</p></div>
+            <div><span>2</span><p><strong>Request</strong>Your preferred date and time</p></div>
+            <div><span>3</span><p><strong>Confirm</strong>We reply with availability</p></div>
+          </div>
+        </div>
+
+        <form id="studio-booking-form" class="booking-form">
+          <fieldset class="service-fieldset">
+            <legend>Select a service <span aria-hidden="true">*</span></legend>
+            <div class="service-options">
+              {serviceOptions.map((service) => (
+                <label id={`service-${service.id}`} class="service-option">
+                  <input type="radio" name="service" value={service.requestLabel} required />
+                  <span class="service-check" aria-hidden="true"></span>
+                  <span class="service-name">
+                    <small>{service.eyebrow}</small>
+                    <strong>{service.title}</strong>
+                    <span>{service.duration}</span>
+                  </span>
+                  <b>{service.price}</b>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+
+          <fieldset class="details-fieldset">
+            <legend>Your preferred session</legend>
+            <div class="form-grid">
+              <label>
+                <span>Preferred date <b aria-hidden="true">*</b></span>
+                <input id="booking-date" type="date" name="date" required />
+              </label>
+              <label>
+                <span>Preferred start time <b aria-hidden="true">*</b></span>
+                <input type="time" name="time" required />
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset class="details-fieldset">
+            <legend>Your contact details</legend>
+            <div class="form-grid">
+              <label>
+                <span>Name <b aria-hidden="true">*</b></span>
+                <input type="text" name="name" autocomplete="name" maxlength="120" required />
+              </label>
+              <label>
+                <span>Email <b aria-hidden="true">*</b></span>
+                <input type="email" name="email" autocomplete="email" maxlength="254" required />
+              </label>
+              <label>
+                <span>Phone</span>
+                <input type="tel" name="phone" autocomplete="tel" maxlength="50" />
+              </label>
+              <label>
+                <span>Company or show name</span>
+                <input type="text" name="company" autocomplete="organization" maxlength="160" />
+              </label>
+              <label class="form-grid-full">
+                <span>Tell us about your session</span>
+                <textarea name="notes" rows="5" maxlength="1000" placeholder="Number of guests, episode topic, production needs, or anything else we should know."></textarea>
+              </label>
+            </div>
+          </fieldset>
+
+          <label class="request-confirmation">
+            <input type="checkbox" name="confirmation" required />
+            <span>I understand this is a request and my session is not reserved until Water Valley Voice confirms availability.</span>
+          </label>
+
+          <button class="button button-gold booking-submit" type="submit">
+            Prepare booking request <span aria-hidden="true">→</span>
+          </button>
+          <p class="form-help">
+            This opens your email app with the complete request addressed to <strong>contact@watervalleyvoice.com</strong>. Review it, then press Send to submit.
+          </p>
+          <p id="booking-feedback" class="booking-feedback" role="status" aria-live="polite"></p>
+
+          <noscript>
+            <p class="booking-feedback is-visible">
+              JavaScript is required to prepare the booking request. Email <a href="mailto:contact@watervalleyvoice.com?subject=Studio%20rental%20request">contact@watervalleyvoice.com</a> for assistance.
+            </p>
+          </noscript>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <SiteFooter />
+
+  <script>
+    const form = document.querySelector<HTMLFormElement>("#studio-booking-form");
+    const dateInput = document.querySelector<HTMLInputElement>("#booking-date");
+    const feedback = document.querySelector<HTMLElement>("#booking-feedback");
+    const serviceLinks = document.querySelectorAll<HTMLAnchorElement>("[data-select-service]");
+
+    if (dateInput) {
+      const today = new Date();
+      const localToday = new Date(today.getTime() - today.getTimezoneOffset() * 60_000).toISOString().slice(0, 10);
+      dateInput.min = localToday;
+    }
+
+    serviceLinks.forEach((link) => {
+      link.addEventListener("click", (event) => {
+        event.preventDefault();
+
+        const serviceId = link.dataset.selectService;
+        const serviceOption = serviceId ? document.querySelector<HTMLElement>(`#service-${serviceId}`) : null;
+        const radio = serviceOption?.querySelector<HTMLInputElement>('input[type="radio"]');
+
+        if (radio) radio.checked = true;
+        const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        serviceOption?.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth", block: "center" });
+        radio?.focus({ preventScroll: true });
+      });
+    });
+
+    form?.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      if (!form.reportValidity()) return;
+
+      const data = new FormData(form);
+      const service = String(data.get("service") || "");
+      const date = String(data.get("date") || "");
+      const time = String(data.get("time") || "");
+      const name = String(data.get("name") || "");
+      const email = String(data.get("email") || "");
+      const phone = String(data.get("phone") || "Not provided");
+      const company = String(data.get("company") || "Not provided");
+      const notes = String(data.get("notes") || "None provided");
+
+      const formattedDate = new Date(`${date}T12:00:00`).toLocaleDateString("en-US", {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+
+      const [hours, minutes] = time.split(":").map(Number);
+      const formattedTime = new Date(2000, 0, 1, hours, minutes).toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "2-digit",
+      });
+
+      const subject = `Studio rental request — ${formattedDate}`;
+      const body = [
+        "Hello Water Valley Voice,",
+        "",
+        "I would like to request a studio rental session.",
+        "",
+        `SERVICE: ${service}`,
+        `PREFERRED DATE: ${formattedDate}`,
+        `PREFERRED START TIME: ${formattedTime}`,
+        "",
+        `NAME: ${name}`,
+        `EMAIL: ${email}`,
+        `PHONE: ${phone}`,
+        `COMPANY / SHOW: ${company}`,
+        "",
+        "SESSION DETAILS:",
+        notes,
+        "",
+        "Please let me know whether this date and time are available and what the next steps are.",
+      ].join("\n");
+
+      if (feedback) {
+        feedback.textContent = "Your request is ready. Complete the email that opens to send it to Water Valley Voice.";
+        feedback.classList.add("is-visible");
+      }
+
+      window.location.href = `mailto:contact@watervalleyvoice.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    });
+  </script>
+</BaseLayout>
