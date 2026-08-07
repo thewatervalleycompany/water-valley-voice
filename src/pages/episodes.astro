@@ -1,0 +1,182 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+
+const episodes = [
+  {
+    id: "water-valley-story",
+    number: "01",
+    label: "Episode 1",
+    kicker: "The origin story",
+    title: "From Mud Lake to Million-Dollar Waterfronts: The Water Valley Story",
+    teaser: "A sweeping origin story about Martin Lind’s belief that empty fields and gravel pits could become a valley of water, homes, golf, and community.",
+    playerTitle: "E1: From Mud Lake to Million-Dollar Waterfronts: The Water Valley Story",
+    playerSrc: "https://www.podbean.com/player-v2/?i=52war-1afb28c-pb&from=pb6admin&pbad=0&share=1&download=1&rtl=0&fonts=Arial&skin=f6f6f6&font-color=auto&logo_link=episode_page&btn-skin=8bbb4e",
+    description: [
+      "Imagine driving by a stretch of empty fields and gravel pits and seeing not a problem, but a promise. In this episode, Marissa sits down with her father, Martin Lind, and we move through time—from a dusty auction day when a young farmer ran out of luck to the stubborn, joyful building of an entire valley of water, homes, and community. Martin tells the story in his own voice: the risk of going broke, the odd partnerships, the relentless belief that those ugly mining holes could become shimmering lakes.",
+      "You’ll hear the gritty details—how a chance transaction with Kodak and an aggressive market created the urgency to mine millions of yards of earth, how a $65,000 waterfront lot that once seemed impossible sold and became worth millions, and how the team learned to sculpt lakes so they looked like nature had carved them ages ago. This is a tale about engineering and tenacity: the flood that ripped through a fairway before the grass had grown, and the 2013 Front Range catastrophe that washed out entire towns but left Water Valley untouched because of foresight and tireless civil work.",
+      "Interwoven with the big moves are the small, unforgettable moments—a baby in a car seat on a dusty road, Tim McGraw and Faith Hill hitting the first balls on the new golf course, a white pelican circling during the groundbreaking as if it were all planned. You’ll laugh at the nicknames, feel the sting of the 2008 recession when the team traded dreams for a jet to stay afloat, and shake your head at the serendipity that linked Martin with Fred Funk, the unlikely architect whose passion and small stature belied grand golf-design ideas.",
+      "Listen as Martin explains Rain Dance—the high, dry canvas they called ‘worthless’ until someone joked that they would need to do a rain dance to move water uphill—and Cascadia, the vision of cascading ponds and preserved western heritage. You’ll learn why they left wide fairways along the river, why pelicans became part of the landscape, and how orchard plots, recessed sidewalks, and community design choices were made to honor Windsor’s past while building for the future.",
+      "This episode is more than a business case study; it’s a human story of stubborn optimism, creative problem-solving, and family legacy. From dirt and gravel to championship golf and thriving neighborhoods, Martin’s recollections are full of tension, humor, and quiet pride. Whether you live in a lake house or just love a good origin story, this conversation pulls you into the slow, spectacular alchemy of turning a valley into a life.",
+      "Join us to hear how Water Valley was named, how Pelican Lakes got its birds, why engineering won the day against a 500-year flood, and what the future holds—Cascadia, community farms, trails, and a continuing commitment to craft places that feel like they were always meant to be. By the end, you’ll understand why this was never just land and water, but a vision passed from father to daughter—and out into a whole town.",
+    ],
+  },
+  {
+    id: "meet-the-team",
+    number: "01",
+    label: "Episode 1 · Part 2",
+    kicker: "The people shaping Water Valley",
+    title: "Introduction to Mandy, Chris, Kurt, and Ryan",
+    teaser: "Meet four leaders whose stories, careers, and creativity continue to shape the Water Valley Company and the Northern Colorado community.",
+    playerTitle: "E1 Part 2: Introduction to Mandy, Chris, Kurt, and Ryan",
+    playerSrc: "https://www.podbean.com/player-v2/?i=n79rk-1b0f75c-pb&from=pb6admin&pbad=0&share=1&download=1&rtl=0&fonts=Arial&skin=f6f6f6&font-color=auto&logo_link=episode_page&btn-skin=8bbb4e",
+    description: [
+      "In this episode of Water Valley Voice, host Marissa Donahoo sits down with several of the people whose stories and careers have helped shape the Water Valley Company and the Northern Colorado community.",
+      "Mandy Oberholzer shares her journey from South Africa to Colorado and discusses her evolving role creating unforgettable events, hospitality offerings, and the new Signature Experience. PGA Director of Golf Chris Williamson explores what makes RainDance National, Pelican Lakes, and The Falls unique while sharing his vision for the future of golf at Water Valley. Kurt Hinkle reflects on his Windsor roots and his path from journalism and marketing to membership and tournament sales. Colorado Eagles President Ryan Bach recounts his remarkable evolution from the team’s inaugural goaltender to a leader responsible for building a successful organization and world-class fan experience.",
+      "Together, their conversations offer an inside look at the people, creativity, culture, and long-standing relationships driving Water Valley forward—and the ambitious experiences still to come.",
+    ],
+  },
+  {
+    id: "family-fairways-flavor",
+    number: "01",
+    label: "Episode 1 · Part 3",
+    kicker: "Family, hospitality, and community",
+    title: "Family, Fairways & Flavor: Inside Windsor’s Grainhouse, Sandbar and Ted’s",
+    teaser: "Go behind the menus to meet the people who make Water Valley’s restaurants feel like home—and hear how grit, chance, and community shaped each place.",
+    playerTitle: "E1 Part3: Family, Fareways & Flavor: Inside Windsor’s Grainhouse, Sandbar and Ted’s",
+    playerSrc: "https://www.podbean.com/player-v2/?i=46vsa-1b221ba-pb&from=pb6admin&pbad=0&share=1&download=1&rtl=0&fonts=Arial&skin=f6f6f6&font-color=auto&logo_link=episode_page&btn-skin=8bbb4e",
+    description: [
+      "Step into Water Valley through the voices of the people who make its restaurants hum. In this episode, we move beyond menus and into stories: Jesse Wilson welcomes guests into the Grainhouse with a proud, kid-friendly roar; Shane Stringer reflects on the Sandbar’s convertible energy—golf carts-as-booths, simulators and long-time staff; Wyatt walks us through the rebirth of Ted’s Backyard as the neighborhood’s go-to family grill; and Taylor, at only 26, reveals the Lodge’s gentle balance of fine dining and casual, sunset-lit moments. Each leader traces a path shaped by grit, chance and community.",
+      "Listen as Jesse remembers starting as a dishwasher at 14 and building a place where every table looks like a family reunion. Hear the small, startling moments—a friend offering a job on the golf course, a grain bin turned restaurant—and how those chances turned into a Grain House that grew $600,000 in its first year and is on track for $1 million. Then meet Shane, whose 25 years in service whisper through the Sandbar’s remodels and long-tenured staff; his stories reveal why the bar feels like coming home and why winter is his next challenge to conquer.",
+      "Wyatt’s account brings the new Ted’s Backyard to life: lakes, patios, a tractor spraying water, ducks and a menu made from scratch. He paints a portrait of a place built for growing families—where kids bike over for milkshakes and neighbors spill onto patios—and explains how the restaurant’s heart is its people and their paychecks and smiles. Taylor closes the circle with the Lodge’s skyline and small theatrical touches—the guides who lead your dining experience, the burrata you must try, and a team pushing guests to taste something new. Her quick rise is a hopeful note about youthful leadership and the possibilities in Windsor.",
+      "Running through every conversation is a single thread: staff as family. Managers from every venue return to that same refrain—long-serving bartenders, servers who stay a decade, kitchens that mentor like kin. Together they show a hospitality model rooted less in slick branding and more in human connection: mentoring new cooks, hosting private breakfasts, reviving wedding events, and welcoming out-of-state golfers who stumbled on something special.",
+      "Against the backdrop of COVID’s shakeups and rapid neighborhood growth, these leaders sketch plans for the future—more music, events, weddings, and a continued focus on authentic, scratch-made food. Whether it’s the novelty of a grain bin restaurant or the simple joy of baby ducklings beside your table, this episode invites listeners to meet the people behind the places and to feel the pulse of a community being shaped, one meal and one story at a time.",
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Episodes | Water Valley Voice"
+  description="Listen to every Water Valley Voice episode and discover the people, places, and stories shaping Windsor and Northern Colorado."
+>
+  <SiteHeader currentPage="episodes" />
+
+  <main id="main-content" class="episodes-page">
+    <section class="episodes-hero">
+      <div class="episodes-hero-copy">
+        <p class="eyebrow eyebrow-gold"><span></span> The complete archive</p>
+        <h1>Every story.<br /><em>Every voice.</em></h1>
+        <p>
+          Meet the people, places, and ideas shaping Water Valley, Windsor, and Northern Colorado—one conversation at a time.
+        </p>
+        <a class="button button-gold" href="#episode-water-valley-story">
+          Start with episode one <span aria-hidden="true">↓</span>
+        </a>
+      </div>
+
+      <div class="episodes-hero-photo">
+        <img
+          src="/media/images/wvv-podcast-studio-web.jpg"
+          alt="The Water Valley Voice podcast studio"
+          width="1800"
+          height="1200"
+          fetchpriority="high"
+        />
+        <div class="episodes-hero-count">
+          <strong>{String(episodes.length).padStart(2, "0")}</strong>
+          <span>Conversations<br />and counting</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="episode-archive section" aria-labelledby="episode-archive-title">
+      <header class="archive-heading">
+        <div>
+          <p class="eyebrow eyebrow-dark"><span></span> Listen from the beginning</p>
+          <h2 id="episode-archive-title">The episodes.</h2>
+        </div>
+        <p>Press play here, then open each story for the complete episode description.</p>
+      </header>
+
+      <div class="archive-list">
+        {episodes.map((episode, index) => (
+          <article
+            id={"episode-" + episode.id}
+            class="archive-episode"
+            aria-labelledby={"episode-title-" + episode.id}
+          >
+            <div class="archive-episode-mark" aria-hidden="true">
+              <span>{episode.label}</span>
+              <strong>{episode.number}</strong>
+              <i></i>
+              <img src="/media/images/wvv-mic-mark-web.jpg" alt="" width="900" height="900" loading="lazy" />
+            </div>
+
+            <div class="archive-episode-content">
+              <div class="archive-episode-meta">
+                <p>{episode.kicker}</p>
+                {index === episodes.length - 1 && <span>Latest</span>}
+              </div>
+              <h3 id={"episode-title-" + episode.id}>
+                <span class="sr-only">{episode.label}: </span>{episode.title}
+              </h3>
+              <p class="archive-episode-lead">{episode.teaser}</p>
+
+              <div class="podbean-player archive-player">
+                <iframe
+                  title={episode.playerTitle}
+                  height="150"
+                  width="100%"
+                  src={episode.playerSrc}
+                  loading="lazy"
+                  allowtransparency="true"
+                  data-name="pb-iframe-player"
+                ></iframe>
+              </div>
+
+              <details class="episode-notes">
+                <summary>
+                  <span>Read full episode description</span>
+                  <i aria-hidden="true"></i>
+                </summary>
+                <div>
+                  {episode.id === "meet-the-team" ? (
+                    <>
+                      <p>
+                        In this episode of <strong>Water Valley Voice</strong>, host Marissa Donahoo sits down with several of the people whose stories and careers have helped shape the Water Valley Company and the Northern Colorado community.
+                      </p>
+                      {episode.description.slice(1).map((paragraph) => <p>{paragraph}</p>)}
+                    </>
+                  ) : (
+                    episode.description.map((paragraph) => <p>{paragraph}</p>)
+                  )}
+                </div>
+              </details>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="episode-subscribe">
+      <div class="section episode-subscribe-inner">
+        <div>
+          <p class="eyebrow eyebrow-gold"><span></span> Never miss a conversation</p>
+          <h2>Follow the story<br /><em>wherever you listen.</em></h2>
+        </div>
+        <div class="episode-subscribe-actions">
+          <a class="button button-gold" href="https://feed.podbean.com/watervalleyvoice/feed.xml" target="_blank" rel="noopener noreferrer">
+            Subscribe with RSS <span aria-hidden="true">↗</span>
+          </a>
+          <a class="button button-outline-light" href="https://www.youtube.com/playlist?list=PLfOdKEY1vw1g" target="_blank" rel="noopener noreferrer">
+            Watch on YouTube <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <SiteFooter />
+</BaseLayout>
