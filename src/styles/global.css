@@ -120,23 +120,26 @@ img {
 }
 
 .brand-text {
-  display: flex;
-  flex-direction: column;
+  display: grid;
   line-height: 1;
   text-transform: uppercase;
 }
 
-.brand-text span {
+.brand-text > span {
   color: var(--gold-light);
   font-size: 9px;
   font-weight: 600;
   letter-spacing: 0.35em;
+  white-space: nowrap;
 }
 
 .brand-text strong {
+  width: 100%;
   margin-top: 4px;
+  display: flex;
+  justify-content: space-between;
   font: 600 23px/0.9 var(--serif);
-  letter-spacing: 0.14em;
+  letter-spacing: 0;
 }
 
 .primary-nav {
