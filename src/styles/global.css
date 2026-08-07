@@ -1011,21 +1011,10 @@ footer {
 
 .archive-heading {
   margin-bottom: 58px;
-  display: grid;
-  grid-template-columns: 1fr 0.7fr;
-  align-items: end;
-  gap: 80px;
 }
 
 .archive-heading .eyebrow {
   margin-bottom: 18px;
-}
-
-.archive-heading > p {
-  margin: 0 0 8px;
-  color: var(--slate);
-  font-size: 14px;
-  line-height: 1.85;
 }
 
 .archive-list {
@@ -1044,7 +1033,6 @@ footer {
 
 .archive-episode-mark {
   position: relative;
-  min-height: 100%;
   padding: 38px 32px 32px;
   display: flex;
   flex-direction: column;
@@ -2072,8 +2060,6 @@ footer {
 
   .archive-heading {
     margin-bottom: 40px;
-    grid-template-columns: 1fr;
-    gap: 24px;
   }
 
   .archive-list {
