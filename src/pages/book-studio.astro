@@ -269,16 +269,17 @@ const bookingFaqSchema = {
           <div class="turnstile-field">
             <p class="turnstile-label">Human verification <span aria-hidden="true">*</span></p>
             {turnstileSiteKey ? (
-              <div
-                class="cf-turnstile"
-                data-sitekey={turnstileSiteKey}
-                data-action="studio_request"
-                data-theme="light"
-                data-size="flexible"
-                data-callback="studioTurnstileSuccess"
-                data-expired-callback="studioTurnstileExpired"
-                data-error-callback="studioTurnstileError"
-              ></div>
+              <>
+                <div id="studio-turnstile" class="studio-turnstile-widget"></div>
+                <div class="turnstile-status-row">
+                  <p id="turnstile-status" class="turnstile-status" role="status" aria-live="polite">
+                    Preparing secure verification…
+                  </p>
+                  <button id="turnstile-retry" class="turnstile-retry" type="button" hidden>
+                    Retry verification
+                  </button>
+                </div>
+              </>
             ) : (
               <p class="turnstile-config-warning" role="alert">
                 Studio requests are temporarily unavailable while secure verification is being configured.
@@ -306,9 +307,87 @@ const bookingFaqSchema = {
 
   <SiteFooter />
 
-  <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  {
+    turnstileSiteKey && (
+      <script is:inline define:vars={{ turnstileSiteKey }}>
+        (() => {
+          const state = window.__studioTurnstile = {
+            siteKey: turnstileSiteKey,
+            status: "loading",
+            widgetId: null,
+          };
+
+          const announce = (status, code) => {
+            state.status = status;
+            window.dispatchEvent(
+              new CustomEvent("studio-turnstile-state", {
+                detail: { status, code },
+              }),
+            );
+          };
+
+          window.studioTurnstileReady = () => {
+            if (!window.turnstile || state.widgetId !== null) return;
+
+            try {
+              state.widgetId = window.turnstile.render("#studio-turnstile", {
+                sitekey: state.siteKey,
+                action: "studio_request",
+                theme: "light",
+                size: "flexible",
+                appearance: "interaction-only",
+                retry: "never",
+                "refresh-expired": "manual",
+                "refresh-timeout": "manual",
+                "feedback-enabled": false,
+                callback: () => announce("success"),
+                "expired-callback": () => announce("expired"),
+                "timeout-callback": () => announce("timeout"),
+                "unsupported-callback": () => announce("unsupported"),
+                "error-callback": (code) => {
+                  announce("error", code);
+                  return true;
+                },
+              });
+            } catch {
+              announce("error", "render-failed");
+            }
+          };
+
+          state.reset = () => {
+            announce("loading");
+
+            if (!window.turnstile) return;
+            if (state.widgetId === null) {
+              window.studioTurnstileReady();
+              return;
+            }
+
+            window.turnstile.reset(state.widgetId);
+          };
+        })();
+      </script>
+    )
+  }
+  {
+    turnstileSiteKey && (
+      <script
+        is:inline
+        src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=studioTurnstileReady"
+        defer
+      ></script>
+    )
+  }
 
   <script>
+    type TurnstileStatus = "loading" | "success" | "expired" | "timeout" | "unsupported" | "error";
+    type StudioTurnstileWindow = Window & {
+      __studioTurnstile?: {
+        status: TurnstileStatus;
+        reset?: () => void;
+      };
+    };
+
     const form = document.querySelector<HTMLFormElement>("#studio-booking-form");
     const dateInput = document.querySelector<HTMLInputElement>("#booking-date");
     const startedAtInput = document.querySelector<HTMLInputElement>("#booking-started-at");
@@ -316,6 +395,9 @@ const bookingFaqSchema = {
     const submitButton = form?.querySelector<HTMLButtonElement>(".booking-submit");
     const submitLabel = submitButton?.querySelector<HTMLElement>("[data-submit-label]");
     const serviceLinks = document.querySelectorAll<HTMLAnchorElement>("[data-select-service]");
+    const turnstileStatus = document.querySelector<HTMLElement>("#turnstile-status");
+    const turnstileRetry = document.querySelector<HTMLButtonElement>("#turnstile-retry");
+    let turnstileWatchdog: number | undefined;
 
     const setDateMinimum = () => {
       if (!dateInput) return;
@@ -335,27 +417,56 @@ const bookingFaqSchema = {
       feedback.classList.add("is-visible", kind === "success" ? "is-success" : "is-error");
     };
 
-    const resetTurnstile = () => {
-      const turnstile = (window as Window & {
-        turnstile?: { reset: (container?: string | HTMLElement) => void };
-      }).turnstile;
-      turnstile?.reset(".cf-turnstile");
+    const setTurnstileStatus = (status: TurnstileStatus) => {
+      if (!turnstileStatus || !turnstileRetry) return;
+
+      window.clearTimeout(turnstileWatchdog);
+      turnstileStatus.classList.remove("is-success", "is-error");
+      turnstileRetry.hidden = true;
+
+      if (status === "success") {
+        turnstileStatus.textContent = "Verification complete.";
+        turnstileStatus.classList.add("is-success");
+        return;
+      }
+
+      if (status === "loading") {
+        turnstileStatus.textContent = "Checking your browser…";
+        turnstileWatchdog = window.setTimeout(() => {
+          turnstileStatus.textContent = "Verification is taking longer than expected. You can retry without reloading the page.";
+          turnstileStatus.classList.add("is-error");
+          turnstileRetry.hidden = false;
+        }, 15_000);
+        return;
+      }
+
+      turnstileStatus.classList.add("is-error");
+      turnstileRetry.hidden = false;
+
+      if (status === "expired") {
+        turnstileStatus.textContent = "Verification expired. Please retry before sending your request.";
+      } else if (status === "timeout") {
+        turnstileStatus.textContent = "Verification timed out. Please retry when you are ready.";
+      } else if (status === "unsupported") {
+        turnstileStatus.textContent = "This browser cannot complete verification. Please try an updated browser without content-blocking extensions.";
+      } else {
+        turnstileStatus.textContent = "Verification could not finish. Please retry, or disable a content blocker or VPN and try again.";
+      }
     };
 
-    Object.assign(window, {
-      studioTurnstileSuccess: () => {
-        if (feedback?.classList.contains("is-error")) {
-          feedback.textContent = "";
-          feedback.classList.remove("is-visible", "is-error");
-        }
-      },
-      studioTurnstileExpired: () => {
-        showFeedback("Human verification expired. Please complete it again before sending.", "error");
-      },
-      studioTurnstileError: () => {
-        showFeedback("Human verification could not load. Please refresh the page and try again.", "error");
-      },
+    const resetTurnstile = () => {
+      (window as StudioTurnstileWindow).__studioTurnstile?.reset?.();
+    };
+
+    window.addEventListener("studio-turnstile-state", (event) => {
+      const detail = (event as CustomEvent<{ status?: TurnstileStatus }>).detail;
+      if (detail?.status) setTurnstileStatus(detail.status);
     });
+
+    const initialTurnstileStatus = (window as StudioTurnstileWindow).__studioTurnstile?.status;
+    if (initialTurnstileStatus) setTurnstileStatus(initialTurnstileStatus);
+
+    turnstileRetry?.addEventListener("click", resetTurnstile);
 
     setDateMinimum();
     resetStartedAt();
