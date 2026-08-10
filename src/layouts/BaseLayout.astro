@@ -4,15 +4,104 @@ import "../styles/global.css";
 interface Props {
   title?: string;
   description?: string;
+  canonical?: string | URL;
+  socialImage?: string | URL;
+  socialImageAlt?: string;
+  socialImageWidth?: number;
+  socialImageHeight?: number;
+  socialImageType?: string;
+  ogType?: "website" | "article" | "profile";
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
 }
 
 const {
   title = "Water Valley Voice | Local stories from Windsor, Colorado",
   description = "Water Valley Voice shares the people, places, and stories that make Windsor and Northern Colorado feel like home.",
+  canonical,
+  socialImage = "/og.png",
+  socialImageAlt = "Water Valley Voice podcast",
+  socialImageWidth = 1200,
+  socialImageHeight = 630,
+  socialImageType = "image/png",
+  ogType = "website",
+  jsonLd,
 } = Astro.props;
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const socialImage = new URL("/og.png", Astro.site);
+const siteURL = Astro.site ?? new URL("https://www.watervalleyvoice.com");
+const canonicalURL = new URL(canonical?.toString() ?? Astro.url.pathname, siteURL);
+canonicalURL.search = "";
+canonicalURL.hash = "";
+
+const socialImageURL = new URL(socialImage.toString(), siteURL);
+const rootURL = new URL("/", siteURL).href;
+const organizationID = new URL("/#organization", siteURL).href;
+const podcastID = new URL("/#podcast", siteURL).href;
+
+const defaultStructuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": organizationID,
+      name: "Water Valley Voice",
+      url: rootURL,
+      logo: new URL("/media/images/wvv-mic-mark-192.jpg", siteURL).href,
+      email: "contact@watervalleyvoice.com",
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "1625 Pelican Lakes Point, Suite 201",
+        addressLocality: "Windsor",
+        addressRegion: "CO",
+        postalCode: "80550",
+        addressCountry: "US",
+      },
+      sameAs: [
+        "https://www.facebook.com/profile.php?id=61591334404567",
+        "https://www.instagram.com/watervalleyvoice/",
+        "https://www.youtube.com/channel/UCOn56MJ6u1mYxIfdJxZwvNw",
+      ],
+    },
+    {
+      "@type": "WebSite",
+      "@id": new URL("/#website", siteURL).href,
+      name: "Water Valley Voice",
+      url: rootURL,
+      description:
+        "Local podcast stories and conversations from Windsor and Northern Colorado.",
+      inLanguage: "en-US",
+      publisher: { "@id": organizationID },
+    },
+    {
+      "@type": "PodcastSeries",
+      "@id": podcastID,
+      name: "Water Valley Voice",
+      url: rootURL,
+      description:
+        "Meaningful conversations with the neighbors, makers, business owners, and community leaders who shape Windsor and Northern Colorado.",
+      inLanguage: "en-US",
+      webFeed: "https://feed.podbean.com/watervalleyvoice/feed.xml",
+      publisher: { "@id": organizationID },
+      sameAs: [
+        "https://www.youtube.com/playlist?list=PLfOdKEY1vw1g",
+        "https://feed.podbean.com/watervalleyvoice/feed.xml",
+      ],
+    },
+  ],
+};
+
+const pageStructuredData = jsonLd
+  ? Array.isArray(jsonLd)
+    ? jsonLd
+    : [jsonLd]
+  : [];
+
+const serializeJsonLd = (value: unknown) =>
+  JSON.stringify(value)
+    .replace(/</g, "\\u003c")
+    .replace(/>/g, "\\u003e")
+    .replace(/&/g, "\\u0026")
+    .replace(/\u2028/g, "\\u2028")
+    .replace(/\u2029/g, "\\u2029");
 ---
 
 <!doctype html>
@@ -22,20 +111,39 @@ const socialImage = new URL("/og.png", Astro.site);
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
-    <link rel="icon" type="image/jpeg" href="/media/images/wvv-mic-mark-web.jpg" />
-    <link rel="apple-touch-icon" href="/media/images/wvv-mic-mark-web.jpg" />
-    <link rel="canonical" href={canonicalURL} />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <link rel="icon" type="image/jpeg" href="/media/images/wvv-mic-mark-192.jpg" />
+    <link rel="apple-touch-icon" href="/media/images/wvv-mic-mark-192.jpg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&amp;family=Montserrat:wght@400;500;600;700&amp;display=swap"
+    />
+    <link rel="canonical" href={canonicalURL.href} />
     <link rel="alternate" type="application/rss+xml" title="Water Valley Voice Podcast" href="https://feed.podbean.com/watervalleyvoice/feed.xml" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonicalURL.href} />
+    <meta property="og:site_name" content="Water Valley Voice" />
+    <meta property="og:locale" content="en_US" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={socialImage} />
+    <meta property="og:image" content={socialImageURL.href} />
+    <meta property="og:image:secure_url" content={socialImageURL.href} />
+    <meta property="og:image:type" content={socialImageType} />
+    <meta property="og:image:width" content={socialImageWidth.toString()} />
+    <meta property="og:image:height" content={socialImageHeight.toString()} />
+    <meta property="og:image:alt" content={socialImageAlt} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={socialImage} />
+    <meta name="twitter:image" content={socialImageURL.href} />
+    <meta name="twitter:image:alt" content={socialImageAlt} />
     <meta name="theme-color" content="#090909" />
+    <script type="application/ld+json" is:inline set:html={serializeJsonLd(defaultStructuredData)}></script>
+    {pageStructuredData.map((data) => (
+      <script type="application/ld+json" is:inline set:html={serializeJsonLd(data)}></script>
+    ))}
     <title>{title}</title>
   </head>
   <body>

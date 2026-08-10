@@ -1,0 +1,216 @@
+---
+import type { GetStaticPaths } from "astro";
+import SiteFooter from "../../components/SiteFooter.astro";
+import SiteHeader from "../../components/SiteHeader.astro";
+import { episodePath, episodes, type Episode } from "../../data/episodes";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+interface Props {
+  episode: Episode;
+  previousEpisode?: Episode;
+  nextEpisode?: Episode;
+}
+
+export const getStaticPaths = (() =>
+  episodes.map((episode, index) => ({
+    params: { slug: episode.slug },
+    props: {
+      episode,
+      previousEpisode: episodes[index - 1],
+      nextEpisode: episodes[index + 1],
+    },
+  }))) satisfies GetStaticPaths;
+
+const { episode, previousEpisode, nextEpisode } = Astro.props;
+const canonicalURL = new URL(`${episodePath(episode)}/`, Astro.site).toString();
+const publishedDateLabel = new Intl.DateTimeFormat("en-US", {
+  month: "long",
+  day: "numeric",
+  year: "numeric",
+  timeZone: "UTC",
+}).format(new Date(`${episode.publishedDate}T12:00:00Z`));
+const episodeSchema = {
+  "@context": "https://schema.org",
+  "@type": "PodcastEpisode",
+  name: episode.title,
+  description: episode.metaDescription,
+  url: canonicalURL,
+  mainEntityOfPage: canonicalURL,
+  episodeNumber: episode.part ? `1 ${episode.part}` : "1",
+  datePublished: episode.publishedDate,
+  timeRequired: episode.duration,
+  image: new URL("/og.png", Astro.site).toString(),
+  inLanguage: "en-US",
+  author: {
+    "@type": "Person",
+    name: "Marissa Donahoo",
+  },
+  contributor: episode.guests.map((name) => ({
+    "@type": "Person",
+    name,
+  })),
+  partOfSeries: {
+    "@type": "PodcastSeries",
+    name: "Water Valley Voice",
+    url: new URL("/", Astro.site).toString(),
+    webFeed: "https://feed.podbean.com/watervalleyvoice/feed.xml",
+  },
+  associatedMedia: {
+    "@type": "AudioObject",
+    name: episode.playerTitle,
+    embedUrl: episode.playerSrc,
+    contentUrl: episode.audioUrl,
+    duration: episode.duration,
+    encodingFormat: "audio/mpeg",
+  },
+};
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Home",
+      item: new URL("/", Astro.site).toString(),
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Episodes",
+      item: new URL("/episodes/", Astro.site).toString(),
+    },
+    {
+      "@type": "ListItem",
+      position: 3,
+      name: episode.title,
+      item: canonicalURL,
+    },
+  ],
+};
+---
+
+<BaseLayout
+  title={episode.seoTitle}
+  description={episode.metaDescription}
+  canonical={canonicalURL}
+  socialImageAlt={`Water Valley Voice podcast — ${episode.title}`}
+  ogType="article"
+  jsonLd={[episodeSchema, breadcrumbSchema]}
+>
+  <SiteHeader currentPage="episodes" />
+
+  <main id="main-content" class="episode-detail-page">
+    <section class="episode-detail-hero">
+      <div class="section episode-detail-hero-inner">
+        <div class="episode-detail-heading">
+          <a class="episode-back-link" href="/episodes"><span aria-hidden="true">←</span> All episodes</a>
+          <p class="eyebrow eyebrow-gold"><span></span> {episode.label}</p>
+          <h1>{episode.title}</h1>
+          <p class="episode-detail-teaser">{episode.teaser}</p>
+          <dl class="episode-hero-facts" aria-label="Episode details">
+            <div>
+              <dt>Published</dt>
+              <dd><time datetime={episode.publishedDate}>{publishedDateLabel}</time></dd>
+            </div>
+            <div>
+              <dt>Run time</dt>
+              <dd>{episode.durationLabel}</dd>
+            </div>
+            <div>
+              <dt>Host</dt>
+              <dd>Marissa Donahoo</dd>
+            </div>
+          </dl>
+        </div>
+
+        <div class="episode-detail-mark" aria-hidden="true">
+          <span>Water Valley Voice</span>
+          <strong>{episode.number}</strong>
+          <i></i>
+          <small>{episode.part ?? "The origin story"}</small>
+          <img src="/media/images/wvv-mic-mark-480.jpg" alt="" width="480" height="480" />
+        </div>
+      </div>
+    </section>
+
+    <section class="section episode-detail-content">
+      <div class="episode-detail-main">
+        <div class="podbean-player episode-detail-player">
+          <iframe
+            title={episode.playerTitle}
+            height="150"
+            width="100%"
+            src={episode.playerSrc}
+            loading="lazy"
+            allowtransparency="true"
+            data-name="pb-iframe-player"
+          ></iframe>
+        </div>
+
+        <article class="episode-story" aria-labelledby="episode-story-title">
+          <p class="eyebrow eyebrow-dark"><span></span> Full episode description</p>
+          <h2 id="episode-story-title">The story behind<br /><em>the conversation.</em></h2>
+          <div class="episode-story-copy">
+            {episode.description.map((paragraph, index) =>
+              index === 0 && episode.slug === "episode-1-part-2" ? (
+                <p>
+                  In this episode of <strong>Water Valley Voice</strong>, host Marissa Donahoo sits down with several of the people whose stories and careers have helped shape the Water Valley Company and the Northern Colorado community.
+                </p>
+              ) : (
+                <p>{paragraph}</p>
+              )
+            )}
+          </div>
+        </article>
+      </div>
+
+      <aside class="episode-detail-aside" aria-label="Episode links">
+        <div class="episode-aside-details">
+          <p class="episode-aside-label">Featuring</p>
+          <p>{episode.guests.join(", ")}</p>
+        </div>
+        <div>
+          <p class="episode-aside-label">Keep listening</p>
+          <a href={episode.podbeanUrl} target="_blank" rel="noopener noreferrer">
+            Open on Podbean <span aria-hidden="true">↗</span>
+          </a>
+          <a href="https://feed.podbean.com/watervalleyvoice/feed.xml" target="_blank" rel="noopener noreferrer">
+            Subscribe with RSS <span aria-hidden="true">↗</span>
+          </a>
+          <a href="https://www.youtube.com/playlist?list=PLfOdKEY1vw1g" target="_blank" rel="noopener noreferrer">
+            Watch on YouTube <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </aside>
+    </section>
+
+    <nav class="section episode-pagination" aria-label="Episode navigation">
+      {previousEpisode ? (
+        <a class="episode-pagination-link episode-pagination-previous" href={episodePath(previousEpisode)}>
+          <span><i aria-hidden="true">←</i> Previous episode</span>
+          <strong>{previousEpisode.title}</strong>
+        </a>
+      ) : (
+        <a class="episode-pagination-link episode-pagination-previous" href="/episodes">
+          <span><i aria-hidden="true">←</i> Episode archive</span>
+          <strong>Explore every conversation</strong>
+        </a>
+      )}
+
+      {nextEpisode ? (
+        <a class="episode-pagination-link episode-pagination-next" href={episodePath(nextEpisode)}>
+          <span>Next episode <i aria-hidden="true">→</i></span>
+          <strong>{nextEpisode.title}</strong>
+        </a>
+      ) : (
+        <a class="episode-pagination-link episode-pagination-next" href="/episodes">
+          <span>Episode archive <i aria-hidden="true">→</i></span>
+          <strong>Explore every conversation</strong>
+        </a>
+      )}
+    </nav>
+  </main>
+
+  <SiteFooter />
+</BaseLayout>

@@ -1,0 +1,251 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import "../styles/about.css";
+
+const companyWorlds = [
+  {
+    number: "01",
+    label: "Development + real estate",
+    title: "Communities made for living",
+    description:
+      "The Water Valley Company approaches land as the beginning of a complete experience—connecting homes, water, trails, gathering places, and long-term community identity.",
+    places: [
+      { name: "Water Valley", detail: "A lake-centered Windsor community built around homes, golf, trails, and life on the water." },
+      { name: "Water Valley South", detail: "The southern neighborhood of the larger Water Valley community." },
+      { name: "RainDance", detail: "An agriculture-rooted residential community shaped by farms, trails, recreation, and gathering places." },
+      { name: "Emerald Estates", detail: "Custom homesites positioned along RainDance National Golf Course." },
+      { name: "Cascadia", detail: "An evolving mixed-use community planned for West Greeley." },
+    ],
+  },
+  {
+    number: "02",
+    label: "Enterprise + specialty real estate",
+    title: "Spaces made for ambition",
+    description:
+      "Purpose-built aviation and flex-space projects extend the company’s work beyond traditional neighborhoods and hospitality.",
+    places: [
+      { name: "Discovery Air", detail: "A nearly 30-acre aviation storage campus with four hangars at Northern Colorado Regional Airport." },
+      { name: "Water Valley Vaults", detail: "Customizable, climate-controlled flex spaces for RVs, boats, collectible vehicles, storage, and small-business workspace." },
+    ],
+  },
+  {
+    number: "03",
+    label: "Golf + recreation",
+    title: "Places made for playing",
+    description:
+      "Championship golf, lakeside recreation, and year-round entertainment turn Northern Colorado landscapes into places people can return to season after season.",
+    places: [
+      { name: "Pelican Lakes Resort & Golf", detail: "A 27-hole golf destination woven through the lakes and waterways of Water Valley." },
+      { name: "RainDance National Resort & Golf", detail: "A championship golf experience designed across the rolling RainDance landscape." },
+      { name: "Hoedown Hill", detail: "A year-round RainDance destination for skiing, snowboarding, tubing, live music, outdoor movies, and sand volleyball." },
+      { name: "Water Adventures at Water Valley", detail: "Also known as The Marina Windsor, with guided fishing, bowfishing, wake sports, tubing, hydrofoiling, and private-beach experiences." },
+    ],
+  },
+  {
+    number: "04",
+    label: "Food + hospitality",
+    title: "Tables made for gathering",
+    description:
+      "Restaurants across the Water Valley world create the everyday moments that make a neighborhood feel like home—from family meals to a drink after a round.",
+    places: [
+      { name: "The Sand Bar", detail: "An open-to-everyone Pelican Lakes restaurant serving comfort food, cocktails, live music, and riverfront views." },
+      { name: "Ted’s Backyard", detail: "A casual, family-friendly scratch kitchen with burgers, pizza, and relaxed indoor and outdoor seating." },
+      { name: "The Grainhouse", detail: "A family-friendly Windsor sports bar with burgers, sandwiches, shareable plates, live music, and nearby sand volleyball." },
+      { name: "The Lodge", detail: "A casual-upscale Windsor restaurant pairing distinctive cuisine and crafted cocktails with golf-course, lake, and Front Range views." },
+    ],
+  },
+];
+
+const companyLinks = [
+  { label: "The Water Valley Company", href: "https://thewatervalleycompany.com/" },
+  { label: "Water Valley", href: "https://watervalley.com/" },
+  { label: "RainDance", href: "https://raindancecolorado.com/" },
+  { label: "RainDance National", href: "https://raindanceresort.com/" },
+  { label: "Pelican Lakes", href: "https://www.pelicanlakeswindsor.com/" },
+  { label: "Cascadia", href: "https://speakupgreeley.com/catalyst" },
+  { label: "JUMA Homes", href: "https://watervalley.com/juma-homes/" },
+  { label: "Four Carat Vodka", href: "https://4caratvodka.com/" },
+  { label: "Discovery Air", href: "https://discoveryairaviation.com/" },
+  { label: "The Lodge", href: "https://thelodgewindsor.com/" },
+  { label: "Hoedown Hill", href: "https://hoedownhill.com/" },
+  { label: "Water Adventures at Water Valley / The Marina", href: "https://themarinawindsor.com/" },
+  { label: "The Sand Bar", href: "https://sandbarwindsor.com/" },
+  { label: "The Grainhouse", href: "https://grainhousewindsor.com/" },
+  { label: "Ted’s Backyard", href: "https://tedsbackyardwindsor.com/" },
+  { label: "Water Valley Vaults", href: "https://watervalleyvaults.com/" },
+];
+
+const aboutURL = new URL("/about/", Astro.site).toString();
+const companyID = `${aboutURL}#water-valley-company`;
+const marissaID = `${aboutURL}#marissa-donahoo`;
+const aboutSchema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    "@id": aboutURL,
+    name: "About The Water Valley Company",
+    url: aboutURL,
+    mainEntity: { "@id": companyID },
+    mentions: companyWorlds.flatMap((world) =>
+      world.places.map((place) => ({ "@type": "Thing", name: place.name })),
+    ),
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": companyID,
+    name: "The Water Valley Company",
+    url: "https://thewatervalleycompany.com/",
+    foundingDate: "1990",
+    founder: ["Martin Lind", "Viki Lind"].map((name) => ({ "@type": "Person", name })),
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Windsor",
+      addressRegion: "CO",
+      addressCountry: "US",
+    },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "@id": marissaID,
+    name: "Marissa Donahoo",
+    jobTitle: "Vice President of Real Estate",
+    worksFor: { "@id": companyID },
+    description:
+      "Host of Water Valley Voice, a licensed Colorado real estate broker, co-founder of JUMA Homes, and owner of Four Carat Vodka.",
+  },
+];
+---
+
+<BaseLayout
+  title="About The Water Valley Company | Water Valley Voice"
+  description="Meet The Water Valley Company, founded in Windsor in 1990, and learn about the communities, golf, hospitality, real estate, and people behind Water Valley Voice."
+  socialImageAlt="Water Valley Voice and The Water Valley Company"
+  jsonLd={aboutSchema}
+>
+  <SiteHeader currentPage="about" />
+
+  <main id="main-content" class="about-page">
+    <section class="about-hero">
+      <div class="about-hero-copy">
+        <p class="eyebrow eyebrow-gold"><span></span> The story behind the stories</p>
+        <h1>Build around<br /><em>the good life.</em></h1>
+        <p>
+          Water Valley Voice is a window into The Water Valley Company—a family-operated Northern Colorado company creating communities and experiences where people can live, play, work, and gather.
+        </p>
+        <a class="button button-gold" href="#company-story">Meet the company <span aria-hidden="true">↓</span></a>
+      </div>
+
+      <div class="about-hero-mark" aria-label="The Water Valley Company, established 1990">
+        <span>Established</span>
+        <strong>1990</strong>
+        <i></i>
+        <img
+          src="/media/images/201022_WV_logo_color-final_outlined_white_lettering.png"
+          alt="The Water Valley Company"
+          width="1518"
+          height="476"
+        />
+      </div>
+    </section>
+
+    <section id="company-story" class="about-story section">
+      <div class="about-story-heading">
+        <p class="eyebrow eyebrow-dark"><span></span> Rooted in Windsor</p>
+        <h2>From land to<br /><em>lasting places.</em></h2>
+      </div>
+      <div class="about-story-copy">
+        <p class="about-story-lead">
+          The company began in Windsor in 1990, when Martin and Viki Lind founded Trollco, Inc.—a total land utilization company that would later become The Water Valley Company.
+        </p>
+        <p>
+          Led by Martin Lind’s conviction that overlooked land could become something meaningful, the company grew across development, real estate, resort-style neighborhoods, championship golf, dining, hospitality, entertainment, and recreation. Its work is connected by one idea: a place should be more than a collection of buildings. It should give people reasons to belong there.
+        </p>
+        <p>
+          Water Valley was the first large expression of that idea. RainDance carried it into a farm-inspired residential community. Pelican Lakes and RainDance National shaped distinctive golf experiences, while restaurants and gathering places brought everyday life into the larger vision. Cascadia represents the company’s continuing ambition to imagine what a complete Northern Colorado destination can become.
+        </p>
+        <a class="text-link" href="https://thewatervalleycompany.com/our-story/" target="_blank" rel="noopener noreferrer">
+          Read the company timeline <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="company-worlds" aria-labelledby="company-worlds-title">
+      <div class="section">
+        <header class="company-worlds-heading">
+          <p class="eyebrow eyebrow-gold"><span></span> One connected world</p>
+          <h2 id="company-worlds-title">Development is only<br /><em>the beginning.</em></h2>
+          <p>
+            The Water Valley Company’s work reaches across real estate, neighborhoods, golf, recreation, restaurants, and hospitality throughout Northern Colorado.
+          </p>
+        </header>
+
+        <div class="company-world-grid">
+          {companyWorlds.map((world) => (
+            <article class="company-world-card">
+              <div class="company-world-number" aria-hidden="true">{world.number}</div>
+              <p>{world.label}</p>
+              <h3>{world.title}</h3>
+              <p>{world.description}</p>
+              <ul>
+                {world.places.map((place) => (
+                  <li>
+                    <strong>{place.name}</strong>
+                    <span>{place.detail}</span>
+                  </li>
+                ))}
+              </ul>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section id="marissa-donahoo" class="about-host">
+      <div class="about-host-portrait">
+        <img
+          src="/media/images/Marissa Donahoo.jpeg"
+          alt="Marissa Donahoo, host of Water Valley Voice"
+          width="800"
+          height="800"
+          loading="lazy"
+        />
+        <span>Host</span>
+        <strong>MD</strong>
+      </div>
+      <div class="about-host-copy">
+        <p class="eyebrow eyebrow-dark"><span></span> The host</p>
+        <h2>Meet Marissa<br /><em>Donahoo.</em></h2>
+        <p class="about-host-lead">
+          Martin Lind’s daughter, Marissa brings family history, real estate experience, and an entrepreneur’s curiosity to every Water Valley Voice conversation.
+        </p>
+        <p>
+          A licensed Colorado real estate broker and Vice President of Real Estate at The Water Valley Company, Marissa works across land, commercial, and residential opportunities in Northern Colorado. She also co-founded JUMA Homes with her husband, Justin, creating distinctive custom homes rooted in thoughtful design.
+        </p>
+        <p>
+          She is also an owner of Four Carat Vodka, a Colorado premium spirits brand known for its diamond-inspired bottles. On the podcast, those overlapping perspectives—family, place-making, real estate, hospitality, and business—help her draw out the people and decisions behind the Water Valley story.
+        </p>
+        <a class="button button-line" href="/episodes">Listen to the conversations <span aria-hidden="true">→</span></a>
+      </div>
+    </section>
+
+    <section class="about-links section" aria-labelledby="about-links-title">
+      <div>
+        <p class="eyebrow eyebrow-dark"><span></span> Explore the wider story</p>
+        <h2 id="about-links-title">Visit the places<br /><em>behind the podcast.</em></h2>
+      </div>
+      <div class="about-link-list">
+        {companyLinks.map((link) => (
+          <a href={link.href} target="_blank" rel="noopener noreferrer">
+            <span>{link.label}</span><i aria-hidden="true">↗</i>
+          </a>
+        ))}
+      </div>
+    </section>
+  </main>
+
+  <SiteFooter />
+</BaseLayout>

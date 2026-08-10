@@ -2,6 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteHeader from "../components/SiteHeader.astro";
+import { episodePath, latestEpisode } from "../data/episodes";
 
 const socials = [
   {
@@ -22,10 +23,11 @@ const socials = [
 ];
 
 const contactHref = "mailto:contact@watervalleyvoice.com?subject=Water%20Valley%20Voice%20Inquiry";
+const [featuredTitle, featuredSubtitle] = latestEpisode.title.split(": ");
 ---
 
 <BaseLayout
-  title="Water Valley Voice | Conversations from Windsor, Colorado"
+  title="Water Valley Voice Podcast | Windsor, Colorado"
   description="Water Valley Voice shares the people, places, and conversations shaping Water Valley, Windsor, and Northern Colorado."
 >
   <SiteHeader />
@@ -83,24 +85,27 @@ const contactHref = "mailto:contact@watervalleyvoice.com?subject=Water%20Valley%
       <article class="episode-feature">
         <div class="episode-number" aria-hidden="true">
           <span>Episode</span>
-          <strong>01</strong>
+          <strong>{latestEpisode.number}</strong>
           <i></i>
-          <small>Part 3</small>
+          <small>{latestEpisode.part}</small>
         </div>
         <div class="episode-details">
           <p class="episode-kicker">Featured conversation</p>
-          <h3>Family, Fairways &amp; Flavor</h3>
-          <p class="episode-subtitle">Inside Windsor’s Grainhouse, Sandbar and Ted’s</p>
+          <h3><a href={episodePath(latestEpisode)}>{featuredTitle}</a></h3>
+          <p class="episode-subtitle">{featuredSubtitle}</p>
           <div class="podbean-player">
             <iframe
-              title="E1 Part 3: Family, Fairways & Flavor: Inside Windsor’s Grainhouse, Sandbar and Ted’s"
+              title={latestEpisode.playerTitle}
               height="150"
               width="100%"
-              src="https://www.podbean.com/player-v2/?i=46vsa-1b221ba-pb&from=pb6admin&pbad=0&share=1&download=1&rtl=0&fonts=Arial&skin=f6f6f6&font-color=auto&logo_link=episode_page&btn-skin=8bbb4e"
+              src={latestEpisode.playerSrc}
               loading="lazy"
               allowtransparency="true"
             ></iframe>
           </div>
+          <a class="text-link episode-detail-link" href={episodePath(latestEpisode)}>
+            Read the full episode description <span aria-hidden="true">→</span>
+          </a>
         </div>
       </article>
     </section>
@@ -133,6 +138,8 @@ const contactHref = "mailto:contact@watervalleyvoice.com?subject=Water%20Valley%
       <div class="studio-photo">
         <img
           src="/media/images/wvv-podcast-studio-web.jpg"
+          srcset="/media/images/wvv-podcast-studio-900.jpg 900w, /media/images/wvv-podcast-studio-web.jpg 1800w"
+          sizes="(max-width: 760px) 100vw, 50vw"
           alt="The Water Valley Voice recording studio with microphones and a custom live-edge table"
           width="1800"
           height="1200"

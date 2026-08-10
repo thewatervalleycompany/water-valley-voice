@@ -1,6 +1,6 @@
 ---
 interface Props {
-  currentPage?: "home" | "episodes" | "booking";
+  currentPage?: "home" | "episodes" | "about" | "booking";
 }
 
 const { currentPage = "home" } = Astro.props;
@@ -9,7 +9,7 @@ const { currentPage = "home" } = Astro.props;
 <header class="site-header">
   <div class="nav-shell">
     <a class="brand" href="/" aria-label="Water Valley Voice home">
-      <img src="/media/images/wvv-mic-mark-web.jpg" alt="" width="48" height="48" />
+      <img src="/media/images/wvv-mic-mark-192.jpg" alt="" width="192" height="192" />
       <span class="brand-text">
         <span>Water Valley</span>
         <strong aria-hidden="true"><span>V</span><span>O</span><span>I</span><span>C</span><span>E</span></strong>
@@ -27,6 +27,7 @@ const { currentPage = "home" } = Astro.props;
       <a href="/episodes" aria-current={currentPage === "episodes" ? "page" : undefined}>Episodes</a>
       <a href="/#watch">Watch</a>
       <a href="/#studio">Our studio</a>
+      <a href="/about" aria-current={currentPage === "about" ? "page" : undefined}>About</a>
       <a href="/book-studio" aria-current={currentPage === "booking" ? "page" : undefined}>Rent the studio</a>
       <a class="nav-cta" href="/#contact">Contact</a>
     </nav>
@@ -49,6 +50,13 @@ const { currentPage = "home" } = Astro.props;
   });
 
   navigation?.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => setMenu(false)));
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && menuButton?.getAttribute("aria-expanded") === "true") {
+      setMenu(false);
+      menuButton.focus();
+    }
+  });
 
   window.addEventListener("resize", () => {
     if (window.innerWidth > 760) setMenu(false);

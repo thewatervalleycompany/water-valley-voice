@@ -2,59 +2,92 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteHeader from "../components/SiteHeader.astro";
+import { studioServices } from "../data/studio-services";
 
-const serviceOptions = [
+const serviceOptions = studioServices;
+const turnstileSiteKey =
+  import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ||
+  (import.meta.env.DEV ? "1x00000000000000000000AA" : "");
+
+const studioURL = new URL("/book-studio/", Astro.site).toString();
+const studioSchema = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "@id": `${studioURL}#studio`,
+  name: "Water Valley Voice Podcast Studio",
+  url: studioURL,
+  description:
+    "Podcast studio and conference room rentals with DIY production gear and done-for-you recording and editing in Windsor, Colorado.",
+  image: new URL("/media/images/wvv-podcast-studio-web.jpg", Astro.site).toString(),
+  email: "studio@watervalleyvoice.com",
+  priceRange: "$50–$1,395",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "1625 Pelican Lakes Point, Suite 201",
+    addressLocality: "Windsor",
+    addressRegion: "CO",
+    postalCode: "80550",
+    addressCountry: "US",
+  },
+  hasOfferCatalog: {
+    "@type": "OfferCatalog",
+    name: "Podcast studio and meeting room rentals",
+    itemListElement: serviceOptions.map((service) => ({
+      "@type": "Offer",
+      price: service.price.replace(/[$,]/g, ""),
+      priceCurrency: "USD",
+      itemOffered: {
+        "@type": "Service",
+        name: `${service.eyebrow} ${service.title}`,
+        description: `${service.description} ${service.duration}.`,
+      },
+    })),
+  },
+};
+
+const bookingFaqs = [
   {
-    id: "diy-half",
-    eyebrow: "DIY",
-    title: "Half Production Day",
-    description: "Includes Space + Gear.",
-    duration: "4 hours",
-    price: "$250",
-    requestLabel: "DIY Half Production Day • Includes Space + Gear (4 hours) • $250",
+    question: "What is included in a DIY studio rental?",
+    answer:
+      "DIY half-day and full-day rentals include the Water Valley Voice studio space and production gear. You operate your own session during the reserved time.",
   },
   {
-    id: "diy-full",
-    eyebrow: "DIY",
-    title: "Full Production Day",
-    description: "Includes Space + Gear.",
-    duration: "8 hours",
-    price: "$500",
-    requestLabel: "DIY Full Production Day • Includes Space + Gear (8 hours) • $500",
+    question: "What is included in done-for-you production?",
+    answer:
+      "Done-for-you packages add recording support and editing for two episodes during a half production day or four episodes during a full production day.",
   },
   {
-    id: "dfy-half",
-    eyebrow: "Done-For-You",
-    title: "Half Production Day + Editing",
-    description: "A fully supported production day with editing for 2 episodes.",
-    duration: "4 hours / 2 episodes",
-    price: "$795",
-    requestLabel: "Done-For-You Half Production Day + Editing (4 hours / 2 episodes) • $795",
+    question: "Is my session booked as soon as I send a request?",
+    answer:
+      "No. Your preferred date and time remain a request until Water Valley Voice replies by email and confirms availability.",
   },
   {
-    id: "dfy-full",
-    eyebrow: "Done-For-You",
-    title: "Full Production Day + Editing",
-    description: "A fully supported production day with editing for 4 episodes.",
-    duration: "8 hours / 4 episodes",
-    price: "$1,395",
-    requestLabel: "Done-For-You Full Production Day + Editing (8 hours / 4 episodes) • $1,395",
-  },
-  {
-    id: "conference-room",
-    eyebrow: "Meeting space",
-    title: "Conference Room",
-    description: "A private, professional room for your next meeting.",
-    duration: "2 hours",
-    price: "$50",
-    requestLabel: "Conference Room for 2 hours • $50",
+    question: "Where is the Water Valley Voice studio?",
+    answer:
+      "The studio is at 1625 Pelican Lakes Point, Suite 201, Windsor, Colorado 80550.",
   },
 ];
+
+const bookingFaqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: bookingFaqs.map((faq) => ({
+    "@type": "Question",
+    name: faq.question,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: faq.answer,
+    },
+  })),
+};
 ---
 
 <BaseLayout
-  title="Rent the Studio | Water Valley Voice"
+  title="Podcast Studio Rental in Windsor, CO | Water Valley Voice"
   description="Book the Water Valley Voice podcast studio or conference room in Windsor, Colorado. Choose DIY space and gear or done-for-you production and editing."
+  canonical={studioURL}
+  socialImageAlt="Water Valley Voice podcast studio in Windsor, Colorado"
+  jsonLd={[studioSchema, bookingFaqSchema]}
 >
   <SiteHeader currentPage="booking" />
 
@@ -62,7 +95,7 @@ const serviceOptions = [
     <section class="booking-hero">
       <div class="booking-hero-copy">
         <p class="eyebrow eyebrow-gold"><span></span> Studio rentals in Windsor</p>
-        <h1>Your story.<br /><em>Your session.</em></h1>
+        <h1>Podcast studio rental.<br /><em>Made for your story.</em></h1>
         <p>
           A polished, purpose-built space for podcasts, interviews, content days, and meetings—with the gear and support to match your production.
         </p>
@@ -71,6 +104,8 @@ const serviceOptions = [
       <div class="booking-hero-photo">
         <img
           src="/media/images/wvv-podcast-studio-web.jpg"
+          srcset="/media/images/wvv-podcast-studio-900.jpg 900w, /media/images/wvv-podcast-studio-web.jpg 1800w"
+          sizes="(max-width: 760px) 100vw, 58vw"
           alt="Water Valley Voice podcast studio available to rent in Windsor"
           width="1800"
           height="1200"
@@ -119,6 +154,21 @@ const serviceOptions = [
       </div>
     </section>
 
+    <section class="booking-faq section" aria-labelledby="booking-faq-title">
+      <div class="booking-faq-heading">
+        <p class="eyebrow eyebrow-dark"><span></span> Before you request</p>
+        <h2 id="booking-faq-title">Studio rental<br /><em>questions.</em></h2>
+      </div>
+      <div class="booking-faq-list">
+        {bookingFaqs.map((faq) => (
+          <details>
+            <summary>{faq.question}<span aria-hidden="true">+</span></summary>
+            <p>{faq.answer}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
     <section id="booking-form" class="booking-form-section">
       <div class="section booking-form-layout">
         <div class="booking-form-intro">
@@ -134,13 +184,31 @@ const serviceOptions = [
           </div>
         </div>
 
-        <form id="studio-booking-form" class="booking-form">
+        <form
+          id="studio-booking-form"
+          class="booking-form"
+          method="post"
+          action="/api/studio-request"
+          accept-charset="UTF-8"
+        >
+          <div class="form-honeypot" aria-hidden="true">
+            <label for="booking-website">Leave this field blank</label>
+            <input
+              id="booking-website"
+              type="text"
+              name="website"
+              autocomplete="off"
+              tabindex="-1"
+            />
+          </div>
+          <input id="booking-started-at" type="hidden" name="startedAt" value="" />
+
           <fieldset class="service-fieldset">
             <legend>Select a service <span aria-hidden="true">*</span></legend>
             <div class="service-options">
               {serviceOptions.map((service) => (
                 <label id={`service-${service.id}`} class="service-option">
-                  <input type="radio" name="service" value={service.requestLabel} required />
+                  <input type="radio" name="service" value={service.id} required />
                   <span class="service-check" aria-hidden="true"></span>
                   <span class="service-name">
                     <small>{service.eyebrow}</small>
@@ -198,17 +266,37 @@ const serviceOptions = [
             <span>I understand this is a request and my session is not reserved until Water Valley Voice confirms availability.</span>
           </label>
 
-          <button class="button button-gold booking-submit" type="submit">
-            Prepare booking request <span aria-hidden="true">→</span>
+          <div class="turnstile-field">
+            <p class="turnstile-label">Human verification <span aria-hidden="true">*</span></p>
+            {turnstileSiteKey ? (
+              <div
+                class="cf-turnstile"
+                data-sitekey={turnstileSiteKey}
+                data-action="studio_request"
+                data-theme="light"
+                data-size="flexible"
+                data-callback="studioTurnstileSuccess"
+                data-expired-callback="studioTurnstileExpired"
+                data-error-callback="studioTurnstileError"
+              ></div>
+            ) : (
+              <p class="turnstile-config-warning" role="alert">
+                Studio requests are temporarily unavailable while secure verification is being configured.
+              </p>
+            )}
+          </div>
+
+          <button class="button button-gold booking-submit" type="submit" disabled={!turnstileSiteKey}>
+            <span data-submit-label>Send studio request</span> <span aria-hidden="true">→</span>
           </button>
           <p class="form-help">
-            This opens your email app with the complete request addressed to <strong>contact@watervalleyvoice.com</strong>. Review it, then press Send to submit.
+            Protected by Cloudflare Turnstile. Your request is sent securely to <strong>studio@watervalleyvoice.com</strong> without opening your email app.
           </p>
           <p id="booking-feedback" class="booking-feedback" role="status" aria-live="polite"></p>
 
           <noscript>
             <p class="booking-feedback is-visible">
-              JavaScript is required to prepare the booking request. Email <a href="mailto:contact@watervalleyvoice.com?subject=Studio%20rental%20request">contact@watervalleyvoice.com</a> for assistance.
+              JavaScript is required for secure human verification. Please enable JavaScript to send this form, or contact studio@watervalleyvoice.com for assistance.
             </p>
           </noscript>
         </form>
@@ -218,17 +306,59 @@ const serviceOptions = [
 
   <SiteFooter />
 
+  <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
   <script>
     const form = document.querySelector<HTMLFormElement>("#studio-booking-form");
     const dateInput = document.querySelector<HTMLInputElement>("#booking-date");
+    const startedAtInput = document.querySelector<HTMLInputElement>("#booking-started-at");
     const feedback = document.querySelector<HTMLElement>("#booking-feedback");
+    const submitButton = form?.querySelector<HTMLButtonElement>(".booking-submit");
+    const submitLabel = submitButton?.querySelector<HTMLElement>("[data-submit-label]");
     const serviceLinks = document.querySelectorAll<HTMLAnchorElement>("[data-select-service]");
 
-    if (dateInput) {
+    const setDateMinimum = () => {
+      if (!dateInput) return;
       const today = new Date();
       const localToday = new Date(today.getTime() - today.getTimezoneOffset() * 60_000).toISOString().slice(0, 10);
       dateInput.min = localToday;
-    }
+    };
+
+    const resetStartedAt = () => {
+      if (startedAtInput) startedAtInput.value = String(Date.now());
+    };
+
+    const showFeedback = (message: string, kind: "success" | "error") => {
+      if (!feedback) return;
+      feedback.textContent = message;
+      feedback.classList.remove("is-success", "is-error");
+      feedback.classList.add("is-visible", kind === "success" ? "is-success" : "is-error");
+    };
+
+    const resetTurnstile = () => {
+      const turnstile = (window as Window & {
+        turnstile?: { reset: (container?: string | HTMLElement) => void };
+      }).turnstile;
+      turnstile?.reset(".cf-turnstile");
+    };
+
+    Object.assign(window, {
+      studioTurnstileSuccess: () => {
+        if (feedback?.classList.contains("is-error")) {
+          feedback.textContent = "";
+          feedback.classList.remove("is-visible", "is-error");
+        }
+      },
+      studioTurnstileExpired: () => {
+        showFeedback("Human verification expired. Please complete it again before sending.", "error");
+      },
+      studioTurnstileError: () => {
+        showFeedback("Human verification could not load. Please refresh the page and try again.", "error");
+      },
+    });
+
+    setDateMinimum();
+    resetStartedAt();
 
     serviceLinks.forEach((link) => {
       link.addEventListener("click", (event) => {
@@ -245,61 +375,52 @@ const serviceOptions = [
       });
     });
 
-    form?.addEventListener("submit", (event) => {
+    form?.addEventListener("submit", async (event) => {
       event.preventDefault();
 
       if (!form.reportValidity()) return;
 
       const data = new FormData(form);
-      const service = String(data.get("service") || "");
-      const date = String(data.get("date") || "");
-      const time = String(data.get("time") || "");
-      const name = String(data.get("name") || "");
-      const email = String(data.get("email") || "");
-      const phone = String(data.get("phone") || "Not provided");
-      const company = String(data.get("company") || "Not provided");
-      const notes = String(data.get("notes") || "None provided");
-
-      const formattedDate = new Date(`${date}T12:00:00`).toLocaleDateString("en-US", {
-        weekday: "long",
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      });
-
-      const [hours, minutes] = time.split(":").map(Number);
-      const formattedTime = new Date(2000, 0, 1, hours, minutes).toLocaleTimeString("en-US", {
-        hour: "numeric",
-        minute: "2-digit",
-      });
-
-      const subject = `Studio rental request — ${formattedDate}`;
-      const body = [
-        "Hello Water Valley Voice,",
-        "",
-        "I would like to request a studio rental session.",
-        "",
-        `SERVICE: ${service}`,
-        `PREFERRED DATE: ${formattedDate}`,
-        `PREFERRED START TIME: ${formattedTime}`,
-        "",
-        `NAME: ${name}`,
-        `EMAIL: ${email}`,
-        `PHONE: ${phone}`,
-        `COMPANY / SHOW: ${company}`,
-        "",
-        "SESSION DETAILS:",
-        notes,
-        "",
-        "Please let me know whether this date and time are available and what the next steps are.",
-      ].join("\n");
-
-      if (feedback) {
-        feedback.textContent = "Your request is ready. Complete the email that opens to send it to Water Valley Voice.";
-        feedback.classList.add("is-visible");
+      if (!data.get("cf-turnstile-response")) {
+        showFeedback("Please complete the human verification before sending your request.", "error");
+        return;
       }
 
-      window.location.href = `mailto:contact@watervalleyvoice.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      if (submitButton) submitButton.disabled = true;
+      if (submitLabel) submitLabel.textContent = "Sending request…";
+
+      try {
+        const response = await fetch(form.action, {
+          method: "POST",
+          body: data,
+          headers: { Accept: "application/json" },
+        });
+        const result = (await response.json().catch(() => null)) as
+          | { success?: boolean; message?: string }
+          | null;
+
+        if (!response.ok || !result?.success) {
+          throw new Error(result?.message || "We could not send your request. Please try again.");
+        }
+
+        form.reset();
+        setDateMinimum();
+        resetStartedAt();
+        resetTurnstile();
+        showFeedback(
+          result.message || "Your studio request was sent. We’ll reply by email after we review availability.",
+          "success",
+        );
+      } catch (error) {
+        resetTurnstile();
+        showFeedback(
+          error instanceof Error ? error.message : "We could not send your request. Please try again.",
+          "error",
+        );
+      } finally {
+        if (submitButton) submitButton.disabled = false;
+        if (submitLabel) submitLabel.textContent = "Send studio request";
+      }
     });
   </script>
 </BaseLayout>

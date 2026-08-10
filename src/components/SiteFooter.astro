@@ -1,16 +1,34 @@
 ---
 const contactHref = "mailto:contact@watervalleyvoice.com?subject=Water%20Valley%20Voice%20Inquiry";
+
+const footerSocials = [
+  { name: "Facebook", href: "https://www.facebook.com/profile.php?id=61591334404567" },
+  { name: "Instagram", href: "https://www.instagram.com/watervalleyvoice/" },
+  { name: "YouTube", href: "https://www.youtube.com/channel/UCOn56MJ6u1mYxIfdJxZwvNw" },
+];
 ---
 
 <footer>
   <div class="footer-main section">
     <a class="brand brand-footer" href="/" aria-label="Water Valley Voice home">
-      <img src="/media/images/wvv-mic-mark-web.jpg" alt="" width="48" height="48" loading="lazy" />
+      <img src="/media/images/wvv-mic-mark-192.jpg" alt="" width="192" height="192" loading="lazy" />
       <span class="brand-text">
         <span>Water Valley</span>
         <strong aria-hidden="true"><span>V</span><span>O</span><span>I</span><span>C</span><span>E</span></strong>
       </span>
     </a>
+
+    <nav class="footer-links" aria-label="Footer navigation">
+      <p>Explore</p>
+      <a href="/episodes">Episodes</a>
+      <a href="/about">About</a>
+      <a href="/book-studio">Rent the studio</a>
+      <div class="footer-socials">
+        {footerSocials.map((social) => (
+          <a href={social.href} target="_blank" rel="noopener noreferrer">{social.name}</a>
+        ))}
+      </div>
+    </nav>
 
     <div class="footer-contact">
       <p>Contact</p>
@@ -25,7 +43,7 @@ const contactHref = "mailto:contact@watervalleyvoice.com?subject=Water%20Valley%
 
   <div class="footer-bottom section">
     <p>© {new Date().getFullYear()} Water Valley Voice</p>
-    <div class="parent-brand">
+    <a class="parent-brand" href="https://thewatervalleycompany.com/" target="_blank" rel="noopener noreferrer">
       <span>A podcast from</span>
       <img
         src="/media/images/201022_WV_logo_color-final_outlined_white_lettering.png"
@@ -34,6 +52,6 @@ const contactHref = "mailto:contact@watervalleyvoice.com?subject=Water%20Valley%
         height="69"
         loading="lazy"
       />
-    </div>
+    </a>
   </div>
 </footer>
