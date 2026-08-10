@@ -273,7 +273,7 @@ const bookingFaqSchema = {
                 <div id="studio-turnstile" class="studio-turnstile-widget"></div>
                 <div class="turnstile-status-row">
                   <p id="turnstile-status" class="turnstile-status" role="status" aria-live="polite">
-                    Preparing secure verification…
+                    Complete the verification above when you are ready.
                   </p>
                   <button id="turnstile-retry" class="turnstile-retry" type="button" hidden>
                     Retry verification
@@ -354,6 +354,10 @@ const bookingFaqSchema = {
             }
           };
 
+          window.studioTurnstileLoadError = () => {
+            announce("error", "script-load-failed");
+          };
+
           state.reset = () => {
             announce("loading");
 
@@ -375,6 +379,7 @@ const bookingFaqSchema = {
         is:inline
         src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=studioTurnstileReady"
         defer
+        onerror="studioTurnstileLoadError()"
       ></script>
     )
   }
@@ -397,7 +402,6 @@ const bookingFaqSchema = {
     const serviceLinks = document.querySelectorAll<HTMLAnchorElement>("[data-select-service]");
     const turnstileStatus = document.querySelector<HTMLElement>("#turnstile-status");
     const turnstileRetry = document.querySelector<HTMLButtonElement>("#turnstile-retry");
-    let turnstileWatchdog: number | undefined;
 
     const setDateMinimum = () => {
       if (!dateInput) return;
@@ -420,7 +424,6 @@ const bookingFaqSchema = {
     const setTurnstileStatus = (status: TurnstileStatus) => {
       if (!turnstileStatus || !turnstileRetry) return;
 
-      window.clearTimeout(turnstileWatchdog);
       turnstileStatus.classList.remove("is-success", "is-error");
       turnstileRetry.hidden = true;
 
@@ -431,12 +434,7 @@ const bookingFaqSchema = {
       }
 
       if (status === "loading") {
-        turnstileStatus.textContent = "Checking your browser…";
-        turnstileWatchdog = window.setTimeout(() => {
-          turnstileStatus.textContent = "Verification is taking longer than expected. You can retry without reloading the page.";
-          turnstileStatus.classList.add("is-error");
-          turnstileRetry.hidden = false;
-        }, 15_000);
+        turnstileStatus.textContent = "Complete the verification above when you are ready.";
         return;
       }
 
