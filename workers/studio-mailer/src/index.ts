@@ -9,7 +9,6 @@ interface EmailMessageBuilder {
   subject: string;
   html?: string;
   text?: string;
-  replyTo?: string | EmailAddress;
 }
 
 interface SendEmailBinding {
@@ -181,7 +180,7 @@ export default {
       `Preferred start time: ${payload.time}`,
       "",
       `Name: ${payload.name}`,
-      `Email: ${payload.email}`,
+      `Email (reply manually): ${payload.email}`,
       `Phone: ${textValue(payload.phone)}`,
       `Company / show: ${textValue(payload.company)}`,
       "",
@@ -201,7 +200,7 @@ export default {
         <tr><th align="left">Preferred date</th><td>${htmlValue(payload.date)}</td></tr>
         <tr><th align="left">Preferred start time</th><td>${htmlValue(payload.time)}</td></tr>
         <tr><th align="left">Name</th><td>${htmlValue(payload.name)}</td></tr>
-        <tr><th align="left">Email</th><td>${htmlValue(payload.email)}</td></tr>
+        <tr><th align="left">Email</th><td><a href="mailto:${escapeHtml(payload.email)}">${htmlValue(payload.email)}</a></td></tr>
         <tr><th align="left">Phone</th><td>${htmlValue(payload.phone)}</td></tr>
         <tr><th align="left">Company / show</th><td>${htmlValue(payload.company)}</td></tr>
       </table>
@@ -214,12 +213,18 @@ export default {
       await env.EMAIL.send({
         to: deliveryTo,
         from: { email: sender, name: "Water Valley Voice Website" },
-        replyTo: { email: payload.email, name: payload.name },
         subject,
         text,
         html,
       });
-    } catch {
+    } catch (error) {
+      const errorCode =
+        typeof error === "object" && error !== null && "code" in error
+          ? String((error as { code?: unknown }).code)
+              .replace(/[^A-Z0-9_:-]/gi, "")
+              .slice(0, 64)
+          : "UNKNOWN";
+      console.error("Studio email send failed", errorCode || "UNKNOWN");
       return jsonResponse({ success: false }, 502);
     }
 
