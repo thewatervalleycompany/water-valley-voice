@@ -5,7 +5,7 @@
 .about-hero {
   min-height: 670px;
   display: grid;
-  grid-template-columns: minmax(410px, 0.9fr) minmax(0, 1.1fr);
+  grid-template-columns: minmax(520px, calc(50vw - 30px)) minmax(0, 1fr);
   overflow: hidden;
   background: var(--black);
   color: var(--white);

@@ -964,7 +964,7 @@ footer {
 .episodes-hero {
   min-height: 660px;
   display: grid;
-  grid-template-columns: minmax(410px, 0.8fr) minmax(0, 1.2fr);
+  grid-template-columns: minmax(520px, calc(50vw - 30px)) minmax(0, 1fr);
   background: var(--black);
   color: var(--white);
 }
@@ -1314,7 +1314,7 @@ footer {
 .booking-hero {
   min-height: 690px;
   display: grid;
-  grid-template-columns: minmax(390px, 0.72fr) minmax(0, 1.28fr);
+  grid-template-columns: minmax(520px, calc(50vw - 30px)) minmax(0, 1fr);
   background: var(--black);
   color: var(--white);
 }
