@@ -17,10 +17,10 @@ const studioSchema = {
   name: "Water Valley Voice Podcast Studio",
   url: studioURL,
   description:
-    "Podcast studio and conference room rentals with DIY production gear and done-for-you recording and editing in Windsor, Colorado.",
+    "Podcast studio and conference room rentals with studio-only, audio, and audio-video equipment options in Windsor, Colorado.",
   image: new URL("/media/images/wvv-podcast-studio-web.jpg", Astro.site).toString(),
   email: "studio@watervalleyvoice.com",
-  priceRange: "$50–$1,395",
+  priceRange: "$50–$800",
   address: {
     "@type": "PostalAddress",
     streetAddress: "1625 Pelican Lakes Point, Suite 201",
@@ -47,14 +47,19 @@ const studioSchema = {
 
 const bookingFaqs = [
   {
-    question: "What is included in a DIY studio rental?",
+    question: "What is included in a studio-only rental?",
     answer:
-      "DIY half-day and full-day rentals include the Water Valley Voice studio space and production gear. You operate your own session during the reserved time.",
+      "Studio-only half-day and full-day rentals include the Water Valley Voice studio space. You bring the audio and video equipment you plan to use.",
   },
   {
-    question: "What is included in done-for-you production?",
+    question: "What is included with the gear packages?",
     answer:
-      "Done-for-you packages add recording support and editing for two episodes during a half production day or four episodes during a full production day.",
+      "The half-day audio package includes access to Water Valley Voice audio recording gear. The full-day audio and video package includes access to our audio and video gear. Equipment details are confirmed with your booking.",
+  },
+  {
+    question: "Is editing included?",
+    answer:
+      "No. These packages cover the studio space and the equipment listed for your selected option. Editing and post-production are not included.",
   },
   {
     question: "Is my session booked as soon as I send a request?",
@@ -84,7 +89,7 @@ const bookingFaqSchema = {
 
 <BaseLayout
   title="Podcast Studio Rental in Windsor, CO | Water Valley Voice"
-  description="Book the Water Valley Voice podcast studio or conference room in Windsor, Colorado. Choose DIY space and gear or done-for-you production and editing."
+  description="Book the Water Valley Voice podcast studio or conference room in Windsor, Colorado. Bring your own gear or choose an audio or audio-video equipment package."
   canonical={studioURL}
   socialImageAlt="Water Valley Voice podcast studio in Windsor, Colorado"
   jsonLd={[studioSchema, bookingFaqSchema]}
@@ -97,7 +102,7 @@ const bookingFaqSchema = {
         <p class="eyebrow eyebrow-gold"><span></span> Studio rentals in Windsor</p>
         <h1>Podcast studio rental.<br /><em>Made for your story.</em></h1>
         <p>
-          A polished, purpose-built space for podcasts, interviews, content days, and meetings—with the gear and support to match your production.
+          A polished, purpose-built space for podcasts, interviews, content days, and meetings—with flexible options to bring your own equipment or use ours.
         </p>
         <a class="button button-gold" href="#booking-form">Request a session <span aria-hidden="true">↓</span></a>
       </div>
@@ -125,7 +130,7 @@ const bookingFaqSchema = {
           <h2 id="packages-title">Studio packages.</h2>
         </div>
         <p>
-          Come in and run your own production, or let our team take care of the recording and editing. All sessions are scheduled by request and confirmed by email.
+          Choose the time and equipment setup that fits your session. Editing and post-production are not included. All sessions are scheduled by request and confirmed by email.
         </p>
       </div>
 
