@@ -2,7 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteHeader from "../components/SiteHeader.astro";
-import { studioServices } from "../data/studio-services";
+import { studioSdCardAddOn, studioServices } from "../data/studio-services";
 
 const serviceOptions = studioServices;
 const turnstileSiteKey =
@@ -20,7 +20,7 @@ const studioSchema = {
     "Podcast studio and conference room rentals with studio-only, audio, and audio-video equipment options in Windsor, Colorado.",
   image: new URL("/media/images/wvv-podcast-studio-web.jpg", Astro.site).toString(),
   email: "studio@watervalleyvoice.com",
-  priceRange: "$50–$800",
+  priceRange: "$50–$850",
   address: {
     "@type": "PostalAddress",
     streetAddress: "1625 Pelican Lakes Point, Suite 201",
@@ -55,6 +55,11 @@ const bookingFaqs = [
     question: "What is included with the gear packages?",
     answer:
       "The half-day audio package includes access to Water Valley Voice audio recording gear. The full-day audio and video package includes access to our audio and video gear. Equipment details are confirmed with your booking.",
+  },
+  {
+    question: "Do I need to bring SD cards?",
+    answer:
+      "Yes. If you use Water Valley Voice equipment, bring compatible SD cards; we will confirm the required card types and quantities with your booking. Studio SD cards are available for an additional $50, but the cards remain with the studio, so you must bring a working way to transfer your files before the session ends.",
   },
   {
     question: "Is editing included?",
@@ -213,7 +218,13 @@ const bookingFaqSchema = {
             <div class="service-options">
               {serviceOptions.map((service) => (
                 <label id={`service-${service.id}`} class="service-option">
-                  <input type="radio" name="service" value={service.id} required />
+                  <input
+                    type="radio"
+                    name="service"
+                    value={service.id}
+                    data-uses-studio-equipment={String(service.usesStudioEquipment)}
+                    required
+                  />
                   <span class="service-check" aria-hidden="true"></span>
                   <span class="service-name">
                     <small>{service.eyebrow}</small>
@@ -223,6 +234,58 @@ const bookingFaqSchema = {
                   <b>{service.price}</b>
                 </label>
               ))}
+            </div>
+          </fieldset>
+
+          <fieldset id="recording-media-fieldset" class="details-fieldset recording-media-fieldset" hidden>
+            <legend>Recording media <span aria-hidden="true">*</span></legend>
+            <p id="recording-media-help" class="recording-media-help">
+              When using Water Valley Voice equipment, bring compatible SD cards or select our {studioSdCardAddOn.price} recording-media add-on. We’ll confirm the required card types and quantities with your booking.
+            </p>
+            <div class="service-options recording-media-options">
+              <label class="service-option">
+                <input
+                  type="radio"
+                  name="recordingMedia"
+                  value="customer-sd-cards"
+                  aria-describedby="recording-media-help"
+                  disabled
+                />
+                <span class="service-check" aria-hidden="true"></span>
+                <span class="service-name">
+                  <small>Your recording media</small>
+                  <strong>I’ll bring compatible SD cards</strong>
+                  <span>No additional fee</span>
+                </span>
+                <b>Included</b>
+              </label>
+              <label class="service-option">
+                <input
+                  id="studio-sd-card-option"
+                  type="radio"
+                  name="recordingMedia"
+                  value="studio-sd-cards"
+                  aria-describedby="recording-media-help"
+                  aria-controls="sd-transfer-confirmation"
+                  disabled
+                />
+                <span class="service-check" aria-hidden="true"></span>
+                <span class="service-name">
+                  <small>Studio recording media</small>
+                  <strong>I need Water Valley Voice SD cards</strong>
+                  <span>Our cards remain at the studio; files must be transferred before you leave</span>
+                </span>
+                <b>+{studioSdCardAddOn.price}</b>
+              </label>
+            </div>
+
+            <div id="sd-transfer-confirmation" hidden>
+              <label class="request-confirmation storage-confirmation">
+                <input type="checkbox" name="transferAcknowledgment" value="acknowledged" disabled />
+                <span>
+                  I understand that I must bring a working transfer solution and my own computer, hard drive, or SSD with enough available space. Without one, I will leave without a copy of the media recorded during my session.
+                </span>
+              </label>
             </div>
           </fieldset>
 
@@ -405,6 +468,12 @@ const bookingFaqSchema = {
     const submitButton = form?.querySelector<HTMLButtonElement>(".booking-submit");
     const submitLabel = submitButton?.querySelector<HTMLElement>("[data-submit-label]");
     const serviceLinks = document.querySelectorAll<HTMLAnchorElement>("[data-select-service]");
+    const serviceRadios = form?.querySelectorAll<HTMLInputElement>('input[name="service"]');
+    const recordingMediaFieldset = document.querySelector<HTMLFieldSetElement>("#recording-media-fieldset");
+    const sdCardRadios = form?.querySelectorAll<HTMLInputElement>('input[name="recordingMedia"]');
+    const studioSdCardOption = document.querySelector<HTMLInputElement>("#studio-sd-card-option");
+    const transferConfirmation = document.querySelector<HTMLElement>("#sd-transfer-confirmation");
+    const transferAcknowledgment = form?.querySelector<HTMLInputElement>('input[name="transferAcknowledgment"]');
     const turnstileStatus = document.querySelector<HTMLElement>("#turnstile-status");
     const turnstileRetry = document.querySelector<HTMLButtonElement>("#turnstile-retry");
 
@@ -474,6 +543,32 @@ const bookingFaqSchema = {
     setDateMinimum();
     resetStartedAt();
 
+    const syncRecordingMedia = () => {
+      const selectedService = form?.querySelector<HTMLInputElement>('input[name="service"]:checked');
+      const usesStudioEquipment = selectedService?.dataset.usesStudioEquipment === "true";
+
+      if (recordingMediaFieldset) recordingMediaFieldset.hidden = !usesStudioEquipment;
+
+      sdCardRadios?.forEach((radio) => {
+        radio.disabled = !usesStudioEquipment;
+        radio.required = usesStudioEquipment;
+        if (!usesStudioEquipment) radio.checked = false;
+      });
+
+      const usesStudioCards = usesStudioEquipment && studioSdCardOption?.checked === true;
+      if (transferConfirmation) transferConfirmation.hidden = !usesStudioCards;
+      if (transferAcknowledgment) {
+        transferAcknowledgment.disabled = !usesStudioCards;
+        transferAcknowledgment.required = usesStudioCards;
+        if (!usesStudioCards) transferAcknowledgment.checked = false;
+      }
+    };
+
+    serviceRadios?.forEach((radio) => radio.addEventListener("change", syncRecordingMedia));
+    sdCardRadios?.forEach((radio) => radio.addEventListener("change", syncRecordingMedia));
+    window.addEventListener("pageshow", syncRecordingMedia);
+    syncRecordingMedia();
+
     serviceLinks.forEach((link) => {
       link.addEventListener("click", (event) => {
         event.preventDefault();
@@ -482,7 +577,10 @@ const bookingFaqSchema = {
         const serviceOption = serviceId ? document.querySelector<HTMLElement>(`#service-${serviceId}`) : null;
         const radio = serviceOption?.querySelector<HTMLInputElement>('input[type="radio"]');
 
-        if (radio) radio.checked = true;
+        if (radio) {
+          radio.checked = true;
+          syncRecordingMedia();
+        }
         const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
         serviceOption?.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth", block: "center" });
         radio?.focus({ preventScroll: true });
@@ -520,6 +618,7 @@ const bookingFaqSchema = {
         form.reset();
         setDateMinimum();
         resetStartedAt();
+        syncRecordingMedia();
         resetTurnstile();
         showFeedback(
           result.message || "Your studio request was sent. We’ll reply by email after we review availability.",

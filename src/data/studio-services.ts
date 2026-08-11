@@ -6,7 +6,14 @@ export interface StudioService {
   duration: string;
   price: string;
   requestLabel: string;
+  usesStudioEquipment: boolean;
 }
+
+export const studioSdCardAddOn = {
+  fee: 50,
+  price: "$50",
+  requestLabel: "Water Valley Voice SD cards (+$50)",
+} as const;
 
 export const studioServices: StudioService[] = [
   {
@@ -17,6 +24,7 @@ export const studioServices: StudioService[] = [
     duration: "4 hours",
     price: "$225",
     requestLabel: "Half Day — Studio Only • Bring Your Own Gear (4 hours) • $225",
+    usesStudioEquipment: false,
   },
   {
     id: "full-day-no-gear",
@@ -26,24 +34,27 @@ export const studioServices: StudioService[] = [
     duration: "8 hours",
     price: "$400",
     requestLabel: "Full Day — Studio Only • Bring Your Own Gear (8 hours) • $400",
+    usesStudioEquipment: false,
   },
   {
     id: "half-day-audio-gear",
     eyebrow: "Our audio gear",
     title: "Half Day — Audio Gear Only",
-    description: "Four hours in the studio with access to Water Valley Voice audio recording gear; video gear is not included.",
+    description: "Four hours with access to Water Valley Voice audio gear. Bring compatible SD cards or add studio recording media for $50.",
     duration: "4 hours",
     price: "$350",
     requestLabel: "Half Day — Audio Gear Included (4 hours) • $350",
+    usesStudioEquipment: true,
   },
   {
     id: "full-day-audio-video-gear",
     eyebrow: "Our audio + video gear",
     title: "Full Day — Audio + Video Gear",
-    description: "Eight hours in the studio with access to Water Valley Voice audio and video gear.",
+    description: "Eight hours with access to Water Valley Voice audio and video gear. Bring compatible SD cards or add studio recording media for $50.",
     duration: "8 hours",
     price: "$800",
     requestLabel: "Full Day — Audio + Video Gear Included (8 hours) • $800",
+    usesStudioEquipment: true,
   },
   {
     id: "conference-room",
@@ -53,6 +64,7 @@ export const studioServices: StudioService[] = [
     duration: "2 hours",
     price: "$50",
     requestLabel: "Conference Room for 2 hours • $50",
+    usesStudioEquipment: false,
   },
 ];
 

@@ -1,4 +1,4 @@
-import { studioServiceById } from "../../src/data/studio-services";
+import { studioSdCardAddOn, studioServiceById } from "../../src/data/studio-services";
 
 interface StudioMailerBinding {
   fetch(input: Request | string, init?: RequestInit): Promise<Response>;
@@ -32,6 +32,8 @@ const TURNSTILE_ACTION = "studio_request";
 
 const expectedFields = new Set([
   "service",
+  "recordingMedia",
+  "transferAcknowledgment",
   "date",
   "time",
   "name",
@@ -239,6 +241,42 @@ export const onRequest = async ({ request, env }: PagesContext): Promise<Respons
   const service = serviceId ? studioServiceById.get(serviceId) : undefined;
   if (!service || !serviceId || serviceId.length > 40) return failure("Please choose a valid studio service.");
 
+  const recordingMediaValue = singleString(formData, "recordingMedia", false);
+  const transferAcknowledgmentValue = singleString(formData, "transferAcknowledgment", false);
+  if (recordingMediaValue === null || transferAcknowledgmentValue === null) {
+    return failure("Please choose a valid recording-media option.");
+  }
+
+  const recordingMedia = recordingMediaValue || "";
+  const transferAcknowledgment = transferAcknowledgmentValue || "";
+  let requestServiceLabel = service.requestLabel;
+
+  if (service.usesStudioEquipment) {
+    if (recordingMedia !== "customer-sd-cards" && recordingMedia !== "studio-sd-cards") {
+      return failure("Please choose whether you will bring SD cards or use the studio’s cards.");
+    }
+
+    if (recordingMedia === "studio-sd-cards") {
+      if (transferAcknowledgment !== "acknowledged") {
+        return failure("Please confirm that you understand the media-transfer requirement.");
+      }
+
+      requestServiceLabel = `${service.requestLabel} • ${studioSdCardAddOn.requestLabel} • Transfer responsibility acknowledged`;
+    } else {
+      if (transferAcknowledgment !== "") {
+        return failure("The media-transfer acknowledgment does not apply to customer-provided SD cards.");
+      }
+
+      requestServiceLabel = `${service.requestLabel} • Customer-provided SD cards (no added fee)`;
+    }
+  } else if (recordingMedia !== "" || transferAcknowledgment !== "") {
+    return failure("Recording-media options are only available with a studio equipment package.");
+  }
+
+  if (requestServiceLabel.length > 180) {
+    return failure("We could not prepare this studio request. Please refresh the page and try again.", 500);
+  }
+
   const date = singleString(formData, "date");
   if (!date || date.length !== 10 || !isValidCalendarDate(date) || date < getDenverToday()) {
     return failure("Please choose a valid future date.");
@@ -311,7 +349,7 @@ export const onRequest = async ({ request, env }: PagesContext): Promise<Respons
       requestId,
       submittedAt: new Date().toISOString(),
       serviceId: service.id,
-      serviceLabel: service.requestLabel,
+      serviceLabel: requestServiceLabel,
       date,
       time,
       name,
