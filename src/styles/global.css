@@ -1550,6 +1550,103 @@ footer {
   color: var(--gold-light);
 }
 
+.studio-capabilities {
+  padding-top: 0;
+  padding-bottom: 122px;
+}
+
+.studio-capabilities-heading {
+  max-width: 830px;
+  margin-bottom: 48px;
+}
+
+.studio-capabilities-heading h2 {
+  margin-bottom: 22px;
+  font-size: clamp(48px, 5vw, 68px);
+}
+
+.studio-capabilities-heading h2 em {
+  color: var(--gold-deep);
+}
+
+.studio-capabilities-heading > p:not(.eyebrow) {
+  max-width: 68ch;
+  margin: 0;
+  color: var(--slate);
+  font-size: 13px;
+  line-height: 1.85;
+}
+
+.studio-capability-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid var(--line);
+  border-left: 1px solid var(--line);
+}
+
+.studio-capability-grid article {
+  min-height: 245px;
+  padding: 28px 25px;
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: var(--white);
+}
+
+.studio-capability-grid article > span {
+  color: var(--gold-dark);
+  font: 500 22px/1 var(--serif);
+}
+
+.studio-capability-grid h3 {
+  margin: 42px 0 13px;
+  font-size: 27px;
+}
+
+.studio-capability-grid p {
+  margin: 0;
+  color: var(--slate);
+  font-size: 11px;
+  line-height: 1.75;
+}
+
+.studio-media-guide {
+  padding: 35px 38px;
+  display: grid;
+  grid-template-columns: 0.72fr 1.28fr;
+  gap: clamp(45px, 7vw, 90px);
+  background:
+    linear-gradient(135deg, rgba(201, 163, 79, 0.1), transparent 42%),
+    var(--black);
+  color: var(--white);
+}
+
+.studio-media-guide h3 {
+  color: var(--white);
+  font-size: clamp(36px, 4vw, 48px);
+}
+
+.studio-media-guide-items {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px 34px;
+}
+
+.studio-media-guide-items p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 11px;
+  line-height: 1.72;
+}
+
+.studio-media-guide-items strong {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--gold-light);
+  font-size: 8px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
 .booking-faq {
   padding-top: 8px;
   padding-bottom: 118px;
@@ -2126,6 +2223,10 @@ footer {
     min-height: 300px;
   }
 
+  .studio-capability-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
   .booking-form-layout {
     grid-template-columns: 0.72fr 1.28fr;
     gap: 45px;
@@ -2462,6 +2563,38 @@ footer {
   .package-card:last-child {
     min-height: 340px;
     grid-column: auto;
+  }
+
+  .studio-capabilities {
+    padding-bottom: 84px;
+  }
+
+  .studio-capabilities-heading {
+    margin-bottom: 36px;
+  }
+
+  .studio-capability-grid,
+  .studio-media-guide,
+  .studio-media-guide-items {
+    grid-template-columns: 1fr;
+  }
+
+  .studio-capability-grid article {
+    min-height: auto;
+    padding: 27px 24px 30px;
+  }
+
+  .studio-capability-grid h3 {
+    margin-top: 24px;
+  }
+
+  .studio-media-guide {
+    padding: 31px 24px 35px;
+    gap: 30px;
+  }
+
+  .studio-media-guide-items {
+    gap: 20px;
   }
 
   .booking-faq {

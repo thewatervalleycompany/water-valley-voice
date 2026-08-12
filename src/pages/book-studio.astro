@@ -17,7 +17,7 @@ const studioSchema = {
   name: "Water Valley Voice Podcast Studio",
   url: studioURL,
   description:
-    "Podcast studio and conference room rentals with studio-only, audio, and audio-video equipment options in Windsor, Colorado.",
+    "Podcast studio and conference room rentals with Canon and Sony cameras, TASCAM 32-bit audio, Shure microphones, lighting, and flexible set options in Windsor, Colorado.",
   image: new URL("/media/images/wvv-podcast-studio-web.jpg", Astro.site).toString(),
   email: "studio@watervalleyvoice.com",
   priceRange: "$50–$850",
@@ -54,12 +54,22 @@ const bookingFaqs = [
   {
     question: "What is included with the gear packages?",
     answer:
-      "The half-day audio package includes access to Water Valley Voice audio recording gear. The full-day audio and video package includes access to our audio and video gear. Equipment details are confirmed with your booking.",
+      "The half-day audio package includes a TASCAM FR-AV4 32-bit float recorder and two Shure SM7dB microphones. The full-day audio and video package adds a Canon EOS C50, Sony α7 IV, and studio lighting. Final equipment availability and setup details are confirmed with your booking.",
   },
   {
-    question: "Do I need to bring SD cards?",
+    question: "Which recording cards should I bring?",
     answer:
-      "Yes. If you use Water Valley Voice equipment, bring compatible SD cards; we will confirm the required card types and quantities with your booking. Studio SD cards are available for an additional $50, but the cards remain with the studio, so you must bring a working way to transfer your files before the session ends.",
+      "Audio recording can use compatible full-size SD, SDHC, or SDXC media and does not require a V30 or V90 video rating. For standard video, bring V30 UHS-I media or better; we use SanDisk Extreme PRO V30 cards rated up to about 200 MB/s read. For higher-data-rate recording, V90 UHS-II media is the better choice; we use OWC Atlas Ultra V90 cards rated up to about 300 MB/s read. The Canon EOS C50’s RAW and highest-data-rate modes require compatible CFexpress Type B media—Canon specifies VPG400 media for applicable modes—and our SanDisk Extreme PRO Type B card is rated up to 1,700 MB/s read and 1,200 MB/s write. The Sony α7 IV uses CFexpress Type A—not Type B—and some demanding modes require VPG200 media. We will confirm the card type, speed class, capacity, and quantity for your planned recording mode before the session.",
+  },
+  {
+    question: "Can I use Water Valley Voice recording cards?",
+    answer:
+      "Yes. Studio recording media is available for an additional $50. The cards remain with the studio, so bring a working card reader or adapter, required cables, and your own computer, hard drive, or SSD with enough available space to copy the recordings before your session ends. Without a transfer solution, you will leave without a copy of the recorded media.",
+  },
+  {
+    question: "Can I customize the studio background and set?",
+    answer:
+      "Yes. The background television can display your logo, artwork, presentation, or another visual you provide. By prior arrangement, the wall-mounted acoustic panels may also be temporarily removed and replaced with client-provided set pieces. Tell us in advance so we can confirm setup and restoration time, as well as how the change may affect the room’s acoustics.",
   },
   {
     question: "Is editing included?",
@@ -94,7 +104,7 @@ const bookingFaqSchema = {
 
 <BaseLayout
   title="Podcast Studio Rental in Windsor, CO | Water Valley Voice"
-  description="Book the Water Valley Voice podcast studio or conference room in Windsor, Colorado. Bring your own gear or choose an audio or audio-video equipment package."
+  description="Rent a Windsor podcast studio with Canon and Sony cameras, TASCAM 32-bit audio, Shure microphones, lighting, and flexible set options."
   canonical={studioURL}
   socialImageAlt="Water Valley Voice podcast studio in Windsor, Colorado"
   jsonLd={[studioSchema, bookingFaqSchema]}
@@ -162,6 +172,52 @@ const bookingFaqSchema = {
           </article>
         ))}
       </div>
+    </section>
+
+    <section class="studio-capabilities section" aria-labelledby="studio-capabilities-title">
+      <div class="studio-capabilities-heading">
+        <p class="eyebrow eyebrow-dark"><span></span> What’s in the room</p>
+        <h2 id="studio-capabilities-title">Production-ready.<br /><em>Set-flexible.</em></h2>
+        <p>
+          Build your session around a polished two-camera, 32-bit float audio setup—or bring your own equipment and use the room as your production canvas.
+        </p>
+      </div>
+
+      <div class="studio-capability-grid">
+        <article>
+          <span>01</span>
+          <h3>Camera + lighting</h3>
+          <p>Canon EOS C50 and Sony α7 IV cameras, supported by studio lighting for a refined two-camera production.</p>
+        </article>
+        <article>
+          <span>02</span>
+          <h3>Broadcast audio</h3>
+          <p>A TASCAM FR-AV4 32-bit float recorder and two Shure SM7dB microphones for clear, professional dialogue.</p>
+        </article>
+        <article>
+          <span>03</span>
+          <h3>Your visual identity</h3>
+          <p>Display your own logo, artwork, or presentation on the background TV to make the studio feel like your show.</p>
+        </article>
+        <article>
+          <span>04</span>
+          <h3>A configurable set</h3>
+          <p>With advance approval, the wall-mounted acoustic panels can be removed and replaced with your own temporary set elements.</p>
+        </article>
+      </div>
+
+      <aside class="studio-media-guide" aria-labelledby="studio-media-guide-title">
+        <div>
+          <p class="eyebrow eyebrow-gold"><span></span> Bring the right media</p>
+          <h3 id="studio-media-guide-title">Card guidance.</h3>
+        </div>
+        <div class="studio-media-guide-items">
+          <p><strong>Audio</strong>Compatible full-size SD, SDHC, or SDXC media. No V30 or V90 video rating is required.</p>
+          <p><strong>Video — preferred</strong>V30 UHS-I rated up to about 200 MB/s; V90 UHS-II rated up to about 300 MB/s is better for demanding formats.</p>
+          <p><strong>Full camera capabilities</strong>Canon: compatible CFexpress Type B, with VPG400 specified for applicable EOS C50 modes. Sony: CFexpress Type A; demanding modes may require VPG200.</p>
+          <p><strong>What we use</strong>SanDisk Extreme PRO V30, OWC Atlas Ultra V90, and SanDisk Extreme PRO CFexpress.</p>
+        </div>
+      </aside>
     </section>
 
     <section class="booking-faq section" aria-labelledby="booking-faq-title">
@@ -240,7 +296,7 @@ const bookingFaqSchema = {
           <fieldset id="recording-media-fieldset" class="details-fieldset recording-media-fieldset" hidden>
             <legend>Recording media <span aria-hidden="true">*</span></legend>
             <p id="recording-media-help" class="recording-media-help">
-              When using Water Valley Voice equipment, bring compatible SD cards or select our {studioSdCardAddOn.price} recording-media add-on. We’ll confirm the required card types and quantities with your booking.
+              When using Water Valley Voice equipment, bring compatible recording cards or select our {studioSdCardAddOn.price} recording-media add-on. Audio can use any compatible SD card. We’ll confirm the video card type and quantity required for your planned recording mode.
             </p>
             <div class="service-options recording-media-options">
               <label class="service-option">
