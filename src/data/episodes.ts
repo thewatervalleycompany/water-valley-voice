@@ -82,13 +82,13 @@ export const episodes: Episode[] = [
     part: "Part 3",
     label: "Episode 1 · Part 3",
     kicker: "Family, hospitality, and community",
-    title: "Family, Fairways & Flavor: Inside Windsor’s Grainhouse, Sandbar and Ted’s",
-    seoTitle: "E1 Part 3: Grainhouse, Sandbar & Ted’s | Water Valley Voice",
+    title: "Family, Fairways & Flavor: Inside Windsor’s Grainhouse, Sandbar, Ted’s, and the Lodge",
+    seoTitle: "Grainhouse, Sandbar, Ted’s & Lodge | Water Valley Voice",
     teaser:
       "Go behind the menus to meet the people who make Water Valley’s restaurants feel like home—and hear how grit, chance, and community shaped each place.",
     metaDescription:
       "Meet the people behind Windsor’s Grainhouse, Sandbar, Ted’s Backyard, and the Lodge and hear how food, family, and community shape Water Valley hospitality.",
-    playerTitle: "E1 Part3: Family, Fareways & Flavor: Inside Windsor’s Grainhouse, Sandbar and Ted’s",
+    playerTitle: "E1 Part3: Family, Fairways & Flavor: Inside Windsor’s Grainhouse, Sandbar, Ted’s, and the Lodge",
     playerSrc:
       "https://www.podbean.com/player-v2/?i=46vsa-1b221ba-pb&from=pb6admin&pbad=0&share=1&download=1&rtl=0&fonts=Arial&skin=f6f6f6&font-color=auto&logo_link=episode_page&btn-skin=8bbb4e",
     publishedDate: "2026-07-29",
