@@ -2,7 +2,12 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteHeader from "../components/SiteHeader.astro";
+import { studioRentalsEnabled } from "../config/features";
 import { studioSdCardAddOn, studioServices } from "../data/studio-services";
+
+if (!studioRentalsEnabled) {
+  return Astro.redirect("/", 302);
+}
 
 const serviceOptions = studioServices;
 const turnstileSiteKey =

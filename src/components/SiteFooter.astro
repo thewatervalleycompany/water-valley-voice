@@ -1,4 +1,6 @@
 ---
+import { studioRentalsEnabled } from "../config/features";
+
 const contactHref = "mailto:contact@watervalleyvoice.com?subject=Water%20Valley%20Voice%20Inquiry";
 
 const footerSocials = [
@@ -22,7 +24,7 @@ const footerSocials = [
       <p>Explore</p>
       <a href="/episodes">Episodes</a>
       <a href="/about">About</a>
-      <a href="/book-studio">Rent the studio</a>
+      {studioRentalsEnabled && <a href="/book-studio">Rent the studio</a>}
       <div class="footer-socials">
         {footerSocials.map((social) => (
           <a href={social.href} target="_blank" rel="noopener noreferrer">{social.name}</a>

@@ -1,4 +1,6 @@
 ---
+import { studioRentalsEnabled } from "../config/features";
+
 interface Props {
   currentPage?: "home" | "episodes" | "about" | "booking";
 }
@@ -26,9 +28,11 @@ const { currentPage = "home" } = Astro.props;
     <nav id="primary-navigation" class="primary-nav" aria-label="Primary navigation">
       <a href="/episodes" aria-current={currentPage === "episodes" ? "page" : undefined}>Episodes</a>
       <a href="/#watch">Watch</a>
-      <a href="/#studio">Our studio</a>
+      {studioRentalsEnabled && <a href="/#studio">Our studio</a>}
       <a href="/about" aria-current={currentPage === "about" ? "page" : undefined}>About</a>
-      <a href="/book-studio" aria-current={currentPage === "booking" ? "page" : undefined}>Rent the studio</a>
+      {studioRentalsEnabled && (
+        <a href="/book-studio" aria-current={currentPage === "booking" ? "page" : undefined}>Rent the studio</a>
+      )}
       <a class="nav-cta" href="/#contact">Contact</a>
     </nav>
   </div>

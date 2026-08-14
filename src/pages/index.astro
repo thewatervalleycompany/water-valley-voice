@@ -2,6 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteHeader from "../components/SiteHeader.astro";
+import { studioRentalsEnabled } from "../config/features";
 import { episodePath, latestEpisode } from "../data/episodes";
 
 const socials = [
@@ -134,32 +135,34 @@ const [featuredTitle, featuredSubtitle] = latestEpisode.title.split(": ");
       </div>
     </section>
 
-    <section id="studio" class="studio-section">
-      <div class="studio-photo">
-        <img
-          src="/media/images/wvv-podcast-studio-web.jpg"
-          srcset="/media/images/wvv-podcast-studio-900.jpg 900w, /media/images/wvv-podcast-studio-web.jpg 1800w"
-          sizes="(max-width: 760px) 100vw, 50vw"
-          alt="The Water Valley Voice recording studio with microphones and a custom live-edge table"
-          width="1800"
-          height="1200"
-          loading="lazy"
-        />
-        <span>Water Valley Voice Studio</span>
-      </div>
-      <div class="studio-copy">
-        <p class="eyebrow eyebrow-gold"><span></span> Record with us</p>
-        <h2>Built for your next<br /><em>production.</em></h2>
-        <p>
-          Bring your own gear or reserve our Canon and Sony cameras, TASCAM 32-bit audio rig, Shure microphones, and studio lighting. Customize the background display—and, by prior arrangement, the removable acoustic-panel set—to match your production.
-        </p>
-        <a class="button button-gold studio-book-button" href="/book-studio">View studio packages <span aria-hidden="true">→</span></a>
-        <address>
-          <span>1625 Pelican Lakes Point, Suite 201</span>
-          <span>Windsor, CO 80550</span>
-        </address>
-      </div>
-    </section>
+    {studioRentalsEnabled && (
+      <section id="studio" class="studio-section">
+        <div class="studio-photo">
+          <img
+            src="/media/images/wvv-podcast-studio-web.jpg"
+            srcset="/media/images/wvv-podcast-studio-900.jpg 900w, /media/images/wvv-podcast-studio-web.jpg 1800w"
+            sizes="(max-width: 760px) 100vw, 50vw"
+            alt="The Water Valley Voice recording studio with microphones and a custom live-edge table"
+            width="1800"
+            height="1200"
+            loading="lazy"
+          />
+          <span>Water Valley Voice Studio</span>
+        </div>
+        <div class="studio-copy">
+          <p class="eyebrow eyebrow-gold"><span></span> Record with us</p>
+          <h2>Built for your next<br /><em>production.</em></h2>
+          <p>
+            Bring your own gear or reserve our Canon and Sony cameras, TASCAM 32-bit audio rig, Shure microphones, and studio lighting. Customize the background display—and, by prior arrangement, the removable acoustic-panel set—to match your production.
+          </p>
+          <a class="button button-gold studio-book-button" href="/book-studio">View studio packages <span aria-hidden="true">→</span></a>
+          <address>
+            <span>1625 Pelican Lakes Point, Suite 201</span>
+            <span>Windsor, CO 80550</span>
+          </address>
+        </div>
+      </section>
+    )}
 
     <section id="contact" class="contact-section">
       <div class="contact-ornament" aria-hidden="true">V</div>

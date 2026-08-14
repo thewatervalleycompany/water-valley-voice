@@ -1,3 +1,4 @@
+import { studioRentalsEnabled } from "../../src/config/features";
 import { studioSdCardAddOn, studioServiceById } from "../../src/data/studio-services";
 
 interface StudioMailerBinding {
@@ -182,6 +183,10 @@ async function verifyTurnstile(
 }
 
 export const onRequest = async ({ request, env }: PagesContext): Promise<Response> => {
+  if (!studioRentalsEnabled) {
+    return failure("Studio requests are not currently available.", 404);
+  }
+
   if (request.method !== "POST") {
     return jsonResponse({ success: false, message: "Method not allowed." }, 405);
   }
