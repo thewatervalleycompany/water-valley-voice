@@ -105,6 +105,35 @@ export const episodes: Episode[] = [
       "Against the backdrop of COVID’s shakeups and rapid neighborhood growth, these leaders sketch plans for the future—more music, events, weddings, and a continued focus on authentic, scratch-made food. Whether it’s the novelty of a grain bin restaurant or the simple joy of baby ducklings beside your table, this episode invites listeners to meet the people behind the places and to feel the pulse of a community being shaped, one meal and one story at a time.",
     ],
   },
+  {
+    slug: "episode-2",
+    number: "02",
+    label: "Episode 2",
+    kicker: "A city-scale vision",
+    title: "Let's Talk About Cascadia",
+    seoTitle: "Episode 2: Let's Talk About Cascadia | Water Valley Voice",
+    teaser:
+      "Martin Lind reveals how Cascadia grew from a city request into a bold Greeley vision shaped by water, entertainment, hockey, and generational opportunity.",
+    metaDescription:
+      "Hear Martin Lind trace Cascadia from a bold Greeley request to a water-centered entertainment district shaped by hockey, public debate, and civic ambition.",
+    playerTitle: "E2: Let's Talk About Cascadia",
+    playerSrc:
+      "https://www.podbean.com/player-v2/?i=pr4zy-1b3ec46-pb&from=pb6admin&pbad=0&share=1&download=1&rtl=0&fonts=Arial&skin=f6f6f6&font-color=auto&logo_link=episode_page&btn-skin=8bbb4e",
+    publishedDate: "2026-08-21",
+    duration: "PT51M17S",
+    durationLabel: "51 min 17 sec",
+    guests: ["Martin Lind"],
+    podbeanUrl: "https://watervalleyvoice.podbean.com/e/episode-2/",
+    audioUrl: "https://mcdn.podbean.com/mf/web/48s9a27b88vnyrt3/Episode_2.mp3",
+    description: [
+      "Welcome to an intimate, behind-the-scenes episode where a daughter sits down with her father, developer Martin Lind, to tell the story of Cascadia — a project that began as a curious city request and grew into an audacious plan to remake a city’s front door. The conversation drifts from quiet memory to city-scale imagination: a 90‑year‑old grandfather’s recollections of headgates and ditches, an aerial pattern of blue ponds that looked like arteries, and one simple phrase — Cascadia — born the moment the team imagined water cascading through the prairie.",
+      "We follow the arc of an idea into reality: Greeley’s leaders showed up with a bold mandate to change perceptions, and Martin and his team answered by painting the greenfield canvas with water, plazas, and an entertainment district anchored by a new arena for the Colorado Eagles. The episode reveals the mechanics behind big developments — land planners and land purchases, inventive financing through a general improvement district, the unusual gift of a hotel to seed the project’s economics, and the lawyered-up collisions that followed when an idea collided with public fear and social media heat.",
+      "It’s not just concrete and covenants. The narrative tightens around human stakes: the pride of building where you live; the risky wager of committing a 40‑year lease to a minor-league hockey club; the gutting controversy of petitions, lawsuits and dark‑money campaigns; and the developer’s quiet insistence that this can be an engine of jobs, tourism, and renewed civic identity. Martin describes how a carefully designed plaza, water show ponds, and an amphitheater could one day host 16,000‑person gatherings — but only after years of financing, zoning fights, and community conversations.",
+      "Surprising anchors emerge: a licensed Mattel water park that promises interactive Hot Wheels runs and Barbie neighborhoods; Oak View Group’s entertainment activation; and three new sheets of ice to feed a youth hockey culture Martin insists will produce future players, community leaders, and scholarship opportunities for kids who can’t otherwise afford the sport. Raw emotion breaks through as Martin remembers the underprivileged kids he once was, and the team’s desire to build scholarships and access into the plan.",
+      "By episode’s end you’re not just armed with facts about capacity numbers, traffic fixes, or funding mechanisms — you’ve been walked through the risks and rewards, the personal ties and public fights, and a vision of an opening day that feels cinematic: kids running through fountains, the Eagles’ puck drop, families in themed hotel rooms, and a plaza alive with music and joy. This is the story of building for a generation: a place meant to keep dollars and dreams closer to home and to turn a barren highway boundary into a living, laughing civic heart.",
+      "Whether you come for the controversy, the engineering of water, the hockey, or the wonder of a Mattel-branded waterpark, the episode invites listeners into a living narrative — equal parts business strategy, family memory, and civic hope — and asks what it takes to remake a place people will be proud to call their own.",
+    ],
+  },
 ];
 
 export const latestEpisode = episodes.at(-1)!;

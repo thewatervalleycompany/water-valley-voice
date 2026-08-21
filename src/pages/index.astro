@@ -24,7 +24,9 @@ const socials = [
 ];
 
 const contactHref = "mailto:contact@watervalleyvoice.com?subject=Water%20Valley%20Voice%20Inquiry";
-const [featuredTitle, featuredSubtitle] = latestEpisode.title.split(": ");
+const featuredTitleParts = latestEpisode.title.split(": ");
+const featuredTitle = featuredTitleParts.shift()!;
+const featuredSubtitle = featuredTitleParts.length > 0 ? featuredTitleParts.join(": ") : latestEpisode.teaser;
 ---
 
 <BaseLayout
@@ -88,7 +90,7 @@ const [featuredTitle, featuredSubtitle] = latestEpisode.title.split(": ");
           <span>Episode</span>
           <strong>{latestEpisode.number}</strong>
           <i></i>
-          <small>{latestEpisode.part}</small>
+          {latestEpisode.part && <small>{latestEpisode.part}</small>}
         </div>
         <div class="episode-details">
           <p class="episode-kicker">Featured conversation</p>

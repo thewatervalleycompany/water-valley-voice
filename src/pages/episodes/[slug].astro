@@ -36,7 +36,9 @@ const episodeSchema = {
   description: episode.metaDescription,
   url: canonicalURL,
   mainEntityOfPage: canonicalURL,
-  episodeNumber: episode.part ? `1 ${episode.part}` : "1",
+  episodeNumber: episode.part
+    ? `${Number.parseInt(episode.number, 10)} ${episode.part}`
+    : Number.parseInt(episode.number, 10),
   datePublished: episode.publishedDate,
   timeRequired: episode.duration,
   image: new URL("/og.png", Astro.site).toString(),
@@ -128,7 +130,7 @@ const breadcrumbSchema = {
           <span>Water Valley Voice</span>
           <strong>{episode.number}</strong>
           <i></i>
-          <small>{episode.part ?? "The origin story"}</small>
+          <small>{episode.part ?? episode.kicker}</small>
           <img src="/media/images/wvv-mic-mark-480.jpg" alt="" width="480" height="480" />
         </div>
       </div>
