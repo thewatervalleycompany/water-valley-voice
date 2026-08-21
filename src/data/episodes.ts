@@ -16,6 +16,9 @@ export interface Episode {
   guests: string[];
   podbeanUrl: string;
   audioUrl: string;
+  youtubeVideoId?: string;
+  youtubeUrl?: string;
+  youtubeUploadDate?: string;
   description: string[];
 }
 
@@ -40,6 +43,9 @@ export const episodes: Episode[] = [
     guests: ["Martin Lind"],
     podbeanUrl: "https://watervalleyvoice.podbean.com/e/watervalleyvoice-e1-p1-audio/",
     audioUrl: "https://mcdn.podbean.com/mf/web/defsfpcd7zqrep8u/E1_p1_V3.mp3",
+    youtubeVideoId: "5gq0khCy5lU",
+    youtubeUrl: "https://www.youtube.com/watch?v=5gq0khCy5lU",
+    youtubeUploadDate: "2026-06-26T12:57:39-07:00",
     description: [
       "Imagine driving by a stretch of empty fields and gravel pits and seeing not a problem, but a promise. In this episode, Marissa sits down with her father, Martin Lind, and we move through time—from a dusty auction day when a young farmer ran out of luck to the stubborn, joyful building of an entire valley of water, homes, and community. Martin tells the story in his own voice: the risk of going broke, the odd partnerships, the relentless belief that those ugly mining holes could become shimmering lakes.",
       "You’ll hear the gritty details—how a chance transaction with Kodak and an aggressive market created the urgency to mine millions of yards of earth, how a $65,000 waterfront lot that once seemed impossible sold and became worth millions, and how the team learned to sculpt lakes so they looked like nature had carved them ages ago. This is a tale about engineering and tenacity: the flood that ripped through a fairway before the grass had grown, and the 2013 Front Range catastrophe that washed out entire towns but left Water Valley untouched because of foresight and tireless civil work.",
@@ -70,6 +76,9 @@ export const episodes: Episode[] = [
     guests: ["Mandy Oberholzer", "Chris Williamson", "Kurt Hinkle", "Ryan Bach"],
     podbeanUrl: "https://watervalleyvoice.podbean.com/e/episode1_part2/",
     audioUrl: "https://mcdn.podbean.com/mf/web/6ic9uxtnfvfhewzh/E1_p2.mp3",
+    youtubeVideoId: "AzwDZaRUBvc",
+    youtubeUrl: "https://www.youtube.com/watch?v=AzwDZaRUBvc",
+    youtubeUploadDate: "2026-07-13T16:52:13-07:00",
     description: [
       "In this episode of Water Valley Voice, host Marissa Donahoo sits down with several of the people whose stories and careers have helped shape the Water Valley Company and the Northern Colorado community.",
       "Mandy Oberholzer shares her journey from South Africa to Colorado and discusses her evolving role creating unforgettable events, hospitality offerings, and the new Signature Experience. PGA Director of Golf Chris Williamson explores what makes RainDance National, Pelican Lakes, and The Falls unique while sharing his vision for the future of golf at Water Valley. Kurt Hinkle reflects on his Windsor roots and his path from journalism and marketing to membership and tournament sales. Colorado Eagles President Ryan Bach recounts his remarkable evolution from the team’s inaugural goaltender to a leader responsible for building a successful organization and world-class fan experience.",
@@ -97,6 +106,9 @@ export const episodes: Episode[] = [
     guests: ["Jesse Wilson", "Shane Stringer", "Wyatt", "Taylor"],
     podbeanUrl: "https://watervalleyvoice.podbean.com/e/e1p3/",
     audioUrl: "https://mcdn.podbean.com/mf/web/m54qqu6ewra6z6pe/E1_p3_edited_85ln7.mp3",
+    youtubeVideoId: "cv0MlUHjU0Q",
+    youtubeUrl: "https://www.youtube.com/watch?v=cv0MlUHjU0Q",
+    youtubeUploadDate: "2026-07-29T14:30:39-07:00",
     description: [
       "Step into Water Valley through the voices of the people who make its restaurants hum. In this episode, we move beyond menus and into stories: Jesse Wilson welcomes guests into the Grainhouse with a proud, kid-friendly roar; Shane Stringer reflects on the Sandbar’s convertible energy—golf carts-as-booths, simulators and long-time staff; Wyatt walks us through the rebirth of Ted’s Backyard as the neighborhood’s go-to family grill; and Taylor, at only 26, reveals the Lodge’s gentle balance of fine dining and casual, sunset-lit moments. Each leader traces a path shaped by grit, chance and community.",
       "Listen as Jesse remembers starting as a dishwasher at 14 and building a place where every table looks like a family reunion. Hear the small, startling moments—a friend offering a job on the golf course, a grain bin turned restaurant—and how those chances turned into a Grain House that grew $600,000 in its first year and is on track for $1 million. Then meet Shane, whose 25 years in service whisper through the Sandbar’s remodels and long-tenured staff; his stories reveal why the bar feels like coming home and why winter is his next challenge to conquer.",

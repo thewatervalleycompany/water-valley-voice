@@ -23,6 +23,28 @@ export const getStaticPaths = (() =>
 
 const { episode, previousEpisode, nextEpisode } = Astro.props;
 const canonicalURL = new URL(`${episodePath(episode)}/`, Astro.site).toString();
+const youtubeEmbedUrl = episode.youtubeVideoId
+  ? `https://www.youtube-nocookie.com/embed/${episode.youtubeVideoId}?rel=0`
+  : undefined;
+const episodeSchemaId = `${canonicalURL}#podcast-episode`;
+const videoSchema =
+  episode.youtubeVideoId && episode.youtubeUrl && episode.youtubeUploadDate && youtubeEmbedUrl
+    ? {
+        "@context": "https://schema.org",
+        "@type": "VideoObject",
+        "@id": `${canonicalURL}#video`,
+        name: episode.playerTitle,
+        description: episode.metaDescription,
+        url: episode.youtubeUrl,
+        embedUrl: youtubeEmbedUrl,
+        thumbnailUrl: `https://i.ytimg.com/vi/${episode.youtubeVideoId}/hqdefault.jpg`,
+        uploadDate: episode.youtubeUploadDate,
+        inLanguage: "en-US",
+        isPartOf: {
+          "@id": episodeSchemaId,
+        },
+      }
+    : undefined;
 const publishedDateLabel = new Intl.DateTimeFormat("en-US", {
   month: "long",
   day: "numeric",
@@ -32,6 +54,7 @@ const publishedDateLabel = new Intl.DateTimeFormat("en-US", {
 const episodeSchema = {
   "@context": "https://schema.org",
   "@type": "PodcastEpisode",
+  "@id": episodeSchemaId,
   name: episode.title,
   description: episode.metaDescription,
   url: canonicalURL,
@@ -57,14 +80,24 @@ const episodeSchema = {
     url: new URL("/", Astro.site).toString(),
     webFeed: "https://feed.podbean.com/watervalleyvoice/feed.xml",
   },
-  associatedMedia: {
-    "@type": "AudioObject",
-    name: episode.playerTitle,
-    embedUrl: episode.playerSrc,
-    contentUrl: episode.audioUrl,
-    duration: episode.duration,
-    encodingFormat: "audio/mpeg",
-  },
+  associatedMedia: [
+    {
+      "@type": "AudioObject",
+      name: episode.playerTitle,
+      embedUrl: episode.playerSrc,
+      contentUrl: episode.audioUrl,
+      duration: episode.duration,
+      encodingFormat: "audio/mpeg",
+    },
+    ...(videoSchema
+      ? [
+          {
+            "@type": "VideoObject",
+            "@id": videoSchema["@id"],
+          },
+        ]
+      : []),
+  ],
 };
 const breadcrumbSchema = {
   "@context": "https://schema.org",
@@ -98,7 +131,7 @@ const breadcrumbSchema = {
   canonical={canonicalURL}
   socialImageAlt={`Water Valley Voice podcast — ${episode.title}`}
   ogType="article"
-  jsonLd={[episodeSchema, breadcrumbSchema]}
+  jsonLd={[episodeSchema, ...(videoSchema ? [videoSchema] : []), breadcrumbSchema]}
 >
   <SiteHeader currentPage="episodes" />
 
@@ -138,16 +171,55 @@ const breadcrumbSchema = {
 
     <section class="section episode-detail-content">
       <div class="episode-detail-main">
-        <div class="podbean-player episode-detail-player">
-          <iframe
-            title={episode.playerTitle}
-            height="150"
-            width="100%"
-            src={episode.playerSrc}
-            loading="lazy"
-            allowtransparency="true"
-            data-name="pb-iframe-player"
-          ></iframe>
+        <div class="episode-media-stack">
+          {youtubeEmbedUrl && episode.youtubeUrl && (
+            <section class="episode-media" aria-labelledby="episode-watch-title">
+              <div class="episode-media-heading">
+                <div>
+                  <p class="eyebrow eyebrow-dark"><span></span> Watch</p>
+                  <h2 id="episode-watch-title">Watch the conversation.</h2>
+                </div>
+                <a class="episode-media-link" href={episode.youtubeUrl} target="_blank" rel="noopener noreferrer">
+                  Open on YouTube <span aria-hidden="true">↗</span>
+                </a>
+              </div>
+              <div class="video-frame episode-video-frame">
+                <iframe
+                  src={youtubeEmbedUrl}
+                  title={`Watch ${episode.playerTitle} on YouTube`}
+                  loading="lazy"
+                  referrerpolicy="strict-origin-when-cross-origin"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen
+                ></iframe>
+              </div>
+            </section>
+          )}
+
+          <section class="episode-media episode-audio" aria-labelledby="episode-listen-title">
+            <div class="episode-media-heading">
+              <div>
+                <p class="eyebrow eyebrow-dark"><span></span> Listen</p>
+                <h2 id="episode-listen-title">
+                  {youtubeEmbedUrl ? "Prefer to listen?" : "Listen to the conversation."}
+                </h2>
+              </div>
+              <a class="episode-media-link" href={episode.podbeanUrl} target="_blank" rel="noopener noreferrer">
+                Open on Podbean <span aria-hidden="true">↗</span>
+              </a>
+            </div>
+            <div class="podbean-player episode-detail-player">
+              <iframe
+                title={episode.playerTitle}
+                height="150"
+                width="100%"
+                src={episode.playerSrc}
+                loading="lazy"
+                allowtransparency="true"
+                data-name="pb-iframe-player"
+              ></iframe>
+            </div>
+          </section>
         </div>
 
         <article class="episode-story" aria-labelledby="episode-story-title">
@@ -180,8 +252,12 @@ const breadcrumbSchema = {
           <a href="https://feed.podbean.com/watervalleyvoice/feed.xml" target="_blank" rel="noopener noreferrer">
             Subscribe with RSS <span aria-hidden="true">↗</span>
           </a>
-          <a href="https://www.youtube.com/playlist?list=PLfOdKEY1vw1g" target="_blank" rel="noopener noreferrer">
-            Watch on YouTube <span aria-hidden="true">↗</span>
+          <a
+            href={episode.youtubeUrl ?? "https://www.youtube.com/playlist?list=PLfOdKEY1vw1g"}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {episode.youtubeUrl ? "Watch this episode on YouTube" : "Watch on YouTube"} <span aria-hidden="true">↗</span>
           </a>
         </div>
       </aside>

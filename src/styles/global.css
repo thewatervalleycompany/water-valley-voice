@@ -2995,6 +2995,60 @@ footer {
   min-width: 0;
 }
 
+.episode-media-stack {
+  display: grid;
+  gap: 56px;
+}
+
+.episode-media {
+  min-width: 0;
+}
+
+.episode-media-heading {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 28px;
+}
+
+.episode-media-heading .eyebrow {
+  margin-bottom: 9px;
+}
+
+.episode-media-heading h2 {
+  margin: 0;
+  font-size: clamp(31px, 3.7vw, 44px);
+  line-height: 1;
+}
+
+.episode-media-link {
+  padding-bottom: 4px;
+  flex: 0 0 auto;
+  color: var(--gold-deep);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.episode-media-link:hover,
+.episode-media-link:focus-visible {
+  color: var(--black);
+}
+
+.episode-media-link:focus-visible {
+  outline: 2px solid var(--gold-dark);
+  outline-offset: 5px;
+}
+
+.episode-video-frame {
+  box-shadow:
+    20px 20px 0 rgba(201, 163, 79, 0.1),
+    0 18px 48px rgba(0, 0, 0, 0.12);
+}
+
 .episode-detail-player {
   margin-top: 0;
   box-shadow: 0 16px 42px rgba(0, 0, 0, 0.08);
@@ -3219,6 +3273,30 @@ footer {
     padding-bottom: 75px;
     grid-template-columns: 1fr;
     gap: 52px;
+  }
+
+  .episode-media-stack {
+    gap: 46px;
+  }
+
+  .episode-media-heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .episode-media-heading h2 {
+    font-size: clamp(31px, 9vw, 40px);
+  }
+
+  .episode-media-link {
+    padding-bottom: 0;
+  }
+
+  .episode-video-frame {
+    box-shadow:
+      10px 10px 0 rgba(201, 163, 79, 0.1),
+      0 14px 36px rgba(0, 0, 0, 0.1);
   }
 
   .episode-story {
