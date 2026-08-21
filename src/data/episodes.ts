@@ -137,6 +137,9 @@ export const episodes: Episode[] = [
     guests: ["Martin Lind"],
     podbeanUrl: "https://watervalleyvoice.podbean.com/e/episode-2/",
     audioUrl: "https://mcdn.podbean.com/mf/web/48s9a27b88vnyrt3/Episode_2.mp3",
+    youtubeVideoId: "_JQR8Ohh1xw",
+    youtubeUrl: "https://www.youtube.com/watch?v=_JQR8Ohh1xw",
+    youtubeUploadDate: "2026-08-21T13:29:08-07:00",
     description: [
       "Welcome to an intimate, behind-the-scenes episode where a daughter sits down with her father, developer Martin Lind, to tell the story of Cascadia — a project that began as a curious city request and grew into an audacious plan to remake a city’s front door. The conversation drifts from quiet memory to city-scale imagination: a 90‑year‑old grandfather’s recollections of headgates and ditches, an aerial pattern of blue ponds that looked like arteries, and one simple phrase — Cascadia — born the moment the team imagined water cascading through the prairie.",
       "We follow the arc of an idea into reality: Greeley’s leaders showed up with a bold mandate to change perceptions, and Martin and his team answered by painting the greenfield canvas with water, plazas, and an entertainment district anchored by a new arena for the Colorado Eagles. The episode reveals the mechanics behind big developments — land planners and land purchases, inventive financing through a general improvement district, the unusual gift of a hotel to seed the project’s economics, and the lawyered-up collisions that followed when an idea collided with public fear and social media heat.",
