@@ -2341,6 +2341,12 @@ footer {
     font-size: clamp(48px, 14vw, 68px);
   }
 
+  .hero-headline-lead {
+    display: inline-block;
+    font-size: clamp(28px, 10.4vw, 68px);
+    white-space: nowrap;
+  }
+
   .hero-headline em {
     font-size: clamp(24px, 9.7vw, 68px);
   }
