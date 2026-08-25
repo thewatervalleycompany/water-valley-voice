@@ -1,7 +1,7 @@
 ---
 import SiteFooter from "../components/SiteFooter.astro";
 import SiteHeader from "../components/SiteHeader.astro";
-import { episodePath, episodes } from "../data/episodes";
+import { episodePath, episodes, latestEpisode } from "../data/episodes";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
 const formatEpisodeDate = (date: string) =>
@@ -11,6 +11,13 @@ const formatEpisodeDate = (date: string) =>
     year: "numeric",
     timeZone: "UTC",
   }).format(new Date(`${date}T12:00:00Z`));
+
+const durationToSeconds = (duration: string) => {
+  const match = duration.match(/^PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?$/);
+  if (!match) return 0;
+
+  return Number(match[1] ?? 0) * 3600 + Number(match[2] ?? 0) * 60 + Number(match[3] ?? 0);
+};
 
 const episodeArchiveSchema = {
   "@context": "https://schema.org",
@@ -40,7 +47,7 @@ const episodeArchiveSchema = {
         <p class="eyebrow eyebrow-gold"><span></span> The complete archive</p>
         <h1>Hear from<br /><em>the source.</em></h1>
         <p>
-          Meet the people, places, and ideas shaping Water Valley, Windsor, and Northern Colorado—one conversation at a time.
+          Experience the heart of The Water Valley Company and their love for Northern Colorado.
         </p>
         <a class="button button-gold" href={`#${episodes[0].slug}`}>
           Start with episode one <span aria-hidden="true">↓</span>
@@ -70,14 +77,82 @@ const episodeArchiveSchema = {
           <p class="eyebrow eyebrow-dark"><span></span> Listen from the beginning</p>
           <h2 id="episode-archive-title">The episodes.</h2>
         </div>
+
+        <details class="episode-jump" id="episode-jump">
+          <summary>
+            <span>Jump to an episode</span>
+            <i aria-hidden="true"></i>
+          </summary>
+          <nav class="episode-jump-menu" aria-label="Jump to an episode">
+            <ul>
+              {episodes.map((episode) => (
+                <li>
+                  <a class="episode-jump-scroll" href={`#${episode.slug}`}>
+                    <span>{episode.label}</span>
+                    <strong>{episode.title}</strong>
+                  </a>
+                  <a
+                    class="episode-jump-page"
+                    href={episodePath(episode)}
+                    aria-label={`Open ${episode.label}: ${episode.title}`}
+                  >
+                    View page <span aria-hidden="true">→</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </details>
       </header>
 
-      <div class="archive-list">
+      <div class="archive-tools" aria-label="Find and order episodes">
+        <div class="archive-search">
+          <label for="episode-search">Search episodes</label>
+          <div class="archive-search-field">
+            <span aria-hidden="true"></span>
+            <input
+              id="episode-search"
+              type="search"
+              inputmode="search"
+              autocomplete="off"
+              placeholder="Search people, places, or topics"
+              aria-describedby="episode-search-help episode-results-status"
+            />
+            <button class="archive-search-clear" type="button" hidden>Clear</button>
+          </div>
+          <p id="episode-search-help">Try a person, place, business, or idea—even if you do not know the episode title.</p>
+        </div>
+
+        <label class="archive-order" for="episode-order">
+          <span>Order by</span>
+          <span class="archive-order-field">
+            <select id="episode-order">
+              <option value="newest">Newest to oldest</option>
+              <option value="oldest" selected>Oldest to newest</option>
+              <option value="longest">Longest to shortest</option>
+              <option value="shortest">Shortest to longest</option>
+            </select>
+            <i aria-hidden="true"></i>
+          </span>
+        </label>
+
+        <p id="episode-results-status" class="archive-results-status" role="status" aria-live="polite">
+          Showing all {episodes.length} episodes
+        </p>
+      </div>
+
+      <div class="archive-list" id="episode-list">
         {episodes.map((episode, index) => (
           <article
             id={episode.slug}
             class="archive-episode"
             aria-labelledby={`episode-title-${episode.slug}`}
+            data-original-index={index}
+            data-published-date={episode.publishedDate}
+            data-duration-seconds={durationToSeconds(episode.duration)}
+            data-search-title={`${episode.label} ${episode.title}`}
+            data-search-topics={episode.topics.join(" ")}
+            data-search-body={`${episode.kicker} ${episode.teaser} ${episode.guests.join(" ")}`}
           >
             <div class="archive-episode-mark" aria-hidden="true">
               <span>{episode.label}</span>
@@ -89,7 +164,7 @@ const episodeArchiveSchema = {
             <div class="archive-episode-content">
               <div class="archive-episode-meta">
                 <p>{episode.kicker}</p>
-                {index === episodes.length - 1 && <span>Latest</span>}
+                {episode.slug === latestEpisode.slug && <span>Latest</span>}
               </div>
               <h3 id={`episode-title-${episode.slug}`}>
                 <a href={episodePath(episode)}>
@@ -123,6 +198,13 @@ const episodeArchiveSchema = {
           </article>
         ))}
       </div>
+
+      <div class="archive-empty" id="episode-empty" hidden>
+        <p class="eyebrow eyebrow-dark"><span></span> No close matches yet</p>
+        <h3>Try another way of saying it.</h3>
+        <p>Search for a guest, place, business, or topic—or clear your search to see every episode.</p>
+        <button class="button button-gold" type="button">Clear search</button>
+      </div>
     </section>
 
     <section class="episode-subscribe">
@@ -145,3 +227,189 @@ const episodeArchiveSchema = {
 
   <SiteFooter />
 </BaseLayout>
+
+<script>
+  const archiveList = document.querySelector<HTMLElement>("#episode-list");
+  const searchInput = document.querySelector<HTMLInputElement>("#episode-search");
+  const clearButton = document.querySelector<HTMLButtonElement>(".archive-search-clear");
+  const emptyState = document.querySelector<HTMLElement>("#episode-empty");
+  const emptyClearButton = emptyState?.querySelector<HTMLButtonElement>("button");
+  const orderSelect = document.querySelector<HTMLSelectElement>("#episode-order");
+  const resultsStatus = document.querySelector<HTMLElement>("#episode-results-status");
+  const jumpMenu = document.querySelector<HTMLDetailsElement>("#episode-jump");
+
+  const cards = archiveList
+    ? Array.from(archiveList.querySelectorAll<HTMLElement>(".archive-episode"))
+    : [];
+
+  const stopWords = new Set([
+    "a", "about", "an", "and", "are", "at", "be", "for", "from", "how", "i", "in", "is", "it", "of",
+    "on", "or", "that", "the", "their", "this", "to", "was", "what", "when", "where", "who", "with",
+  ]);
+
+  const conceptGroups = [
+    ["history", "origin", "founded", "founder", "beginning", "began", "legacy", "past"],
+    ["restaurant", "restaurants", "food", "dining", "eat", "meal", "menu", "hospitality"],
+    ["hockey", "sports", "arena", "eagles", "ice", "player", "players"],
+    ["golf", "course", "fairway", "fairways"],
+    ["development", "developer", "developing", "build", "building", "land", "planning", "project", "projects", "real", "estate"],
+    ["water", "lake", "lakes", "pond", "ponds", "flood", "marina"],
+    ["family", "community", "people", "neighbor", "neighbors", "leadership"],
+    ["business", "businesses", "company", "career", "careers", "job", "jobs", "work"],
+    ["event", "events", "entertainment", "concert", "concerts", "plaza"],
+    ["controversy", "politics", "lawsuit", "petition", "public", "financing"],
+  ];
+
+  const normalize = (value: string) =>
+    value
+      .normalize("NFKD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, " ")
+      .trim();
+
+  const similarity = (left: string, right: string) => {
+    if (left === right) return 1;
+    if (!left.length || !right.length) return 0;
+
+    const previous = Array.from({ length: right.length + 1 }, (_, index) => index);
+    for (let leftIndex = 1; leftIndex <= left.length; leftIndex += 1) {
+      let diagonal = previous[0];
+      previous[0] = leftIndex;
+
+      for (let rightIndex = 1; rightIndex <= right.length; rightIndex += 1) {
+        const above = previous[rightIndex];
+        const cost = left[leftIndex - 1] === right[rightIndex - 1] ? 0 : 1;
+        previous[rightIndex] = Math.min(previous[rightIndex] + 1, previous[rightIndex - 1] + 1, diagonal + cost);
+        diagonal = above;
+      }
+    }
+
+    return 1 - previous[right.length] / Math.max(left.length, right.length);
+  };
+
+  const scoreCard = (card: HTMLElement, rawQuery: string) => {
+    const query = normalize(rawQuery);
+    if (!query) return 1;
+
+    const title = normalize(card.dataset.searchTitle ?? "");
+    const topics = normalize(card.dataset.searchTopics ?? "");
+    const body = normalize(card.dataset.searchBody ?? "");
+    const allText = `${title} ${topics} ${body}`;
+    const episodeWords = Array.from(new Set(allText.split(" ").filter(Boolean)));
+    const queryWords = query.split(" ").filter((word) => word.length > 1 && !stopWords.has(word));
+    const usefulWords = queryWords.length ? queryWords : query.split(" ").filter(Boolean);
+    let score = 0;
+
+    if (title.includes(query)) score += 36;
+    else if (topics.includes(query)) score += 26;
+    else if (body.includes(query)) score += 16;
+
+    usefulWords.forEach((word) => {
+      if (title.split(" ").includes(word)) score += 14;
+      else if (title.includes(word)) score += 10;
+
+      if (topics.split(" ").includes(word)) score += 12;
+      else if (topics.includes(word)) score += 8;
+
+      if (body.includes(word)) score += 5;
+
+      conceptGroups.forEach((group) => {
+        if (!group.includes(word)) return;
+        const relatedMatches = group.filter((relatedWord) => allText.includes(relatedWord)).length;
+        score += Math.min(relatedMatches * 2, 8);
+      });
+
+      if (word.length >= 4 && !allText.includes(word)) {
+        const bestFuzzyMatch = episodeWords.reduce(
+          (best, episodeWord) => Math.max(best, similarity(word, episodeWord)),
+          0,
+        );
+        if (bestFuzzyMatch >= 0.8) score += 5;
+        else if (bestFuzzyMatch >= 0.7) score += 2;
+      }
+    });
+
+    return score;
+  };
+
+  const compareCards = (left: HTMLElement, right: HTMLElement) => {
+    const order = orderSelect?.value ?? "oldest";
+    const leftDate = Date.parse(left.dataset.publishedDate ?? "") || 0;
+    const rightDate = Date.parse(right.dataset.publishedDate ?? "") || 0;
+    const leftDuration = Number(left.dataset.durationSeconds ?? 0);
+    const rightDuration = Number(right.dataset.durationSeconds ?? 0);
+    const leftIndex = Number(left.dataset.originalIndex ?? 0);
+    const rightIndex = Number(right.dataset.originalIndex ?? 0);
+
+    if (order === "newest") return rightDate - leftDate || rightIndex - leftIndex;
+    if (order === "longest") return rightDuration - leftDuration || leftIndex - rightIndex;
+    if (order === "shortest") return leftDuration - rightDuration || leftIndex - rightIndex;
+    return leftDate - rightDate || leftIndex - rightIndex;
+  };
+
+  const updateArchive = () => {
+    if (!archiveList || !searchInput || !resultsStatus || !emptyState || !clearButton) return;
+
+    const query = searchInput.value.trim();
+    const scoredCards = cards.map((card) => ({ card, score: scoreCard(card, query) }));
+    const maximumScore = Math.max(0, ...scoredCards.map(({ score }) => score));
+    const minimumScore = query ? Math.max(2, Math.floor(maximumScore * 0.28)) : 0;
+    const matchingCards = scoredCards
+      .filter(({ score }) => !query || (score > 0 && score >= minimumScore))
+      .map(({ card }) => card);
+
+    cards.forEach((card) => {
+      card.hidden = !matchingCards.includes(card);
+    });
+
+    const orderedCards = cards.slice().sort(compareCards);
+    const currentOrder = Array.from(archiveList.querySelectorAll<HTMLElement>(":scope > .archive-episode"));
+    const orderChanged = orderedCards.some((card, index) => currentOrder[index] !== card);
+    if (orderChanged) archiveList.append(...orderedCards);
+
+    const count = matchingCards.length;
+    const episodeWord = count === 1 ? "episode" : "episodes";
+    resultsStatus.textContent = query
+      ? `${count} ${episodeWord} found for “${query}”`
+      : `Showing all ${cards.length} episodes`;
+    emptyState.hidden = count !== 0;
+    clearButton.hidden = !query;
+  };
+
+  const clearSearch = () => {
+    if (!searchInput) return;
+    searchInput.value = "";
+    updateArchive();
+    searchInput.focus();
+  };
+
+  searchInput?.addEventListener("input", updateArchive);
+  searchInput?.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && searchInput.value) {
+      event.preventDefault();
+      clearSearch();
+    }
+  });
+  clearButton?.addEventListener("click", clearSearch);
+  emptyClearButton?.addEventListener("click", clearSearch);
+  orderSelect?.addEventListener("change", updateArchive);
+
+  jumpMenu?.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+    jumpMenu.open = false;
+    jumpMenu.querySelector<HTMLElement>("summary")?.focus();
+  });
+  jumpMenu?.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => {
+      jumpMenu.open = false;
+    });
+  });
+  document.addEventListener("click", (event) => {
+    if (jumpMenu?.open && event.target instanceof Node && !jumpMenu.contains(event.target)) {
+      jumpMenu.open = false;
+    }
+  });
+
+  updateArchive();
+</script>
