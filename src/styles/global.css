@@ -3258,13 +3258,18 @@ footer {
   margin-bottom: 45px;
   display: inline-flex;
   align-items: center;
-  gap: 9px;
+  gap: 11px;
   color: rgba(255, 255, 255, 0.62);
-  font-size: 9px;
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.13em;
   text-decoration: none;
   text-transform: uppercase;
+}
+
+.episode-back-link > span {
+  font-size: 18px;
+  line-height: 1;
 }
 
 .episode-back-link:hover,
