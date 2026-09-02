@@ -1,0 +1,42 @@
+---
+import type { EpisodeAd, EpisodeAdPlacement } from "../data/episode-ads";
+
+interface Props {
+  ad?: EpisodeAd;
+  placement: EpisodeAdPlacement;
+}
+
+const { ad, placement } = Astro.props;
+const dimensions = {
+  desktopTower: { width: 300, height: 600 },
+  mobileTop: { width: 728, height: 90 },
+  mobileLower: { width: 970, height: 250 },
+} satisfies Record<EpisodeAdPlacement, { width: number; height: number }>;
+const opensInNewTab = ad?.newTab ?? (ad ? /^https?:\/\//i.test(ad.href) : false);
+const placementMedia = placement === "desktopTower" ? "(min-width: 761px)" : "(max-width: 760px)";
+const transparentPixel = "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
+---
+
+{ad && (
+  <div class:list={["episode-ad", `episode-ad--${placement}`]}>
+    <a
+      class="episode-ad-link"
+      href={ad.href}
+      target={opensInNewTab ? "_blank" : undefined}
+      rel={opensInNewTab ? "noopener noreferrer" : undefined}
+      aria-label={`${ad.alt}${opensInNewTab ? " (opens in a new tab)" : ""}`}
+    >
+      <picture>
+        <source media={placementMedia} srcset={ad.src} />
+        <img
+          src={transparentPixel}
+          alt={ad.alt}
+          width={dimensions[placement].width}
+          height={dimensions[placement].height}
+          loading="lazy"
+          decoding="async"
+        />
+      </picture>
+    </a>
+  </div>
+)}

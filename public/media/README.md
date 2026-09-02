@@ -5,6 +5,7 @@ Use these folders for files that should be available directly on the website:
 - `images/` — photographs, episode artwork, logos, and social cards
 - `audio/` — short audio files hosted directly by the website
 - `video/` — short video files hosted directly by the website
+- `ads/episodes/` — optimized clickable episode-page creatives, organized by ad size
 
 Use lowercase, descriptive filenames with hyphens, such as
 `grainhouse-interview-01.jpg`. Large podcast episodes should stay on Podbean and

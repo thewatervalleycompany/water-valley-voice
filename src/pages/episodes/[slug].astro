@@ -1,7 +1,9 @@
 ---
 import type { GetStaticPaths } from "astro";
+import EpisodeAd from "../../components/EpisodeAd.astro";
 import SiteFooter from "../../components/SiteFooter.astro";
 import SiteHeader from "../../components/SiteHeader.astro";
+import { getEpisodeAds } from "../../data/episode-ads";
 import { episodePath, episodes, type Episode } from "../../data/episodes";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
@@ -22,6 +24,7 @@ export const getStaticPaths = (() =>
   }))) satisfies GetStaticPaths;
 
 const { episode, previousEpisode, nextEpisode } = Astro.props;
+const episodeAds = getEpisodeAds(episode.slug);
 const canonicalURL = new URL(`${episodePath(episode)}/`, Astro.site).toString();
 const facebookShareURL = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(canonicalURL)}`;
 const youtubeEmbedUrl = episode.youtubeVideoId
@@ -172,6 +175,8 @@ const breadcrumbSchema = {
 
     <section class="section episode-detail-content">
       <div class="episode-detail-main">
+        <EpisodeAd ad={episodeAds.mobileTop} placement="mobileTop" />
+
         <div class="episode-media-stack">
           {youtubeEmbedUrl && episode.youtubeUrl && (
             <section class="episode-media" aria-labelledby="episode-watch-title">
@@ -239,6 +244,8 @@ const breadcrumbSchema = {
           </div>
         </article>
 
+        <EpisodeAd ad={episodeAds.mobileLower} placement="mobileLower" />
+
         <section
           class="episode-share"
           aria-labelledby="episode-share-title"
@@ -272,28 +279,32 @@ const breadcrumbSchema = {
         </section>
       </div>
 
-      <aside class="episode-detail-aside" aria-label="Episode links">
-        <div class="episode-aside-details">
-          <p class="episode-aside-label">Featuring</p>
-          <p>{episode.guests.join(", ")}</p>
-        </div>
-        <div>
-          <p class="episode-aside-label">Keep listening</p>
-          <a href={episode.podbeanUrl} target="_blank" rel="noopener noreferrer">
-            Open on Podbean <span aria-hidden="true">↗</span>
-          </a>
-          <a href="https://feed.podbean.com/watervalleyvoice/feed.xml" target="_blank" rel="noopener noreferrer">
-            Subscribe with RSS <span aria-hidden="true">↗</span>
-          </a>
-          <a
-            href={episode.youtubeUrl ?? "https://www.youtube.com/playlist?list=PLfOdKEY1vw1g"}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {episode.youtubeUrl ? "Watch this episode on YouTube" : "Watch on YouTube"} <span aria-hidden="true">↗</span>
-          </a>
-        </div>
-      </aside>
+      <div class:list={["episode-detail-rail", { "episode-detail-rail--with-ad": Boolean(episodeAds.desktopTower) }]}>
+        <aside class="episode-detail-aside" aria-label="Episode links">
+          <div class="episode-aside-details">
+            <p class="episode-aside-label">Featuring</p>
+            <p>{episode.guests.join(", ")}</p>
+          </div>
+          <div>
+            <p class="episode-aside-label">Keep listening</p>
+            <a href={episode.podbeanUrl} target="_blank" rel="noopener noreferrer">
+              Open on Podbean <span aria-hidden="true">↗</span>
+            </a>
+            <a href="https://feed.podbean.com/watervalleyvoice/feed.xml" target="_blank" rel="noopener noreferrer">
+              Subscribe with RSS <span aria-hidden="true">↗</span>
+            </a>
+            <a
+              href={episode.youtubeUrl ?? "https://www.youtube.com/playlist?list=PLfOdKEY1vw1g"}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {episode.youtubeUrl ? "Watch this episode on YouTube" : "Watch on YouTube"} <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+        </aside>
+
+        <EpisodeAd ad={episodeAds.desktopTower} placement="desktopTower" />
+      </div>
     </section>
 
     <nav class="section episode-pagination" aria-label="Episode navigation">

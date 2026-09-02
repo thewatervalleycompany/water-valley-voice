@@ -15,3 +15,11 @@ dist/
 
 # Cloudflare local state
 .wrangler/
+
+# Original episode-ad uploads stay local; only optimized public copies ship.
+/episode-ad-sources/300x600/*
+!/episode-ad-sources/300x600/.gitkeep
+/episode-ad-sources/728x90/*
+!/episode-ad-sources/728x90/.gitkeep
+/episode-ad-sources/970x250/*
+!/episode-ad-sources/970x250/.gitkeep
