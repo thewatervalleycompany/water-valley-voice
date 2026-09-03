@@ -5,12 +5,17 @@ interface Props {
   title?: string;
   description?: string;
   canonical?: string | URL;
+  robots?: string;
   socialImage?: string | URL;
   socialImageAlt?: string;
   socialImageWidth?: number;
   socialImageHeight?: number;
   socialImageType?: string;
   ogType?: "website" | "article" | "profile";
+  publishedTime?: string;
+  pageType?: "WebPage" | "AboutPage" | "CollectionPage";
+  mainEntityId?: string;
+  breadcrumbId?: string;
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
 }
 
@@ -18,12 +23,17 @@ const {
   title = "Water Valley Voice | Local stories from Windsor, Colorado",
   description = "Water Valley Voice shares the people, places, and stories that make Windsor and Northern Colorado feel like home.",
   canonical,
+  robots = "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
   socialImage = "/og.png",
   socialImageAlt = "Water Valley Voice podcast",
   socialImageWidth = 1200,
   socialImageHeight = 630,
   socialImageType = "image/png",
   ogType = "website",
+  publishedTime,
+  pageType = "WebPage",
+  mainEntityId,
+  breadcrumbId,
   jsonLd,
 } = Astro.props;
 
@@ -35,17 +45,21 @@ canonicalURL.hash = "";
 const socialImageURL = new URL(socialImage.toString(), siteURL);
 const rootURL = new URL("/", siteURL).href;
 const organizationID = new URL("/#organization", siteURL).href;
+const websiteID = new URL("/#website", siteURL).href;
 const podcastID = new URL("/#podcast", siteURL).href;
+const hostID = new URL("/about/#marissa-donahoo", siteURL).href;
+const logoID = new URL("/#logo", siteURL).href;
+const pageID = `${canonicalURL.href}#webpage`;
+const primaryImageID = `${canonicalURL.href}#primaryimage`;
 
-const defaultStructuredData = {
-  "@context": "https://schema.org",
-  "@graph": [
+const defaultStructuredData = [
     {
       "@type": "Organization",
       "@id": organizationID,
       name: "Water Valley Voice",
       url: rootURL,
-      logo: new URL("/media/images/wvv-mic-mark-192.jpg", siteURL).href,
+      logo: { "@id": logoID },
+      image: { "@id": logoID },
       email: "contact@watervalleyvoice.com",
       address: {
         "@type": "PostalAddress",
@@ -62,8 +76,25 @@ const defaultStructuredData = {
       ],
     },
     {
+      "@type": "ImageObject",
+      "@id": logoID,
+      url: new URL("/media/images/wvv-mic-mark-192.jpg", siteURL).href,
+      contentUrl: new URL("/media/images/wvv-mic-mark-192.jpg", siteURL).href,
+      width: 192,
+      height: 192,
+      caption: "Water Valley Voice microphone mark",
+    },
+    {
+      "@type": "Person",
+      "@id": hostID,
+      name: "Marissa Donahoo",
+      url: hostID,
+      image: new URL("/media/images/Marissa Donahoo.jpeg", siteURL).href,
+      jobTitle: "Host of Water Valley Voice",
+    },
+    {
       "@type": "WebSite",
-      "@id": new URL("/#website", siteURL).href,
+      "@id": websiteID,
       name: "Water Valley Voice",
       url: rootURL,
       description:
@@ -80,20 +111,76 @@ const defaultStructuredData = {
         "Meaningful conversations with the neighbors, makers, business owners, and community leaders who shape Windsor and Northern Colorado.",
       inLanguage: "en-US",
       webFeed: "https://feed.podbean.com/watervalleyvoice/feed.xml",
+      image: { "@id": logoID },
       publisher: { "@id": organizationID },
+      creator: { "@id": hostID },
       sameAs: [
         "https://www.youtube.com/playlist?list=PLfOdKEY1vw1g",
         "https://feed.podbean.com/watervalleyvoice/feed.xml",
       ],
     },
-  ],
-};
+    {
+      "@type": "ImageObject",
+      "@id": primaryImageID,
+      url: socialImageURL.href,
+      contentUrl: socialImageURL.href,
+      width: socialImageWidth,
+      height: socialImageHeight,
+      caption: socialImageAlt,
+    },
+    {
+      "@type": pageType,
+      "@id": pageID,
+      url: canonicalURL.href,
+      name: title,
+      description,
+      inLanguage: "en-US",
+      isPartOf: { "@id": websiteID },
+      primaryImageOfPage: { "@id": primaryImageID },
+      mainEntity: { "@id": mainEntityId ?? podcastID },
+      ...(breadcrumbId ? { breadcrumb: { "@id": breadcrumbId } } : {}),
+    },
+];
 
 const pageStructuredData = jsonLd
   ? Array.isArray(jsonLd)
     ? jsonLd
     : [jsonLd]
   : [];
+
+const pageStructuredDataNodes = pageStructuredData.flatMap((data) => {
+  const graph = data["@graph"];
+
+  if (Array.isArray(graph)) return graph;
+
+  const { "@context": _context, ...node } = data;
+  return [node];
+});
+
+const connectedStructuredDataNodes = [
+  ...defaultStructuredData,
+  ...pageStructuredDataNodes,
+].reduce<Record<string, unknown>[]>((nodes, node) => {
+  const normalizedNode = node as Record<string, unknown>;
+  const nodeID = normalizedNode["@id"];
+
+  if (typeof nodeID !== "string") {
+    nodes.push(normalizedNode);
+    return nodes;
+  }
+
+  const existingIndex = nodes.findIndex((item) => item["@id"] === nodeID);
+
+  if (existingIndex === -1) nodes.push(normalizedNode);
+  else nodes[existingIndex] = { ...nodes[existingIndex], ...normalizedNode };
+
+  return nodes;
+}, []);
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": connectedStructuredDataNodes,
+};
 
 const serializeJsonLd = (value: unknown) =>
   JSON.stringify(value)
@@ -108,12 +195,13 @@ const serializeJsonLd = (value: unknown) =>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={description} />
-    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="robots" content={robots} />
     <link rel="icon" type="image/jpeg" href="/media/images/wvv-mic-mark-192.jpg" />
     <link rel="apple-touch-icon" href="/media/images/wvv-mic-mark-192.jpg" />
+    <link rel="manifest" href="/site.webmanifest" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -134,16 +222,14 @@ const serializeJsonLd = (value: unknown) =>
     <meta property="og:image:width" content={socialImageWidth.toString()} />
     <meta property="og:image:height" content={socialImageHeight.toString()} />
     <meta property="og:image:alt" content={socialImageAlt} />
+    {ogType === "article" && publishedTime && <meta property="article:published_time" content={publishedTime} />}
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={socialImageURL.href} />
     <meta name="twitter:image:alt" content={socialImageAlt} />
     <meta name="theme-color" content="#090909" />
-    <script type="application/ld+json" is:inline set:html={serializeJsonLd(defaultStructuredData)}></script>
-    {pageStructuredData.map((data) => (
-      <script type="application/ld+json" is:inline set:html={serializeJsonLd(data)}></script>
-    ))}
+    <script type="application/ld+json" is:inline set:html={serializeJsonLd(structuredData)}></script>
     <title>{title}</title>
   </head>
   <body>

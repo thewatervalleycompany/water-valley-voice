@@ -22,9 +22,9 @@ const footerSocials = [
 
     <nav class="footer-links" aria-label="Footer navigation">
       <p>Explore</p>
-      <a href="/episodes">Episodes</a>
-      <a href="/about">About</a>
-      {studioRentalsEnabled && <a href="/book-studio">Rent the studio</a>}
+      <a href="/episodes/">Episodes</a>
+      <a href="/about/">About</a>
+      {studioRentalsEnabled && <a href="/book-studio/">Rent the studio</a>}
       <div class="footer-socials">
         {footerSocials.map((social) => (
           <a href={social.href} target="_blank" rel="noopener noreferrer">{social.name}</a>

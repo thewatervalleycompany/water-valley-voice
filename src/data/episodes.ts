@@ -8,9 +8,11 @@ export interface Episode {
   seoTitle: string;
   teaser: string;
   metaDescription: string;
+  socialImageAlt: string;
   playerTitle: string;
   playerSrc: string;
   publishedDate: string;
+  publishedDateTime: string;
   duration: string;
   durationLabel: string;
   guests: string[];
@@ -35,10 +37,13 @@ export const episodes: Episode[] = [
       "A sweeping origin story about Martin Lind’s belief that empty fields and gravel pits could become a valley of water, homes, golf, and community.",
     metaDescription:
       "Hear Martin Lind tell the Water Valley origin story—from gravel pits and bold engineering to lakes, golf, neighborhoods, and a lasting family legacy.",
+    socialImageAlt:
+      "Marissa Donahoo seated at the Water Valley Voice podcast table with studio microphones.",
     playerTitle: "E1: From Mud Lake to Million-Dollar Waterfronts: The Water Valley Story",
     playerSrc:
       "https://www.podbean.com/player-v2/?i=52war-1afb28c-pb&from=pb6admin&pbad=0&share=1&download=1&rtl=0&fonts=Arial&skin=f6f6f6&font-color=auto&logo_link=episode_page&btn-skin=8bbb4e",
     publishedDate: "2026-06-26",
+    publishedDateTime: "2026-06-26T15:24:41-06:00",
     duration: "PT30M51S",
     durationLabel: "30 min 51 sec",
     guests: ["Martin Lind"],
@@ -83,10 +88,13 @@ export const episodes: Episode[] = [
       "Meet four leaders whose stories, careers, and creativity continue to shape the Water Valley Company and the Northern Colorado community.",
     metaDescription:
       "Meet Mandy Oberholzer, Chris Williamson, Kurt Hinkle, and Ryan Bach and hear how their careers, creativity, and relationships help shape Water Valley.",
+    socialImageAlt:
+      "Marissa Donahoo speaking into a microphone at the Water Valley Voice podcast table.",
     playerTitle: "E1 Part 2: Introduction to Mandy, Chris, Kurt, and Ryan",
     playerSrc:
       "https://www.podbean.com/player-v2/?i=n79rk-1b0f75c-pb&from=pb6admin&pbad=0&share=1&download=1&rtl=0&fonts=Arial&skin=f6f6f6&font-color=auto&logo_link=episode_page&btn-skin=8bbb4e",
     publishedDate: "2026-07-13",
+    publishedDateTime: "2026-07-13T17:26:05-06:00",
     duration: "PT44M46S",
     durationLabel: "44 min 46 sec",
     guests: ["Mandy Oberholzer", "Chris Williamson", "Kurt Hinkle", "Ryan Bach"],
@@ -125,10 +133,13 @@ export const episodes: Episode[] = [
       "Go behind the menus to meet the people who make Water Valley’s restaurants feel like home—and hear how grit, chance, and community shaped each place.",
     metaDescription:
       "Meet the people behind Windsor’s Grainhouse, Sandbar, Ted’s Backyard, and the Lodge and hear how food, family, and community shape Water Valley hospitality.",
+    socialImageAlt:
+      "Marissa Donahoo hosting a conversation in the Water Valley Voice podcast studio.",
     playerTitle: "E1 Part3: Family, Fairways & Flavor: Inside Windsor’s Grainhouse, Sandbar, Ted’s, and the Lodge",
     playerSrc:
       "https://www.podbean.com/player-v2/?i=46vsa-1b221ba-pb&from=pb6admin&pbad=0&share=1&download=1&rtl=0&fonts=Arial&skin=f6f6f6&font-color=auto&logo_link=episode_page&btn-skin=8bbb4e",
     publishedDate: "2026-07-29",
+    publishedDateTime: "2026-07-29T10:29:55-06:00",
     duration: "PT25M43S",
     durationLabel: "25 min 43 sec",
     guests: ["Jesse Wilson", "Shane Stringer", "Wyatt", "Taylor"],
@@ -168,10 +179,13 @@ export const episodes: Episode[] = [
       "Martin Lind reveals how Cascadia grew from a city request into a bold Greeley vision shaped by water, entertainment, hockey, and generational opportunity.",
     metaDescription:
       "Hear Martin Lind trace Cascadia from a bold Greeley request to a water-centered entertainment district shaped by hockey, public debate, and civic ambition.",
+    socialImageAlt:
+      "Marissa Donahoo hosting Episode 2 from the Water Valley Voice podcast studio.",
     playerTitle: "E2: Let's Talk About Cascadia",
     playerSrc:
       "https://www.podbean.com/player-v2/?i=pr4zy-1b3ec46-pb&from=pb6admin&pbad=0&share=1&download=1&rtl=0&fonts=Arial&skin=f6f6f6&font-color=auto&logo_link=episode_page&btn-skin=8bbb4e",
     publishedDate: "2026-08-21",
+    publishedDateTime: "2026-08-21T10:09:45-06:00",
     duration: "PT51M17S",
     durationLabel: "51 min 17 sec",
     guests: ["Martin Lind"],
@@ -207,4 +221,4 @@ export const episodes: Episode[] = [
 
 export const latestEpisode = episodes.at(-1)!;
 
-export const episodePath = (episode: Episode) => `/episodes/${episode.slug}`;
+export const episodePath = (episode: Episode) => `/episodes/${episode.slug}/`;

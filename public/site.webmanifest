@@ -1,0 +1,24 @@
+{
+  "name": "Water Valley Voice",
+  "short_name": "WV Voice",
+  "description": "A podcast sharing the people, places, and conversations behind The Water Valley Company and Northern Colorado.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "browser",
+  "background_color": "#090909",
+  "theme_color": "#090909",
+  "icons": [
+    {
+      "src": "/media/images/wvv-mic-mark-192.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any"
+    },
+    {
+      "src": "/media/images/wvv-mic-mark-480.jpg",
+      "sizes": "480x480",
+      "type": "image/jpeg",
+      "purpose": "any"
+    }
+  ]
+}

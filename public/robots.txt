@@ -1,4 +1,20 @@
+# General search-engine and public-web crawling.
 User-agent: *
+Allow: /
+
+# Search and user-requested retrieval crawlers. These are separate from
+# model-training crawlers. The general rule above currently allows those too;
+# no crawler-specific training policy has been chosen here.
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: Claude-User
 Allow: /
 
 Sitemap: https://www.watervalleyvoice.com/sitemap-index.xml

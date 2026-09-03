@@ -22,13 +22,14 @@ const durationToSeconds = (duration: string) => {
 const episodeArchiveSchema = {
   "@context": "https://schema.org",
   "@type": "ItemList",
+  "@id": new URL("/episodes/#episode-list", Astro.site).toString(),
   name: "Water Valley Voice podcast episodes",
   numberOfItems: episodes.length,
   itemListElement: episodes.map((episode, index) => ({
     "@type": "ListItem",
     position: index + 1,
     name: episode.title,
-    url: new URL(`${episodePath(episode)}/`, Astro.site).toString(),
+    url: new URL(episodePath(episode), Astro.site).toString(),
   })),
 };
 ---
@@ -37,6 +38,8 @@ const episodeArchiveSchema = {
   title="Windsor, Colorado Podcast Episodes | Water Valley Voice"
   description="Listen to every Water Valley Voice podcast episode and meet the people, places, and ideas shaping Windsor, Water Valley, and Northern Colorado."
   socialImageAlt="Water Valley Voice podcast episode archive"
+  pageType="CollectionPage"
+  mainEntityId={episodeArchiveSchema["@id"]}
   jsonLd={episodeArchiveSchema}
 >
   <SiteHeader currentPage="episodes" />

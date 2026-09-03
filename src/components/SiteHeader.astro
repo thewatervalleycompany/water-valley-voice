@@ -26,12 +26,12 @@ const { currentPage = "home" } = Astro.props;
     </button>
 
     <nav id="primary-navigation" class="primary-nav" aria-label="Primary navigation">
-      <a href="/episodes" aria-current={currentPage === "episodes" ? "page" : undefined}>Episodes</a>
+      <a href="/episodes/" aria-current={currentPage === "episodes" ? "page" : undefined}>Episodes</a>
       <a href="/#watch">Watch</a>
       {studioRentalsEnabled && <a href="/#studio">Our studio</a>}
-      <a href="/about" aria-current={currentPage === "about" ? "page" : undefined}>About</a>
+      <a href="/about/" aria-current={currentPage === "about" ? "page" : undefined}>About</a>
       {studioRentalsEnabled && (
-        <a href="/book-studio" aria-current={currentPage === "booking" ? "page" : undefined}>Rent the studio</a>
+        <a href="/book-studio/" aria-current={currentPage === "booking" ? "page" : undefined}>Rent the studio</a>
       )}
       <a class="nav-cta" href="/#contact">Contact</a>
     </nav>

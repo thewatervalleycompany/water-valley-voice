@@ -1,0 +1,89 @@
+---
+import SiteFooter from "../components/SiteFooter.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Page Not Found | Water Valley Voice"
+  description="The requested Water Valley Voice page could not be found."
+  robots="noindex, follow"
+>
+  <SiteHeader />
+
+  <main id="main-content" class="not-found-page">
+    <section class="section not-found-inner">
+      <p class="eyebrow eyebrow-gold"><span></span> Page not found</p>
+      <h1>That story is not<br /><em>here yet.</em></h1>
+      <p>
+        The address may have changed, or the page may no longer be available. You can return home or continue with the podcast archive.
+      </p>
+      <div class="not-found-actions">
+        <a class="button button-gold" href="/">Return home</a>
+        <a class="button button-outline-light" href="/episodes/">Browse episodes <span aria-hidden="true">→</span></a>
+      </div>
+    </section>
+  </main>
+
+  <SiteFooter />
+</BaseLayout>
+
+<style>
+  .not-found-page {
+    min-height: 66vh;
+    display: grid;
+    align-items: center;
+    background:
+      linear-gradient(145deg, rgba(201, 163, 79, 0.12), transparent 48%),
+      var(--black);
+    color: var(--white);
+  }
+
+  .not-found-inner {
+    padding-top: 110px;
+    padding-bottom: 120px;
+  }
+
+  h1 {
+    max-width: 900px;
+    margin: 24px 0 28px;
+    color: var(--white);
+    font-size: clamp(58px, 8vw, 108px);
+    line-height: 0.92;
+  }
+
+  h1 em {
+    color: var(--gold-light);
+  }
+
+  .not-found-inner > p:not(.eyebrow) {
+    max-width: 62ch;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.68);
+    font-size: 16px;
+    line-height: 1.8;
+  }
+
+  .not-found-actions {
+    margin-top: 38px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+
+  @media (max-width: 560px) {
+    .not-found-inner {
+      padding-top: 82px;
+      padding-bottom: 92px;
+    }
+
+    .not-found-actions {
+      align-items: stretch;
+      flex-direction: column;
+    }
+
+    .not-found-actions .button {
+      width: 100%;
+    }
+  }
+</style>

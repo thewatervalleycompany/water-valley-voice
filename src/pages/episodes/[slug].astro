@@ -25,12 +25,20 @@ export const getStaticPaths = (() =>
 
 const { episode, previousEpisode, nextEpisode } = Astro.props;
 const episodeAds = getEpisodeAds(episode.slug);
-const canonicalURL = new URL(`${episodePath(episode)}/`, Astro.site).toString();
+const canonicalURL = new URL(episodePath(episode), Astro.site).toString();
 const facebookShareURL = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(canonicalURL)}`;
 const youtubeEmbedUrl = episode.youtubeVideoId
   ? `https://www.youtube-nocookie.com/embed/${episode.youtubeVideoId}?rel=0`
   : undefined;
 const episodeSchemaId = `${canonicalURL}#podcast-episode`;
+const webpageSchemaId = `${canonicalURL}#webpage`;
+const breadcrumbSchemaId = `${canonicalURL}#breadcrumb`;
+const podcastSchemaId = new URL("/#podcast", Astro.site).toString();
+const hostSchemaId = new URL("/about/#marissa-donahoo", Astro.site).toString();
+const organizationSchemaId = new URL("/#organization", Astro.site).toString();
+const episodeImageURL = episode.youtubeVideoId
+  ? `https://i.ytimg.com/vi/${episode.youtubeVideoId}/maxresdefault.jpg`
+  : new URL("/og.png", Astro.site).toString();
 const videoSchema =
   episode.youtubeVideoId && episode.youtubeUrl && episode.youtubeUploadDate && youtubeEmbedUrl
     ? {
@@ -41,9 +49,11 @@ const videoSchema =
         description: episode.metaDescription,
         url: episode.youtubeUrl,
         embedUrl: youtubeEmbedUrl,
-        thumbnailUrl: `https://i.ytimg.com/vi/${episode.youtubeVideoId}/hqdefault.jpg`,
+        thumbnailUrl: episodeImageURL,
         uploadDate: episode.youtubeUploadDate,
+        duration: episode.duration,
         inLanguage: "en-US",
+        publisher: { "@id": organizationSchemaId },
         isPartOf: {
           "@id": episodeSchemaId,
         },
@@ -62,31 +72,29 @@ const episodeSchema = {
   name: episode.title,
   description: episode.metaDescription,
   url: canonicalURL,
-  mainEntityOfPage: canonicalURL,
+  mainEntityOfPage: { "@id": webpageSchemaId },
   episodeNumber: episode.part
     ? `${Number.parseInt(episode.number, 10)} ${episode.part}`
     : Number.parseInt(episode.number, 10),
-  datePublished: episode.publishedDate,
+  datePublished: episode.publishedDateTime,
   timeRequired: episode.duration,
-  image: new URL("/og.png", Astro.site).toString(),
+  image: { "@id": `${canonicalURL}#primaryimage` },
   inLanguage: "en-US",
-  author: {
-    "@type": "Person",
-    name: "Marissa Donahoo",
-  },
+  keywords: episode.topics,
+  about: episode.topics.map((name) => ({ "@type": "Thing", name })),
+  author: { "@id": hostSchemaId },
+  publisher: { "@id": organizationSchemaId },
   contributor: episode.guests.map((name) => ({
     "@type": "Person",
     name,
   })),
   partOfSeries: {
-    "@type": "PodcastSeries",
-    name: "Water Valley Voice",
-    url: new URL("/", Astro.site).toString(),
-    webFeed: "https://feed.podbean.com/watervalleyvoice/feed.xml",
+    "@id": podcastSchemaId,
   },
   associatedMedia: [
     {
       "@type": "AudioObject",
+      "@id": `${canonicalURL}#audio`,
       name: episode.playerTitle,
       embedUrl: episode.playerSrc,
       contentUrl: episode.audioUrl,
@@ -106,6 +114,7 @@ const episodeSchema = {
 const breadcrumbSchema = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
+  "@id": breadcrumbSchemaId,
   itemListElement: [
     {
       "@type": "ListItem",
@@ -133,8 +142,15 @@ const breadcrumbSchema = {
   title={episode.seoTitle}
   description={episode.metaDescription}
   canonical={canonicalURL}
-  socialImageAlt={`Water Valley Voice podcast — ${episode.title}`}
+  socialImage={episodeImageURL}
+  socialImageAlt={episode.socialImageAlt}
+  socialImageWidth={episode.youtubeVideoId ? 1280 : 1200}
+  socialImageHeight={episode.youtubeVideoId ? 720 : 630}
+  socialImageType={episode.youtubeVideoId ? "image/jpeg" : "image/png"}
   ogType="article"
+  publishedTime={episode.publishedDateTime}
+  mainEntityId={episodeSchemaId}
+  breadcrumbId={breadcrumbSchemaId}
   jsonLd={[episodeSchema, ...(videoSchema ? [videoSchema] : []), breadcrumbSchema]}
 >
   <SiteHeader currentPage="episodes" />
@@ -143,7 +159,7 @@ const breadcrumbSchema = {
     <section class="episode-detail-hero">
       <div class="section episode-detail-hero-inner">
         <div class="episode-detail-heading">
-          <a class="episode-back-link" href="/episodes"><span aria-hidden="true">←</span> All episodes</a>
+          <a class="episode-back-link" href="/episodes/"><span aria-hidden="true">←</span> All episodes</a>
           <p class="eyebrow eyebrow-gold"><span></span> {episode.label}</p>
           <h1>{episode.title}</h1>
           <p class="episode-detail-teaser">{episode.teaser}</p>
@@ -314,7 +330,7 @@ const breadcrumbSchema = {
           <strong>{previousEpisode.title}</strong>
         </a>
       ) : (
-        <a class="episode-pagination-link episode-pagination-previous" href="/episodes">
+        <a class="episode-pagination-link episode-pagination-previous" href="/episodes/">
           <span><i aria-hidden="true">←</i> Episode archive</span>
           <strong>Explore every conversation</strong>
         </a>
@@ -326,7 +342,7 @@ const breadcrumbSchema = {
           <strong>{nextEpisode.title}</strong>
         </a>
       ) : (
-        <a class="episode-pagination-link episode-pagination-next" href="/episodes">
+        <a class="episode-pagination-link episode-pagination-next" href="/episodes/">
           <span>Episode archive <i aria-hidden="true">→</i></span>
           <strong>Explore every conversation</strong>
         </a>

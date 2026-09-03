@@ -258,7 +258,7 @@ img {
 }
 
 .eyebrow-dark {
-  color: var(--gold-dark);
+  color: var(--gold-deep);
 }
 
 .eyebrow-gold {
@@ -420,10 +420,13 @@ h2 {
 
 .text-link {
   margin-bottom: 7px;
-  padding-bottom: 5px;
+  min-height: 44px;
+  padding: 11px 0 5px;
+  display: inline-flex;
+  align-items: center;
   border-bottom: 1px solid var(--gold);
   color: var(--black);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-decoration: none;
@@ -853,7 +856,7 @@ footer {
   margin: 0 0 11px;
   display: block;
   color: var(--gold-light);
-  font-size: 8px;
+  font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -872,7 +875,10 @@ footer {
 
 .footer-links > a {
   color: rgba(255, 255, 255, 0.72);
-  font-size: 9px;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+  font-size: 10px;
   letter-spacing: 0.05em;
   text-decoration: none;
   transition: color 180ms ease;
@@ -893,8 +899,11 @@ footer {
 }
 
 .footer-socials a {
-  color: rgba(255, 255, 255, 0.42);
-  font-size: 8px;
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 10px;
   letter-spacing: 0.05em;
   text-decoration: none;
   transition: color 180ms ease;
@@ -934,8 +943,8 @@ footer {
 
 .footer-bottom > p {
   margin: 0 0 7px;
-  color: rgba(255, 255, 255, 0.34);
-  font-size: 8px;
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 10px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
@@ -948,8 +957,8 @@ footer {
 }
 
 .parent-brand > span {
-  color: rgba(255, 255, 255, 0.35);
-  font-size: 8px;
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 10px;
   letter-spacing: 0.15em;
   text-transform: uppercase;
 }
@@ -1305,7 +1314,7 @@ footer {
 }
 
 .archive-search-field input::placeholder {
-  color: #807d76;
+  color: var(--slate);
   opacity: 1;
 }
 
@@ -1335,7 +1344,7 @@ footer {
 
 .archive-search > p {
   margin: 8px 0 0;
-  color: #77736b;
+  color: var(--slate);
   font-size: 10px;
   line-height: 1.55;
 }
@@ -2676,13 +2685,19 @@ footer {
   }
 
   .hero-headline-lead {
+    max-width: 100%;
     display: inline-block;
-    font-size: clamp(28px, 10.4vw, 68px);
+    font-size: clamp(25px, 8.8vw, 62px);
+    letter-spacing: -0.015em;
     white-space: nowrap;
   }
 
   .hero-headline em {
-    font-size: clamp(24px, 9.7vw, 68px);
+    max-width: 100%;
+    display: inline-block;
+    font-size: clamp(22px, 7.6vw, 58px);
+    letter-spacing: -0.015em;
+    white-space: nowrap;
   }
 
   .hero-aside {
@@ -3091,6 +3106,11 @@ footer {
     gap: 38px;
   }
 
+  .footer-links > a,
+  .footer-socials a {
+    min-height: 44px;
+  }
+
   .footer-bottom {
     padding-top: 29px;
     align-items: flex-start;
@@ -3313,7 +3333,7 @@ footer {
 
 .episode-hero-facts dt {
   color: var(--gold-light);
-  font-size: 8px;
+  font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -3322,7 +3342,7 @@ footer {
 .episode-hero-facts dd {
   margin: 5px 0 0;
   color: rgba(255, 255, 255, 0.75);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.035em;
 }
@@ -3419,10 +3439,13 @@ footer {
 }
 
 .episode-media-link {
-  padding-bottom: 4px;
+  min-height: 44px;
+  padding: 8px 0;
+  display: inline-flex;
+  align-items: center;
   flex: 0 0 auto;
   color: var(--gold-deep);
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-decoration: none;
@@ -3608,7 +3631,7 @@ footer {
 .episode-aside-label {
   margin: 0 0 17px;
   color: var(--gold-light);
-  font-size: 8px;
+  font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;

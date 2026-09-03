@@ -83,17 +83,6 @@ const marissaID = `${aboutURL}#marissa-donahoo`;
 const aboutSchema = [
   {
     "@context": "https://schema.org",
-    "@type": "AboutPage",
-    "@id": aboutURL,
-    name: "About The Water Valley Company",
-    url: aboutURL,
-    mainEntity: { "@id": companyID },
-    mentions: companyWorlds.flatMap((world) =>
-      world.places.map((place) => ({ "@type": "Thing", name: place.name })),
-    ),
-  },
-  {
-    "@context": "https://schema.org",
     "@type": "Organization",
     "@id": companyID,
     name: "The Water Valley Company",
@@ -112,6 +101,8 @@ const aboutSchema = [
     "@type": "Person",
     "@id": marissaID,
     name: "Marissa Donahoo",
+    url: marissaID,
+    image: new URL("/media/images/Marissa Donahoo.jpeg", Astro.site).toString(),
     jobTitle: "Vice President of Real Estate",
     worksFor: { "@id": companyID },
     description:
@@ -124,6 +115,8 @@ const aboutSchema = [
   title="About The Water Valley Company | Water Valley Voice"
   description="Meet The Water Valley Company, founded in Windsor in 1990, and learn about the communities, golf, hospitality, real estate, and people behind Water Valley Voice."
   socialImageAlt="Water Valley Voice and The Water Valley Company"
+  pageType="AboutPage"
+  mainEntityId={companyID}
   jsonLd={aboutSchema}
 >
   <SiteHeader currentPage="about" />
@@ -230,7 +223,7 @@ const aboutSchema = [
         <p>
           She is also an owner of Four Carat Vodka, a Colorado premium spirits brand known for its diamond-inspired bottles. On the podcast, those overlapping perspectives—family, place-making, real estate, hospitality, and business—help her draw out the people and decisions behind the Water Valley story.
         </p>
-        <a class="button button-line" href="/episodes">Listen to the conversations <span aria-hidden="true">→</span></a>
+        <a class="button button-line" href="/episodes/">Listen to the conversations <span aria-hidden="true">→</span></a>
       </div>
     </section>
 

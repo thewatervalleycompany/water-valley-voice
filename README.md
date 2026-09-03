@@ -189,6 +189,18 @@ The production build automatically creates an XML sitemap at
 `public/robots.txt` allows crawling and points search engines to that sitemap.
 Only submit the production `www` address; it is the site's canonical address.
 
+Run `npm run build && npm run check:seo` before publishing. The SEO check
+validates the rendered metadata, connected structured data, sitemap, robots
+rules, web manifest, and `llms.txt` inventory.
+
+The site publishes `https://www.watervalleyvoice.com/llms.txt` as an
+experimental, human-readable content map for AI tools. It is not a Google
+ranking requirement. `public/robots.txt` explicitly permits major
+search/retrieval crawlers, while its general allow rule currently also permits
+training and grounding crawlers. Decide the desired AI-training policy before
+adding crawler-specific blocks; do not treat search visibility and model
+training as the same choice.
+
 Do these steps after the latest version is deployed to Cloudflare and both of
 the URLs below load in a private browser window:
 
@@ -203,7 +215,7 @@ the URLs below load in a private browser window:
 4. In Cloudflare, open **watervalleyvoice.com → DNS → Records → Add record**. Choose **TXT**, enter `@` for **Name**, paste Google's exact value into **Content**, leave **TTL** set to **Auto**, and save it.
 5. Return to Search Console and choose **Verify**. DNS changes may take several minutes to appear. Leave the verification TXT record in Cloudflare after verification succeeds.
 6. In the verified property, open **Sitemaps**, enter `sitemap-index.xml` in **Add a new sitemap**, and choose **Submit**.
-7. Open **URL inspection**, inspect `https://www.watervalleyvoice.com/`, and choose **Request indexing** if Google says the page is not indexed. Repeat this for important new pages after they are published, including `/episodes/`, `/about/`, `/book-studio/`, and each individual episode URL.
+7. Open **URL inspection**, inspect `https://www.watervalleyvoice.com/`, and choose **Request indexing** if Google says the page is not indexed. Repeat this for important public pages after they are published, including `/episodes/`, `/about/`, and each individual episode URL. Do not request indexing for `/book-studio/` while studio rentals are disabled and that path redirects to the homepage.
 8. Use **Page indexing** to watch for crawl errors and **Performance** to see the searches that bring people to the website. Indexing is controlled by Google and can take time even after a successful request.
 
 ### Bing Webmaster Tools
