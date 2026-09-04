@@ -176,6 +176,10 @@ const breadcrumbSchema = {
               <dt>Host</dt>
               <dd>Marissa Donahoo</dd>
             </div>
+            <div>
+              <dt>Featuring</dt>
+              <dd>{episode.guests.join(", ")}</dd>
+            </div>
           </dl>
         </div>
 
@@ -297,10 +301,6 @@ const breadcrumbSchema = {
 
       <div class:list={["episode-detail-rail", { "episode-detail-rail--with-ad": Boolean(episodeAds.desktopTower) }]}>
         <aside class="episode-detail-aside" aria-label="Episode links">
-          <div class="episode-aside-details">
-            <p class="episode-aside-label">Featuring</p>
-            <p>{episode.guests.join(", ")}</p>
-          </div>
           <div>
             <p class="episode-aside-label">Keep listening</p>
             <a href={episode.podbeanUrl} target="_blank" rel="noopener noreferrer">
