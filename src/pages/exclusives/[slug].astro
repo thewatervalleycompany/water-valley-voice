@@ -1,0 +1,153 @@
+---
+import type { GetStaticPaths } from "astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import SiteHeader from "../../components/SiteHeader.astro";
+import SiteFooter from "../../components/SiteFooter.astro";
+import EpisodeAd from "../../components/EpisodeAd.astro";
+import SharePanel from "../../components/SharePanel.astro";
+import { getEpisodeAds } from "../../data/episode-ads";
+import { episodePath } from "../../data/episodes";
+import { exclusives, exclusivePath, getRelatedEpisode, type Exclusive } from "../../data/exclusives";
+import "../../styles/exclusives.css";
+
+interface Props { exclusive: Exclusive; }
+export const getStaticPaths = (() => exclusives.map((exclusive) => ({
+  params: { slug: exclusive.slug }, props: { exclusive },
+}))) satisfies GetStaticPaths;
+
+const { exclusive } = Astro.props;
+const relatedEpisode = getRelatedEpisode(exclusive);
+const ads = getEpisodeAds(exclusive.slug);
+const canonicalURL = new URL(exclusivePath(exclusive), Astro.site).href;
+const videoID = `${canonicalURL}#video`;
+const breadcrumbID = `${canonicalURL}#breadcrumb`;
+const dateLabel = new Intl.DateTimeFormat("en-US", {
+  month: "long", day: "numeric", year: "numeric", timeZone: "UTC",
+}).format(new Date(`${exclusive.publishedDate}T12:00:00Z`));
+const videoSchema = {
+  "@type": "VideoObject",
+  "@id": videoID,
+  name: exclusive.title,
+  description: exclusive.metaDescription,
+  url: canonicalURL,
+  contentUrl: exclusive.videoUrl,
+  thumbnailUrl: new URL(exclusive.poster, Astro.site).href,
+  uploadDate: exclusive.publishedDateTime,
+  duration: exclusive.duration,
+  encodingFormat: "video/mp4",
+  inLanguage: "en-US",
+  mainEntityOfPage: { "@id": `${canonicalURL}#webpage` },
+  publisher: { "@id": new URL("/#organization", Astro.site).href },
+  creator: { "@id": new URL("/about/#marissa-donahoo", Astro.site).href },
+  contributor: exclusive.guests.map((name) => ({ "@type": "Person", name })),
+  ...(relatedEpisode ? { isPartOf: { "@id": new URL(`${episodePath(relatedEpisode)}#podcast-episode`, Astro.site).href } } : {}),
+};
+const breadcrumbSchema = {
+  "@type": "BreadcrumbList",
+  "@id": breadcrumbID,
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: new URL("/", Astro.site).href },
+    { "@type": "ListItem", position: 2, name: "Exclusives", item: new URL("/exclusives/", Astro.site).href },
+    { "@type": "ListItem", position: 3, name: exclusive.title, item: canonicalURL },
+  ],
+};
+---
+
+<BaseLayout
+  title={`${exclusive.title} | Water Valley Voice`}
+  description={exclusive.metaDescription}
+  canonical={canonicalURL}
+  socialImage={exclusive.poster}
+  socialImageAlt={exclusive.posterAlt}
+  socialImageWidth={1280}
+  socialImageHeight={720}
+  socialImageType="image/jpeg"
+  ogType="article"
+  publishedTime={exclusive.publishedDateTime}
+  mainEntityId={videoID}
+  breadcrumbId={breadcrumbID}
+  jsonLd={[videoSchema, breadcrumbSchema]}
+>
+  <SiteHeader currentPage="exclusives" />
+  <main id="main-content" class="episode-detail-page exclusive-page">
+    <section class="episode-detail-hero">
+      <div class="section episode-detail-hero-inner">
+        <div class="episode-detail-heading">
+          <a class="episode-back-link" href="/exclusives/"><span aria-hidden="true">←</span> All Exclusives</a>
+          <p class="eyebrow eyebrow-gold"><span></span> Only on our website</p>
+          <h1>{exclusive.title}</h1>
+          <p class="episode-detail-teaser">{exclusive.teaser}</p>
+          <dl class="episode-hero-facts" aria-label="Exclusive details">
+            <div><dt>Published</dt><dd><time datetime={exclusive.publishedDate}>{dateLabel}</time></dd></div>
+            <div><dt>Run time</dt><dd>{exclusive.durationLabel}</dd></div>
+            <div><dt>Host</dt><dd>Marissa Donahoo</dd></div>
+            <div class="episode-hero-fact--featuring"><dt>Featuring</dt><dd>{exclusive.guests.join(", ")}</dd></div>
+          </dl>
+        </div>
+        <div class="episode-detail-mark" aria-hidden="true">
+          <span>Water Valley Voice</span><strong>EX</strong><i></i><small>Exclusively here</small>
+          <img src="/media/images/wvv-mic-mark-480.jpg" alt="" width="480" height="480" />
+        </div>
+      </div>
+    </section>
+
+    <section class="section episode-detail-content">
+      <div class="episode-detail-main">
+        <EpisodeAd ad={ads.mobileTop} placement="mobileTop" />
+        <section class="episode-media" aria-labelledby="exclusive-watch-title">
+          <div class="episode-media-heading">
+            <div>
+              <p class="eyebrow eyebrow-dark"><span></span> Website Exclusive</p>
+              <h2 id="exclusive-watch-title">Watch the conversation.</h2>
+            </div>
+          </div>
+          <video
+            class="exclusive-native-video episode-video-frame"
+            controls playsinline preload="metadata"
+            width="1920" height="1080"
+            poster={exclusive.poster}
+            aria-label={exclusive.title}
+          >
+            <source src={exclusive.videoUrl} type="video/mp4" />
+            {exclusive.captions && <track kind="captions" src={exclusive.captions} srclang="en" label="English" />}
+            Your browser does not support this video. <a href={exclusive.videoUrl}>Open the video file.</a>
+          </video>
+        </section>
+
+        {relatedEpisode && (
+          <section class="exclusive-related-episode" aria-labelledby="related-episode-title">
+            <p class="eyebrow eyebrow-dark"><span></span> From {relatedEpisode.label}</p>
+            <h2 id="related-episode-title">Keep the conversation going.</h2>
+            <p>{relatedEpisode.title}</p>
+            <a class="text-link" href={episodePath(relatedEpisode)}>
+              Watch or listen to {relatedEpisode.label} <span aria-hidden="true">→</span>
+            </a>
+          </section>
+        )}
+
+        <article class="episode-story" aria-labelledby="exclusive-story-title">
+          <p class="eyebrow eyebrow-dark"><span></span> About this Exclusive</p>
+          <h2 id="exclusive-story-title">A little more<br /><em>of the story.</em></h2>
+          <div class="episode-story-copy">
+            {exclusive.description.map((paragraph) => <p>{paragraph}</p>)}
+          </div>
+        </article>
+        <EpisodeAd ad={ads.lowerBanner} placement="lowerBanner" />
+        <SharePanel kind="exclusive" title={exclusive.title} text={exclusive.teaser} url={canonicalURL} />
+      </div>
+
+      <div class:list={["episode-detail-rail", { "episode-detail-rail--with-ad": Boolean(ads.desktopTower) }]}>
+        <aside class="episode-detail-aside" aria-label="More conversations">
+          <div>
+            <p class="episode-aside-label">Keep exploring</p>
+            {relatedEpisode && <a href={episodePath(relatedEpisode)}>{relatedEpisode.label} <span aria-hidden="true">→</span></a>}
+            <a href="/exclusives/">All Exclusives <span aria-hidden="true">→</span></a>
+            <a href="/episodes/">All episodes <span aria-hidden="true">→</span></a>
+          </div>
+        </aside>
+        <EpisodeAd ad={ads.desktopTower} placement="desktopTower" />
+      </div>
+    </section>
+  </main>
+  <SiteFooter />
+</BaseLayout>

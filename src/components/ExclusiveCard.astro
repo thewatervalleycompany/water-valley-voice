@@ -1,0 +1,19 @@
+---
+import { exclusivePath, type Exclusive } from "../data/exclusives";
+import "../styles/exclusives.css";
+interface Props { exclusive: Exclusive; }
+const { exclusive } = Astro.props;
+---
+
+<article class="exclusive-card">
+  <a class="exclusive-card-image" href={exclusivePath(exclusive)} aria-label={`Watch ${exclusive.title}`}>
+    <img src={exclusive.poster} alt={exclusive.posterAlt} width="1280" height="720" loading="lazy" decoding="async" />
+    <span class="exclusive-duration">{exclusive.durationLabel}</span>
+  </a>
+  <div class="exclusive-card-copy">
+    <p class="eyebrow eyebrow-dark"><span></span> Only on our website</p>
+    <h3><a href={exclusivePath(exclusive)}>{exclusive.title}</a></h3>
+    <p>{exclusive.teaser}</p>
+    <a class="text-link" href={exclusivePath(exclusive)}>Watch the Exclusive <span aria-hidden="true">→</span></a>
+  </div>
+</article>

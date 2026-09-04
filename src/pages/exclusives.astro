@@ -1,0 +1,45 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+import ExclusiveCard from "../components/ExclusiveCard.astro";
+import { exclusivePath, newestExclusives } from "../data/exclusives";
+import "../styles/exclusives.css";
+
+const archiveSchema = {
+  "@type": "ItemList",
+  "@id": new URL("/exclusives/#exclusive-list", Astro.site).href,
+  name: "Water Valley Voice Exclusives",
+  numberOfItems: newestExclusives.length,
+  itemListElement: newestExclusives.map((exclusive, index) => ({
+    "@type": "ListItem", position: index + 1,
+    name: exclusive.title, url: new URL(exclusivePath(exclusive), Astro.site).href,
+  })),
+};
+---
+
+<BaseLayout
+  title="Exclusives | Water Valley Voice"
+  description="Discover Water Valley Voice Exclusives: extra stories, candid moments, and original conversations available only on our website."
+  pageType="CollectionPage"
+  mainEntityId={archiveSchema["@id"]}
+  jsonLd={archiveSchema}
+>
+  <SiteHeader currentPage="exclusives" />
+  <main id="main-content" class="exclusive-page">
+    <section class="episode-detail-hero exclusive-archive-hero">
+      <div class="section episode-detail-heading">
+        <p class="eyebrow eyebrow-gold"><span></span> Only on our website</p>
+        <h1>Exclusives.</h1>
+        <p class="episode-detail-teaser">Extra stories, candid moments, and original conversations. There’s always more to talk about.</p>
+      </div>
+    </section>
+    <section class="section exclusive-archive" aria-labelledby="exclusive-list-title">
+      <h2 id="exclusive-list-title">The latest Exclusives.</h2>
+      <div class="exclusive-list">
+        {newestExclusives.map((exclusive) => <ExclusiveCard exclusive={exclusive} />)}
+      </div>
+    </section>
+  </main>
+  <SiteFooter />
+</BaseLayout>

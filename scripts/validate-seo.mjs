@@ -1,4 +1,4 @@
-import { readFileSync, readdirSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { extname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -111,6 +111,33 @@ for (const file of htmlFiles) {
         assert(types.has("AudioObject"), `${outputPath}: missing AudioObject schema`);
         assert(types.has("BreadcrumbList"), `${outputPath}: missing BreadcrumbList schema`);
       }
+
+      if (outputPath.startsWith("exclusives/") && outputPath !== "exclusives/index.html") {
+        const video = graph.find((node) => node?.["@type"] === "VideoObject");
+        assert(Boolean(video), `${outputPath}: missing VideoObject schema`);
+        assert(types.has("BreadcrumbList"), `${outputPath}: missing BreadcrumbList schema`);
+        assert(video?.contentUrl?.startsWith("https://media.watervalleyvoice.com/exclusives/"), `${outputPath}: video must use the R2 media domain`);
+        assert(html.includes(`<source src="${video?.contentUrl}" type="video/mp4"`), `${outputPath}: player and schema video URLs differ`);
+        assert(/<video\b[^>]*\bcontrols\b/.test(html), `${outputPath}: missing native video controls`);
+        assert(/data-share-kind="exclusive"/.test(html), `${outputPath}: missing Exclusive sharing controls`);
+        const poster = firstMatch(html, /<video\b[^>]*poster="([^"]+)"/);
+        assert(poster?.startsWith("/") && existsSync(join(distDirectoryPath, poster)), `${outputPath}: missing poster file`);
+        const captions = firstMatch(html, /<track\b[^>]*src="([^"]+)"/);
+        if (captions) {
+          const captionPath = join(distDirectoryPath, captions);
+          assert(existsSync(captionPath), `${outputPath}: missing caption file`);
+          if (existsSync(captionPath)) assert(readFileSync(captionPath, "utf8").startsWith("WEBVTT"), `${outputPath}: captions are not WebVTT`);
+        }
+        if (video?.isPartOf?.["@id"]) {
+          const parentPath = new URL(video.isPartOf["@id"]).pathname;
+          const parentFile = join(distDirectoryPath, parentPath, "index.html");
+          assert(html.includes(`href="${parentPath}"`), `${outputPath}: missing parent episode link`);
+          assert(existsSync(parentFile), `${outputPath}: parent episode does not exist`);
+          if (existsSync(parentFile)) {
+            assert(readFileSync(parentFile, "utf8").includes(`href="${new URL(canonical).pathname}"`), `${outputPath}: parent episode does not link back to Exclusive`);
+          }
+        }
+      }
     } catch (error) {
       failures.push(`${outputPath}: JSON-LD does not parse (${error.message})`);
     }
@@ -144,8 +171,8 @@ assert(manifest.name === "Water Valley Voice", "site.webmanifest: unexpected app
 
 const llmsText = readFileSync(new URL("llms.txt", distDirectory), "utf8");
 assert(llmsText.includes("# Water Valley Voice"), "llms.txt: site heading is missing");
-for (const url of sitemapURLs.filter((url) => url.includes("/episodes/episode-"))) {
-  assert(llmsText.includes(url), `llms.txt: missing episode URL ${url}`);
+for (const url of sitemapURLs.filter((url) => url.includes("/episodes/episode-") || url.includes("/exclusives/"))) {
+  assert(llmsText.includes(url), `llms.txt: missing content URL ${url}`);
 }
 
 if (failures.length > 0) {

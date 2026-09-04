@@ -25,6 +25,12 @@ To preview the exact production build, run `npm run build`, then `npm run previe
 
 Place website photographs in `public/media/images/`. The starter folders also include `audio/` and `video/`, but full podcast episodes should remain on Podbean and long videos should remain on YouTube.
 
+Website-only Exclusives use Cloudflare R2. Place original exports in
+`exclusive-sources/` for optimization, then upload the delivery copies to the
+`exclusives/` folder in the `water-valley-voice-media` bucket. Published media
+uses `https://media.watervalleyvoice.com/exclusives/`. See
+[the R2 media guide](docs/r2-media.md) for the configuration and upload workflow.
+
 Files under `public/` are referenced from the site without the word `public`. For example:
 
 ```astro
@@ -45,6 +51,22 @@ The site will then automatically:
 
 Keep slugs in the established format: `episode-2`, `episode-2-part-2`, and so
 on. Run `npm run check` and `npm run build` before publishing.
+
+## Add an Exclusive
+
+Add an entry to `src/data/exclusives.ts` with its title, teaser, description,
+publication date, duration, guests, R2 video URL, and poster image. Add a WebVTT
+caption file under `public/media/captions/` and set `captions` to its public path.
+The site creates its page, adds it to `/exclusives/`, and includes it in the
+sitemap and content inventory. The player uses R2 directly, with the same ad
+placements and sharing controls as episode pages.
+
+Set `relatedEpisodeSlug` when the Exclusive belongs to an episode, for example
+`episode-1-part-2`. Both pages will link to each other. Omit that field for a
+standalone Exclusive. Exclusives do not change the homepage's latest podcast
+episode or get added to the Podbean/YouTube feeds.
+
+Run `npm run check`, `npm run build`, and `npm run check:seo` before publishing.
 
 ## Publish with Cloudflare Pages
 

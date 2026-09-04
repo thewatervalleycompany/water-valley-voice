@@ -1,10 +1,13 @@
 ---
 import type { GetStaticPaths } from "astro";
 import EpisodeAd from "../../components/EpisodeAd.astro";
+import ExclusiveCard from "../../components/ExclusiveCard.astro";
+import SharePanel from "../../components/SharePanel.astro";
 import SiteFooter from "../../components/SiteFooter.astro";
 import SiteHeader from "../../components/SiteHeader.astro";
 import { getEpisodeAds } from "../../data/episode-ads";
 import { episodePath, episodes, type Episode } from "../../data/episodes";
+import { getExclusivesForEpisode } from "../../data/exclusives";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
 interface Props {
@@ -25,8 +28,8 @@ export const getStaticPaths = (() =>
 
 const { episode, previousEpisode, nextEpisode } = Astro.props;
 const episodeAds = getEpisodeAds(episode.slug);
+const relatedExclusives = getExclusivesForEpisode(episode.slug);
 const canonicalURL = new URL(episodePath(episode), Astro.site).toString();
-const facebookShareURL = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(canonicalURL)}`;
 const youtubeEmbedUrl = episode.youtubeVideoId
   ? `https://www.youtube-nocookie.com/embed/${episode.youtubeVideoId}?rel=0`
   : undefined;
@@ -264,39 +267,19 @@ const breadcrumbSchema = {
           </div>
         </article>
 
+        {relatedExclusives.length > 0 && (
+          <section class="episode-related-exclusives" aria-labelledby="related-exclusives-title">
+            <p class="eyebrow eyebrow-dark"><span></span> More of the conversation</p>
+            <h2 id="related-exclusives-title">Exclusives from this episode.</h2>
+            <div class="exclusive-list">
+              {relatedExclusives.map((exclusive) => <ExclusiveCard exclusive={exclusive} />)}
+            </div>
+          </section>
+        )}
+
         <EpisodeAd ad={episodeAds.lowerBanner} placement="lowerBanner" />
 
-        <section
-          class="episode-share"
-          aria-labelledby="episode-share-title"
-          data-episode-share
-          data-share-title={episode.playerTitle}
-          data-share-text={episode.teaser}
-          data-share-url={canonicalURL}
-        >
-          <div class="episode-share-copy">
-            <p class="eyebrow eyebrow-gold"><span></span> Pass it along</p>
-            <h2 id="episode-share-title">Share this episode.</h2>
-            <p>Know someone who would enjoy this conversation? Send it their way.</p>
-          </div>
-          <div class="episode-share-actions">
-            <button class="episode-share-action episode-share-primary" type="button" data-native-share hidden>
-              Share episode <span aria-hidden="true">↗</span>
-            </button>
-            <a
-              class="episode-share-action"
-              href={facebookShareURL}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Facebook <span aria-hidden="true">↗</span>
-            </a>
-            <button class="episode-share-action" type="button" data-copy-share>
-              Copy link <span aria-hidden="true">⧉</span>
-            </button>
-          </div>
-          <p class="episode-share-status" role="status" aria-live="polite" data-share-status></p>
-        </section>
+        <SharePanel kind="episode" title={episode.playerTitle} text={episode.teaser} url={canonicalURL} />
       </div>
 
       <div class:list={["episode-detail-rail", { "episode-detail-rail--with-ad": Boolean(episodeAds.desktopTower) }]}>
@@ -351,54 +334,4 @@ const breadcrumbSchema = {
   </main>
 
   <SiteFooter />
-
-  <script>
-    const sharePanel = document.querySelector<HTMLElement>("[data-episode-share]");
-
-    if (sharePanel) {
-      const nativeShareButton = sharePanel.querySelector<HTMLButtonElement>("[data-native-share]");
-      const copyShareButton = sharePanel.querySelector<HTMLButtonElement>("[data-copy-share]");
-      const shareStatus = sharePanel.querySelector<HTMLElement>("[data-share-status]");
-      const title = sharePanel.dataset.shareTitle ?? document.title;
-      const text = sharePanel.dataset.shareText ?? "Listen to this episode of Water Valley Voice.";
-      const url = sharePanel.dataset.shareUrl ?? window.location.href;
-      const shareData = { title, text, url };
-
-      const setStatus = (message: string) => {
-        if (shareStatus) shareStatus.textContent = message;
-      };
-
-      const copyLink = async () => {
-        setStatus("");
-        try {
-          if (!navigator.clipboard || !window.isSecureContext) throw new Error("Clipboard unavailable.");
-          await navigator.clipboard.writeText(url);
-
-          setStatus("Episode link copied.");
-        } catch {
-          setStatus("The link could not be copied automatically. Copy it from your browser’s address bar.");
-        }
-      };
-
-      const canUseNativeShare =
-        typeof navigator.share === "function" &&
-        (typeof navigator.canShare !== "function" || navigator.canShare(shareData));
-
-      if (nativeShareButton && canUseNativeShare) {
-        nativeShareButton.hidden = false;
-        nativeShareButton.addEventListener("click", async () => {
-          setStatus("");
-          try {
-            await navigator.share(shareData);
-            setStatus("Episode shared.");
-          } catch (error) {
-            if (error instanceof DOMException && error.name === "AbortError") return;
-            setStatus("Sharing did not open. You can copy the link instead.");
-          }
-        });
-      }
-
-      copyShareButton?.addEventListener("click", copyLink);
-    }
-  </script>
 </BaseLayout>

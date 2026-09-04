@@ -1,5 +1,6 @@
 import type { APIRoute } from "astro";
 import { episodePath, episodes } from "../data/episodes";
+import { exclusivePath, newestExclusives } from "../data/exclusives";
 
 export const prerender = true;
 
@@ -22,6 +23,7 @@ export const GET: APIRoute = ({ site }) => {
     "",
     `- [Home](${absoluteURL("/")})`,
     `- [All podcast episodes](${absoluteURL("/episodes/")})`,
+    `- [Website-only Exclusives](${absoluteURL("/exclusives/")})`,
     `- [About The Water Valley Company and host Marissa Donahoo](${absoluteURL("/about/")})`,
     "",
     "## Listen and watch",
@@ -32,6 +34,12 @@ export const GET: APIRoute = ({ site }) => {
     "## Episodes",
     "",
     ...episodeLines,
+    "",
+    "## Exclusives",
+    "",
+    ...newestExclusives.map((exclusive) =>
+      `- [${exclusive.title}](${absoluteURL(exclusivePath(exclusive))}) — ${exclusive.teaser}`,
+    ),
     "",
     "## Contact",
     "",

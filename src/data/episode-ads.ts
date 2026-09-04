@@ -14,7 +14,7 @@ export interface EpisodeAd {
 export type EpisodeAdSet = Partial<Record<EpisodeAdPlacement, EpisodeAd>>;
 
 /**
- * Creatives configured here appear on every episode page. Leave a placement
+ * Creatives configured here appear on episode and Exclusive pages. Leave a placement
  * absent to hide it completely. Example:
  *
  * desktopTower: {

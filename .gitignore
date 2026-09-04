@@ -23,3 +23,7 @@ dist/
 !/episode-ad-sources/728x90/.gitkeep
 /episode-ad-sources/970x250/*
 !/episode-ad-sources/970x250/.gitkeep
+
+# Exclusive media stays local until it is optimized and uploaded separately.
+/exclusive-sources/*
+!/exclusive-sources/README.md

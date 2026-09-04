@@ -1,0 +1,81 @@
+---
+interface Props {
+  kind: "episode" | "exclusive";
+  title: string;
+  text: string;
+  url: string;
+}
+
+const { kind, title, text, url } = Astro.props;
+const facebookShareURL = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+const label = kind === "exclusive" ? "Exclusive" : "episode";
+---
+
+<section
+  class="episode-share"
+  aria-labelledby="episode-share-title"
+  data-content-share
+  data-share-title={title}
+  data-share-text={text}
+  data-share-url={url}
+  data-share-kind={kind}
+>
+  <div class="episode-share-copy">
+    <p class="eyebrow eyebrow-gold"><span></span> Pass it along</p>
+    <h2 id="episode-share-title">Share this {label}.</h2>
+    <p>Know someone who would enjoy this conversation? Send it their way.</p>
+  </div>
+  <div class="episode-share-actions">
+    <button class="episode-share-action episode-share-primary" type="button" data-native-share hidden>
+      Share {label} <span aria-hidden="true">↗</span>
+    </button>
+    <a class="episode-share-action" href={facebookShareURL} target="_blank" rel="noopener noreferrer">
+      Facebook <span aria-hidden="true">↗</span>
+    </a>
+    <button class="episode-share-action" type="button" data-copy-share>
+      Copy link <span aria-hidden="true">⧉</span>
+    </button>
+  </div>
+  <p class="episode-share-status" role="status" aria-live="polite" data-share-status></p>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLElement>("[data-content-share]").forEach((panel) => {
+    const nativeButton = panel.querySelector<HTMLButtonElement>("[data-native-share]");
+    const copyButton = panel.querySelector<HTMLButtonElement>("[data-copy-share]");
+    const status = panel.querySelector<HTMLElement>("[data-share-status]");
+    const title = panel.dataset.shareTitle ?? document.title;
+    const text = panel.dataset.shareText ?? "Enjoy this conversation from Water Valley Voice.";
+    const url = panel.dataset.shareUrl ?? window.location.href;
+    const kind = panel.dataset.shareKind === "exclusive" ? "Exclusive" : "Episode";
+    const shareData = { title, text, url };
+    const setStatus = (message: string) => { if (status) status.textContent = message; };
+
+    copyButton?.addEventListener("click", async () => {
+      setStatus("");
+      try {
+        if (!navigator.clipboard || !window.isSecureContext) throw new Error("Clipboard unavailable.");
+        await navigator.clipboard.writeText(url);
+        setStatus(`${kind} link copied.`);
+      } catch {
+        setStatus("The link could not be copied automatically. Copy it from your browser’s address bar.");
+      }
+    });
+
+    const canShare = typeof navigator.share === "function" &&
+      (typeof navigator.canShare !== "function" || navigator.canShare(shareData));
+    if (nativeButton && canShare) {
+      nativeButton.hidden = false;
+      nativeButton.addEventListener("click", async () => {
+        setStatus("");
+        try {
+          await navigator.share(shareData);
+          setStatus(`${kind} shared.`);
+        } catch (error) {
+          if (error instanceof DOMException && error.name === "AbortError") return;
+          setStatus("Sharing did not open. You can copy the link instead.");
+        }
+      });
+    }
+  });
+</script>

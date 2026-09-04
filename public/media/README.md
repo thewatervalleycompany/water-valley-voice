@@ -12,6 +12,12 @@ Use lowercase, descriptive filenames with hyphens, such as
 full-length videos should stay on YouTube; embedding those services keeps this
 site fast and avoids unnecessary hosting and bandwidth costs.
 
+Website-only Exclusives use the separate Cloudflare R2 media bucket. Put
+original exports in the project's local `exclusive-sources/` folder, then
+upload optimized copies to R2 under `exclusives/`. Their public URLs start with
+`https://media.watervalleyvoice.com/exclusives/`; do not place large Exclusive
+videos in this `public/` tree. See `docs/r2-media.md` in the project root.
+
 The homepage currently uses the Podbean player and YouTube playlist directly.
 
 The files ending in `-web.jpg` are smaller, website-ready copies of the original
