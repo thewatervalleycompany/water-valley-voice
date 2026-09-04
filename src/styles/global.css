@@ -3326,6 +3326,10 @@ footer {
   border-left: 1px solid rgba(201, 163, 79, 0.34);
 }
 
+.episode-hero-facts > .episode-hero-fact--featuring {
+  flex: 1 1 165px;
+}
+
 .episode-hero-facts > div:first-child {
   padding-left: 0;
   border-left: 0;
