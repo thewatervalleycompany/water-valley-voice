@@ -34,6 +34,11 @@ const defaultEpisodeAds: EpisodeAdSet = {
     href: "https://watervalleyvaults.com/design/",
     alt: "Water Valley Vaults: 10% off premium storage, limited availability",
   },
+  mobileLower: {
+    src: "/media/ads/episodes/970x250/water-valley-vaults-10-percent-off.webp",
+    href: "https://watervalleyvaults.com/design/",
+    alt: "Water Valley Vaults: 10% off premium storage",
+  },
 };
 
 /** Add only the placements that should differ for a particular episode. */
