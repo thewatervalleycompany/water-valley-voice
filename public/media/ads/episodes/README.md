@@ -5,7 +5,7 @@ website:
 
 - `300x600/` — desktop right-rail placement
 - `728x90/` — mobile placement between the episode hero and video section
-- `970x250/` — mobile placement between the full description and share panel
+- `970x250/` — responsive placement between the full description and share panel
 
 Original uploads should be placed in the matching folder under
 `episode-ad-sources/`, not here. The website scales each published creative to

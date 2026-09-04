@@ -3669,9 +3669,18 @@ footer {
   margin-top: 24px;
 }
 
-.episode-ad--mobileTop,
-.episode-ad--mobileLower {
+.episode-ad--mobileTop {
   display: none;
+}
+
+.episode-ad--lowerBanner {
+  width: 100%;
+  margin-top: 58px;
+  display: block;
+}
+
+.episode-ad--lowerBanner + .episode-share {
+  margin-top: 34px;
 }
 
 .episode-ad-link {
@@ -3711,7 +3720,7 @@ footer {
   aspect-ratio: 728 / 90;
 }
 
-.episode-ad--mobileLower img {
+.episode-ad--lowerBanner img {
   aspect-ratio: 970 / 250;
 }
 
@@ -3927,21 +3936,13 @@ footer {
   }
 
   .episode-ad--mobileTop,
-  .episode-ad--mobileLower {
+  .episode-ad--lowerBanner {
     width: 100%;
     display: block;
   }
 
   .episode-ad--mobileTop {
     margin-bottom: 46px;
-  }
-
-  .episode-ad--mobileLower {
-    margin-top: 58px;
-  }
-
-  .episode-ad--mobileLower + .episode-share {
-    margin-top: 34px;
   }
 
   .episode-pagination {

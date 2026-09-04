@@ -1,4 +1,4 @@
-export type EpisodeAdPlacement = "desktopTower" | "mobileTop" | "mobileLower";
+export type EpisodeAdPlacement = "desktopTower" | "mobileTop" | "lowerBanner";
 
 export interface EpisodeAd {
   /** Public path to the optimized image or animated GIF/WebP. */
@@ -25,7 +25,7 @@ export type EpisodeAdSet = Partial<Record<EpisodeAdPlacement, EpisodeAd>>;
  */
 const defaultEpisodeAds: EpisodeAdSet = {
   desktopTower: {
-    src: "/media/ads/episodes/300x600/water-valley-vaults-protect-assets.webp",
+    src: "/media/ads/episodes/300x600/water-valley-vaults-protect-assets-looping.webp",
     href: "https://watervalleyvaults.com/design/",
     alt: "Water Valley Vaults: protect your assets and receive 10% off",
   },
@@ -34,7 +34,7 @@ const defaultEpisodeAds: EpisodeAdSet = {
     href: "https://watervalleyvaults.com/design/",
     alt: "Water Valley Vaults: 10% off premium storage, limited availability",
   },
-  mobileLower: {
+  lowerBanner: {
     src: "/media/ads/episodes/970x250/water-valley-vaults-10-percent-off.webp",
     href: "https://watervalleyvaults.com/design/",
     alt: "Water Valley Vaults: 10% off premium storage",

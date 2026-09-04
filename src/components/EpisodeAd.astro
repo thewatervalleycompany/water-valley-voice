@@ -10,10 +10,11 @@ const { ad, placement } = Astro.props;
 const dimensions = {
   desktopTower: { width: 300, height: 600 },
   mobileTop: { width: 728, height: 90 },
-  mobileLower: { width: 970, height: 250 },
+  lowerBanner: { width: 970, height: 250 },
 } satisfies Record<EpisodeAdPlacement, { width: number; height: number }>;
 const opensInNewTab = ad?.newTab ?? (ad ? /^https?:\/\//i.test(ad.href) : false);
-const placementMedia = placement === "desktopTower" ? "(min-width: 761px)" : "(max-width: 760px)";
+const placementMedia =
+  placement === "desktopTower" ? "(min-width: 761px)" : placement === "mobileTop" ? "(max-width: 760px)" : undefined;
 const transparentPixel = "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
 ---
 

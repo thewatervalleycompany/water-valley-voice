@@ -4,7 +4,7 @@ Place each original image or GIF in the folder matching its designed size:
 
 - `300x600/` — desktop right-rail creative
 - `728x90/` — mobile creative above the Watch section
-- `970x250/` — mobile creative between the description and share panel
+- `970x250/` — responsive creative between the description and share panel
 
 These source files are intentionally ignored by Git and are not published to
 the website. This prevents an unoptimized upload from being sent to every site
