@@ -809,6 +809,7 @@ h2 {
 }
 
 .social-icon {
+  flex: 0 0 34px;
   width: 34px;
   height: 34px;
   display: grid;
@@ -816,9 +817,10 @@ h2 {
   border: 1px solid var(--gold);
   border-radius: 50%;
   color: var(--gold-dark);
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
+}
+
+.social-icon svg {
+  display: block;
 }
 
 .social-grid strong {

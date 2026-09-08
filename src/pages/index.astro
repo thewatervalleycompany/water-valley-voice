@@ -8,17 +8,14 @@ import { episodePath, latestEpisode } from "../data/episodes";
 const socials = [
   {
     name: "Facebook",
-    short: "f",
     href: "https://www.facebook.com/profile.php?id=61591334404567",
   },
   {
     name: "Instagram",
-    short: "ig",
     href: "https://www.instagram.com/watervalleyvoice/",
   },
   {
     name: "YouTube",
-    short: "yt",
     href: "https://www.youtube.com/channel/UCOn56MJ6u1mYxIfdJxZwvNw",
   },
 ];
@@ -193,12 +190,28 @@ const featuredSubtitle = featuredTitleParts.length > 0 ? featuredTitleParts.join
       <div class="section social-inner">
         <div>
           <p class="eyebrow eyebrow-dark"><span></span> Stay connected</p>
-          <h2>Be the first to know.</h2>
+          <h2>Follow us on socials.</h2>
         </div>
         <div class="social-grid">
           {socials.map((social) => (
             <a href={social.href} target="_blank" rel="noopener noreferrer" aria-label={`Follow Water Valley Voice on ${social.name}`}>
-              <span class="social-icon" aria-hidden="true">{social.short}</span>
+              <span class="social-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" focusable="false">
+                  {social.name === "Facebook" && (
+                    <path d="M14 22v-9h3l.5-4H14V6.5c0-1.16.32-1.95 2-1.95h2V1.1A26.7 26.7 0 0 0 15.1 1C12.23 1 10 2.74 10 5.94V9H7v4h3v9z" />
+                  )}
+                  {social.name === "Instagram" && (
+                    <g fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="3" y="3" width="18" height="18" rx="5" />
+                      <circle cx="12" cy="12" r="4" />
+                      <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+                    </g>
+                  )}
+                  {social.name === "YouTube" && (
+                    <path fill-rule="evenodd" d="M21.6 5.2C22.3 5.4 22.8 6 23 6.7c.4 1.4.4 4.3.4 5.3s0 3.9-.4 5.3c-.2.7-.7 1.3-1.4 1.5C19.9 19.3 12 19.3 12 19.3s-7.9 0-9.6-.5C1.7 18.6 1.2 18 .9 17.3.6 15.9.6 13 .6 12s0-3.9.3-5.3c.3-.7.8-1.3 1.5-1.5C4.1 4.7 12 4.7 12 4.7s7.9 0 9.6.5ZM9.7 8.8v6.4l6.1-3.2z" />
+                  )}
+                </svg>
+              </span>
               <strong>{social.name}</strong>
               <i aria-hidden="true">↗</i>
             </a>
