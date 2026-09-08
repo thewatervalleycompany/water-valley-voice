@@ -9,6 +9,15 @@
 .exclusive-page .episode-detail-content { padding-top: 60px; }
 .exclusive-page .episode-detail-mark { min-height: 290px; }
 .exclusive-page .episode-detail-mark > small { font-size: 11px; }
+.exclusive-monogram { display: inline-flex; align-items: baseline; gap: 0.02em; }
+.exclusive-monogram sup {
+  position: relative;
+  font-size: 0.5em;
+  line-height: inherit;
+  top: -0.68em;
+  /* Half-size capitals rise by their cap height to align with the E. */
+  top: -1cap;
+}
 .exclusive-native-video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; background: #000; }
 .exclusive-archive { padding-block: 65px 90px; }
 .exclusive-archive > h2 { margin: 0 0 35px; font-size: clamp(32px, 4vw, 48px); }
