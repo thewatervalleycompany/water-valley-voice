@@ -42,7 +42,22 @@ const defaultEpisodeAds: EpisodeAdSet = {
 };
 
 /** Add only the placements that should differ for a particular episode. */
-const episodeAdOverrides: Partial<Record<string, EpisodeAdSet>> = {};
+const episodeAdOverrides: Partial<Record<string, EpisodeAdSet>> = {
+  "episode-2": {
+    desktopTower: {
+      src: "/media/ads/episodes/300x600/water-valley-vaults-save-your-marriage.webp",
+      href: "https://watervalleyvaults.com/design/",
+      alt: "Water Valley Vaults: save your marriage by storing recreational gear in a private vault",
+    },
+  },
+  "episode-3": {
+    desktopTower: {
+      src: "/media/ads/episodes/300x600/water-valley-vaults-business-location.webp",
+      href: "https://watervalleyvaults.com/design/",
+      alt: "Water Valley Vaults: receive 10% off your business location",
+    },
+  },
+};
 
 export const getEpisodeAds = (episodeSlug: string): EpisodeAdSet => ({
   ...defaultEpisodeAds,
