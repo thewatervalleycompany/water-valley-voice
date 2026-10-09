@@ -225,9 +225,9 @@ export const episodes: Episode[] = [
     title: "Big Announcement: Sweetheart Winery Opens in Windsor's RainDance",
     seoTitle: "Episode 3: Sweetheart Winery in RainDance | Water Valley Voice",
     teaser:
-      "Charles Oester shares the family story behind Sweetheart Winery and what’s coming to its new RainDance location in the former Ted’s Sweetwater Grill.",
+      "Charles Oster shares the family story behind Sweetheart Winery and what’s coming to its new RainDance location in the former Ted’s Sweetwater Grill.",
     metaDescription:
-      "Charles Oester joins Marissa Donahoo to talk Sweetheart Winery’s family roots, wines, cider, and new RainDance location in Windsor.",
+      "Charles Oster joins Marissa Donahoo to talk Sweetheart Winery’s family roots, wines, cider, and new RainDance location in Windsor.",
     socialImageAlt:
       "Episode 3: Big Announcement: Sweetheart Winery Opens in Windsor’s RainDance, from Water Valley Voice.",
     playerTitle: "E3: Big Announcement: Sweetheart Winery Opens in Windsor's RainDance",
@@ -238,7 +238,7 @@ export const episodes: Episode[] = [
     duration: "PT57M4S",
     durationLabel: "57 min 4 sec",
     guests: [
-      "Charles Oester",
+      "Charles Oster",
     ],
     topics: [
       "Sweetheart Winery",
@@ -259,7 +259,7 @@ export const episodes: Episode[] = [
     youtubeUrl: "https://www.youtube.com/watch?v=8zxoOZWc85o",
     youtubeUploadDate: "2026-10-08T15:58:21-07:00",
     description: [
-      "Join Marissa as she sits down with Charles Oester, co-owner of Sweetheart Winery, for an intimate conversation that traces a family journey from hometown roots to bold expansion. In this episode, Charles opens up about the winery’s origins in Loveland, the tight-knit family who runs it, and how a spontaneous promise over wine became the seed for acquiring the iconic RainDance property. You’ll feel the warmth of a family business: siblings and spouses who built a brand that blends Napa-sourced fruit, Northern Colorado craftsmanship, and heartfelt hospitality.",
+      "Join Marissa as she sits down with Charles Oster, co-owner of Sweetheart Winery, for an intimate conversation that traces a family journey from hometown roots to bold expansion. In this episode, Charles opens up about the winery’s origins in Loveland, the tight-knit family who runs it, and how a spontaneous promise over wine became the seed for acquiring the iconic RainDance property. You’ll feel the warmth of a family business: siblings and spouses who built a brand that blends Napa-sourced fruit, Northern Colorado craftsmanship, and heartfelt hospitality.",
       "Charles reveals the craftsmanship behind their wines and the surprising story of their California and Oregon sourcing, the cider-making science that keeps sugar low and flavor high, and the hands-on approach that earned them top 10 winery recognition. Listen as he describes the magic of their Loveland flagships—weddings among deer, moonlit wildlife visits, live Flight Club nights—and how that same enchantment will be reimagined at RainDance. Expect insider details about their Wine Club’s explosive growth, exclusive perks like Wine Force One limo tours, and a community-first philosophy that shapes every decision.",
       "As the conversation turns personal, Charles shares why community causes matter to Sweetheart: the chapter with Children's Hospital that honors a young girl named Everly and partnerships supporting veterans, women’s initiatives, and local families. He talks candidly about the decisions that led to choosing Windsor—family ties, the right feeling in the neighborhood—and the vision for RainDance: from a taproom and full kitchen to an outdoor terrace, brunch and coffee offerings, and a welcoming “living room” where neighbors become friends. With a tentative Halloween preview and a slated November opening, the episode brims with excitement, vulnerability, and plans to make the property a place where memories are made.",
       "Whether you love wine, cider, family stories, or community-driven businesses, this episode invites you into the behind-the-scenes passion that turns grapes and apples into experiences. Tune in for food talk, heartwarming philanthropy, and the promise of a new Sweetheart chapter that aims to be as much a neighbor as a destination.",
