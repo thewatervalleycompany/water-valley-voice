@@ -265,6 +265,56 @@ export const episodes: Episode[] = [
       "Whether you love wine, cider, family stories, or community-driven businesses, this episode invites you into the behind-the-scenes passion that turns grapes and apples into experiences. Tune in for food talk, heartwarming philanthropy, and the promise of a new Sweetheart chapter that aims to be as much a neighbor as a destination.",
     ],
   },
+  {
+    slug: "episode-4",
+    number: "04",
+    label: "Episode 4",
+    kicker: "The story behind the water",
+    title: "Why Water Valley’s Lakes Are Full: The Ben Eaton Story Behind the Water",
+    seoTitle: "Episode 4: Why Water Valley’s Lakes Are Full | Water Valley Voice",
+    teaser:
+      "Martin Lind joins Marissa Donahoo to explore Ben Eaton’s water legacy and the history, water rights, and engineering behind Water Valley’s full lakes.",
+    metaDescription:
+      "Martin Lind shares the Ben Eaton story behind Water Valley’s full lakes, from historic water rights to the irrigation systems serving the community today.",
+    socialImageAlt: "Episode 4: Why Water Valley’s Lakes Are Full: The Ben Eaton Story Behind the Water, from Water Valley Voice.",
+    playerTitle: "E4: Why Water Valley’s Lakes Are Full: The Ben Eaton Story Behind the Water",
+    playerSrc:
+      "https://www.podbean.com/player-v2/?i=hzk2b-1b877a2-pb&from=pb6admin&pbad=0&share=1&download=1&rtl=0&fonts=Arial&skin=f6f6f6&font-color=&logo_link=episode_page&btn-skin=8bbb4e",
+    publishedDate: "2026-10-16",
+    publishedDateTime: "2026-10-16T16:24:36-06:00",
+    duration: "PT57M54S",
+    durationLabel: "57 min 54 sec",
+    guests: [
+      "Martin Lind",
+    ],
+    topics: [
+      "Ben Eaton",
+      "Water Valley history",
+      "Colorado water rights",
+      "water storage",
+      "irrigation",
+      "lakes",
+      "drought resilience",
+      "RainDance",
+      "water stewardship",
+      "metro districts",
+      "data centers",
+    ],
+    podbeanUrl: "https://watervalleyvoice.podbean.com/e/why-water-valley-s-lakes-are-full-the-ben-eaton-story-behind-the-water/",
+    audioUrl: "https://mcdn.podbean.com/mf/web/25uuh9xcydc9j5ei/Episode4.mp3",
+    youtubeVideoId: "TNhCwkfcZN8",
+    youtubeUrl: "https://www.youtube.com/watch?v=TNhCwkfcZN8",
+    youtubeUploadDate: "2026-10-16T15:27:25-07:00",
+    description: [
+      "Welcome back to The Water Valley Voice! Today, Marissa Donahoo and Martin Lind unspool a story that spans a century and a half. They start with a simple question: why, in the middle of a historic drought, are Water Valley’s lakes full and its lawns green when so much else is brown? That question becomes the thread that pulls history, law, engineering and neighborhood memory into a single revealing tapestry.",
+      "The narrative moves from the present into the footprints of pioneers. Meet B.H. Eaton, the restless 19th‑century engineer who chased rivers and dug ditches. He filed claims in Denver before roads, trains or statehood made travel easy, and the water priorities he established in the 1860s still ripple across the valley. Hand‑written ledgers, fragile invoices and minutes—kept in a fireproof safe—become artifacts that prove a surprisingly modern truth: water, managed wisely, becomes an asset that outlives its owners.",
+      "Listen as the conversation peels back Colorado water law: first in time, first in right; the difference between diversion and storage; and the strange law of the “free river” that lets a well‑timed diversion fill reservoirs when no one downstream is calling for the water. The hosts turn a technical cross‑section into a story anyone can follow—rivers, ditches, groundwater, return flows—and they show how careful engineering and court‑tested rights let the community store snowmelt and put it to work for parks, fairways and front yards.",
+      "It’s also a personal tale of stewardship. While developers elsewhere sold off water or paved over ditches, the people behind Water Valley and Raindance kept those rights intact, built lakes and a dual‑water system, and in doing so crafted resilience: lower irrigation bills, fewer demands on potable supplies, and neighborhoods that stay green even as municipal water prices climb.",
+      "And when a modern controversy arrives — a large data center proposed nearby — the story widens again. Rumors about massive water use, noise and contamination meet a different reality: new data‑center cooling technologies use far less water than myths suggest, and careful permitting, sound mitigation and existing agreements all shape what can and cannot happen. The hosts cut through fear and gaslighting with context: compared to processing plants, car washes, or breweries, the center’s water footprint looks different when you put it in perspective.",
+      "History, they argue, is not nostalgia but compass. From Eaton’s hand‑dug ditch to today’s recorded water decrees and dual‑tap systems, the valley’s water belongs to metro districts and residents in a way most people do not expect. It is an asset of surprising future value — a buffer against scarcity, a bargaining chip in times of change, and a lesson in how community foresight can bend the arc of drought.",
+      "This episode is a storytelling tour through gravel and ledger paper, through legal fights and bird‑filled lakes, and into the quiet engineering choices that keep a place green. It’s about how the past teaches the present to hold on to what matters — and how, in Water Valley, the right diversion at the right time still makes a desert bloom.",
+    ],
+  },
 ];
 
 export const latestEpisode = episodes.at(-1)!;

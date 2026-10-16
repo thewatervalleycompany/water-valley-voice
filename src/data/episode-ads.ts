@@ -57,6 +57,13 @@ const episodeAdOverrides: Partial<Record<string, EpisodeAdSet>> = {
       alt: "Water Valley Vaults: receive 10% off your business location",
     },
   },
+  "episode-4": {
+    desktopTower: {
+      src: "/media/ads/episodes/300x600/water-valley-vaults-save-your-marriage.webp",
+      href: "https://watervalleyvaults.com/design/",
+      alt: "Water Valley Vaults: save your marriage by storing recreational gear in a private vault",
+    },
+  },
 };
 
 export const getEpisodeAds = (episodeSlug: string): EpisodeAdSet => ({
