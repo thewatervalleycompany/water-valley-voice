@@ -37,7 +37,13 @@ const episodeSchemaId = `${canonicalURL}#podcast-episode`;
 const webpageSchemaId = `${canonicalURL}#webpage`;
 const breadcrumbSchemaId = `${canonicalURL}#breadcrumb`;
 const podcastSchemaId = new URL("/#podcast", Astro.site).toString();
-const hostSchemaId = new URL("/about/#marissa-donahoo", Astro.site).toString();
+const hostName = episode.host ?? "Marissa Donahoo";
+const hostSchemaId = episode.host
+  ? `${canonicalURL}#host`
+  : new URL("/about/#marissa-donahoo", Astro.site).toString();
+const hostSchema = episode.host
+  ? { "@type": "Person", "@id": hostSchemaId, name: hostName }
+  : undefined;
 const organizationSchemaId = new URL("/#organization", Astro.site).toString();
 const episodeImageURL = episode.youtubeVideoId
   ? `https://i.ytimg.com/vi/${episode.youtubeVideoId}/maxresdefault.jpg`
@@ -154,7 +160,7 @@ const breadcrumbSchema = {
   publishedTime={episode.publishedDateTime}
   mainEntityId={episodeSchemaId}
   breadcrumbId={breadcrumbSchemaId}
-  jsonLd={[episodeSchema, ...(videoSchema ? [videoSchema] : []), breadcrumbSchema]}
+  jsonLd={[episodeSchema, ...(hostSchema ? [hostSchema] : []), ...(videoSchema ? [videoSchema] : []), breadcrumbSchema]}
 >
   <SiteHeader currentPage="episodes" />
 
@@ -177,7 +183,7 @@ const breadcrumbSchema = {
             </div>
             <div>
               <dt>Host</dt>
-              <dd>Marissa Donahoo</dd>
+              <dd>{hostName}</dd>
             </div>
             <div class="episode-hero-fact--featuring">
               <dt>Featuring</dt>

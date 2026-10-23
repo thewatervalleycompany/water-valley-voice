@@ -15,6 +15,7 @@ export interface Episode {
   publishedDateTime: string;
   duration: string;
   durationLabel: string;
+  host?: string;
   guests: string[];
   topics: string[];
   podbeanUrl: string;
@@ -313,6 +314,57 @@ export const episodes: Episode[] = [
       "And when a modern controversy arrives — a large data center proposed nearby — the story widens again. Rumors about massive water use, noise and contamination meet a different reality: new data‑center cooling technologies use far less water than myths suggest, and careful permitting, sound mitigation and existing agreements all shape what can and cannot happen. The hosts cut through fear and gaslighting with context: compared to processing plants, car washes, or breweries, the center’s water footprint looks different when you put it in perspective.",
       "History, they argue, is not nostalgia but compass. From Eaton’s hand‑dug ditch to today’s recorded water decrees and dual‑tap systems, the valley’s water belongs to metro districts and residents in a way most people do not expect. It is an asset of surprising future value — a buffer against scarcity, a bargaining chip in times of change, and a lesson in how community foresight can bend the arc of drought.",
       "This episode is a storytelling tour through gravel and ledger paper, through legal fights and bird‑filled lakes, and into the quiet engineering choices that keep a place green. It’s about how the past teaches the present to hold on to what matters — and how, in Water Valley, the right diversion at the right time still makes a desert bloom.",
+    ],
+  },
+  {
+    slug: "episode-5",
+    number: "05",
+    label: "Episode 5",
+    kicker: "Catalyst, 2F, and Greeley’s future",
+    title: "Gaslighting Greeley: The Fight Over Catalyst and 2F",
+    seoTitle: "Episode 5: Catalyst, 2F, and Greeley | Water Valley Voice",
+    teaser:
+      "Sherrie Peif joins Martin Lind to discuss why her view of Catalyst changed, the debate over 2F, and what they see at stake for Greeley’s future.",
+    metaDescription:
+      "Sherrie Peif and Martin Lind discuss Greeley’s Catalyst project, the 2F ballot measure, city finances, and how Sherrie’s view of the project changed.",
+    socialImageAlt: "Episode 5: Gaslighting Greeley: The Fight Over Catalyst and 2F, from Water Valley Voice.",
+    playerTitle: "Gaslighting Greeley: The Fight Over Catalyst and 2F",
+    playerSrc:
+      "https://www.podbean.com/player-v2/?i=zp8ns-1b91832-pb&from=pb6admin&pbad=0&share=1&download=1&rtl=0&fonts=Arial&skin=f6f6f6&font-color=auto&logo_link=episode_page&btn-skin=8bbb4e",
+    publishedDate: "2026-10-23",
+    publishedDateTime: "2026-10-23T14:55:48-06:00",
+    duration: "PT39M40S",
+    durationLabel: "39 min 40 sec",
+    host: "Martin Lind",
+    guests: [
+      "Sherrie Peif",
+    ],
+    topics: [
+      "Catalyst",
+      "Cascadia",
+      "Greeley",
+      "2F ballot measure",
+      "Sherrie Peif",
+      "Martin Lind",
+      "city finances",
+      "certificates of participation",
+      "sales tax",
+      "Colorado Eagles",
+      "parks and recreation",
+      "community development",
+    ],
+    podbeanUrl: "https://watervalleyvoice.podbean.com/e/gaslighting-greeley-the-fight-over-catalyst-and-2f/",
+    audioUrl: "https://mcdn.podbean.com/mf/web/3p9jxuqcudskiy5w/Episode5.mp3",
+    youtubeVideoId: "2x8Xuxfd130",
+    youtubeUrl: "https://www.youtube.com/watch?v=2x8Xuxfd130",
+    youtubeUploadDate: "2026-10-23T13:56:00-07:00",
+    description: [
+      "On a sunlit morning call from Mexico, longtime Northern Colorado voice Sherrie Peif joins Martin for a candid, urgent conversation about a project that has split a city. Sherrie, who began as a skeptical critic of certificates of participation and the Catalyst plan, recounts the moment she took a three-hour deep dive with Martin — poring over schematics, contracts, and the human stakes — and how the facts transformed her view. The episode opens with friendship, history, and a frank admission: this fight is as much about how Greeley pays as it is about what it becomes.",
+      "As the narrative unfolds, listeners are carried into the messy middle of municipal politics: gaslighting campaigns, court fights, and the sudden budget shortfalls that make parks, museums, and recreation the likely casualties. Sherrie and Martin trace the dominoes — how a failed vote, an overturned referendum, and a bruising public campaign led to a choice that will be decided at the ballot box next Tuesday. The tone is conversational but clear: the math is unambiguous and the consequences are real.",
+      "Through concrete examples — from the Eagles and ice rinks that draw tournament crowds to the water taps that fund infrastructure — the hosts translate policy into everyday life. We hear about sales tax leakage to neighboring cities, the paradox of projects that benefit regional school districts, and the ripple effects on housing, local businesses, and civic pride. These aren’t abstract numbers; they are playgrounds, downtown restaurants, and the futures of local kids with big-league dreams.",
+      "Sherrie’s arc gives the episode its emotional backbone: a longtime friend who refused to take one-sided claims at face value, dug into the paperwork, and publicly called out hypocrisy when she found it. Her switch from opposition to advocacy models what the hosts urge of voters — do the homework, listen to the nuance, and decide what kind of community you want to leave for the next generation.",
+      "Martin and Sherrie don’t pretend there aren’t mistakes in the city’s communication or decisions; they catalog them and then turn their attention to the pragmatic question at hand: how does Greeley get out of its fiscal hole? The stakes are painted plainly — a thriving, investment-ready city with new entertainment, hotels, and regional draw, or a quieter bedroom community with fewer services and dimmer prospects.",
+      "By the end of the episode, the urgency is palpable but not sensational. Instead of fearmongering, the story asks listeners to weigh trade-offs: a tiny sales tax ask paid largely by visitors versus the slow attrition of the amenities that make a city vibrant. It’s a vote about math, vision, and identity — and the hosts invite you to imagine the horizon for Greeley, with all its possibilities and perils, before you mark your ballot.",
     ],
   },
 ];
