@@ -513,15 +513,15 @@ h2 {
   font-size: 14px;
 }
 
-.podbean-player {
-  min-height: 150px;
+.podcast-player {
+  min-height: 240px;
   margin-top: 28px;
   overflow: hidden;
   border: 1px solid rgba(0, 0, 0, 0.07);
   background: #f6f6f6;
 }
 
-.podbean-player iframe {
+.podcast-player iframe {
   min-width: min(100%, 430px);
   display: block;
   border: 0;
@@ -1538,7 +1538,7 @@ footer {
 }
 
 .archive-player iframe {
-  height: 150px;
+  height: 240px;
 }
 
 .episode-notes {
@@ -3480,7 +3480,7 @@ footer {
 }
 
 .episode-detail-player iframe {
-  height: 150px;
+  height: 240px;
 }
 
 .episode-story {

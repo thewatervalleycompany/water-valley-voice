@@ -239,19 +239,17 @@ const breadcrumbSchema = {
                   {youtubeEmbedUrl ? "Prefer to listen?" : "Listen to the conversation."}
                 </h2>
               </div>
-              <a class="episode-media-link" href={episode.podbeanUrl} target="_blank" rel="noopener noreferrer">
-                Open on Podbean <span aria-hidden="true">↗</span>
+              <a class="episode-media-link" href={episode.playerSrc} target="_blank" rel="noopener noreferrer">
+                Open player <span aria-hidden="true">↗</span>
               </a>
             </div>
-            <div class="podbean-player episode-detail-player">
+            <div class="podcast-player episode-detail-player">
               <iframe
                 title={episode.playerTitle}
-                height="150"
+                height="240"
                 width="100%"
                 src={episode.playerSrc}
                 loading="lazy"
-                allowtransparency="true"
-                data-name="pb-iframe-player"
               ></iframe>
             </div>
           </section>
@@ -292,8 +290,8 @@ const breadcrumbSchema = {
         <aside class="episode-detail-aside" aria-label="Episode links">
           <div>
             <p class="episode-aside-label">Keep listening</p>
-            <a href={episode.podbeanUrl} target="_blank" rel="noopener noreferrer">
-              Open on Podbean <span aria-hidden="true">↗</span>
+            <a href={episode.playerSrc} target="_blank" rel="noopener noreferrer">
+              Open player <span aria-hidden="true">↗</span>
             </a>
             <a href="https://feed.podbean.com/watervalleyvoice/feed.xml" target="_blank" rel="noopener noreferrer">
               Subscribe with RSS <span aria-hidden="true">↗</span>

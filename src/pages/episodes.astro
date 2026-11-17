@@ -181,15 +181,13 @@ const episodeArchiveSchema = {
                 <span>{episode.durationLabel}</span>
               </p>
 
-              <div class="podbean-player archive-player">
+              <div class="podcast-player archive-player">
                 <iframe
                   title={episode.playerTitle}
-                  height="150"
+                  height="240"
                   width="100%"
                   src={episode.playerSrc}
                   loading="lazy"
-                  allowtransparency="true"
-                  data-name="pb-iframe-player"
                 ></iframe>
               </div>
 

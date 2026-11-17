@@ -100,14 +100,13 @@ const featuredSubtitle = featuredTitleParts.length > 0 ? featuredTitleParts.join
           <p class="episode-kicker">Featured conversation</p>
           <h3><a href={episodePath(latestEpisode)}>{featuredTitle}</a></h3>
           <p class="episode-subtitle">{featuredSubtitle}</p>
-          <div class="podbean-player">
+          <div class="podcast-player">
             <iframe
               title={latestEpisode.playerTitle}
-              height="150"
+              height="240"
               width="100%"
               src={latestEpisode.playerSrc}
               loading="lazy"
-              allowtransparency="true"
             ></iframe>
           </div>
           <a class="text-link episode-detail-link" href={episodePath(latestEpisode)}>
